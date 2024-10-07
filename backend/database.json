@@ -1,0 +1,164 @@
+{
+  "admins": {
+    "1": {
+      "name": "1",
+      "password": "1",
+      "store": {
+        "1": {
+          "name": "sjkwejm",
+          "description": "lpvbkopwekbopw",
+          "defaultColor": null,
+          "content": {
+            "slide1": {
+              "text": {
+                "text1": {
+                  "height": "100px",
+                  "width": "100px",
+                  "text": "wiojfgiowejfg",
+                  "fontSize": "1em",
+                  "textColour": "black"
+                },
+                "text2": {
+                  "height": "100px",
+                  "width": "100px",
+                  "text": "iowejfiowefgiwejgijwiogjiowejgiowegijwej",
+                  "fontSize": "1em",
+                  "textColour": "black"
+                }
+              },
+              "image": {},
+              "video": {},
+              "code": {}
+            },
+            "slide2": {
+              "text": {
+                "text1": {
+                  "height": "100px",
+                  "width": "100px",
+                  "text": "ifjiowejfgo",
+                  "fontSize": "1em",
+                  "textColour": "black"
+                }
+              },
+              "image": {
+                "image1": {
+                  "height": "100px",
+                  "width": "100px",
+                  "url": "wegwegweg",
+                  "alt": "picture is here"
+                }
+              },
+              "video": {
+                "video1": {
+                  "height": "100px",
+                  "width": "100px",
+                  "url": "nigger.mp4",
+                  "autoplay": false
+                }
+              },
+              "code": {
+                "code1": {
+                  "height": "300px",
+                  "width": "300px",
+                  "code": "if (fuck comp6080) {\n    print(\"yes\")\n}",
+                  "fontSize": "2em"
+                }
+              }
+            },
+            "slide3": {
+              "text": {
+                "text1": {
+                  "height": "100px",
+                  "width": "100px",
+                  "text": "slide 3 ",
+                  "fontSize": "1em",
+                  "textColour": "black"
+                }
+              },
+              "image": {},
+              "video": {},
+              "code": {}
+            },
+            "slide4": {
+              "text": {},
+              "image": {},
+              "video": {},
+              "code": {}
+            }
+          }
+        }
+      }
+    },
+    "iqti@gmail.com": {
+      "name": "iqti",
+      "password": "a",
+      "store": {
+        "1": {
+          "name": "Sanjam Chandi Singh",
+          "description": "sanjam sang",
+          "defaultColor": null,
+          "content": {
+            "slide1": {
+              "text": {
+                "text1": {
+                  "height": "10",
+                  "width": "10",
+                  "text": "fuck you",
+                  "fontSize": "30",
+                  "textColour": "blue"
+                }
+              },
+              "image": {
+                "image1": {
+                  "height": "50",
+                  "width": "50",
+                  "url": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUTExMVFhUXFRcXGBgVFxgYGBsYGBgYGBoXFRgaHSggGx0lHxcXITEhJSkrLi4uFx8zODMtNygtLi0BCgoKDg0OGxAQGy0lICYtLS0tLS0tMC0tLS0tLS0tLy0tLS0tNS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIANwA5QMBIgACEQEDEQH/xAAcAAEAAQUBAQAAAAAAAAAAAAAABAIDBQYHAQj/xAA+EAABAwIDBAcGBQMDBQEAAAABAAIRAyEEMUEFElFhBiJxgZGh8AcTMrHB0RRCcuHxI1JiFTOyRGOCkqIW/8QAGwEBAAMBAQEBAAAAAAAAAAAAAAECAwQFBgf/xAAxEQACAQIEAwcDAwUAAAAAAAAAAQIDEQQSITEFE0EiUYGRsdHwMmFxFCNiFTNCQ1L/2gAMAwEAAhEDEQA/AO4oiIAiIgCIiAIiIAiIgCIiAIiIAiIgCKitVa0FziABckmAsBiOmOHaDG+6MobE9kx5rKpWp0/raRDaW5sSLn2K6ZV3/A0U2zIPxOjvt22UWptnEE3rvtORgc5iFxz4lTT7Kb+fcpzEdLRc5odJsQz8+8J/OAfP91kcP0xqAjfptP6ZBPCJn91MeJUX9V14exKqI3VFhMD0ow9QgF2446PsJ4B2SzQK7KdWFRXg7lk0z1ERaEhERAEREAREQBERAEREAREQBERAEREAREQBRdo45tGm6o82aJ5nkOaqx2KbSpue42aJ/YLlO1drPxDi58xPVEyAOA9aLhxmMVBWW7KTllJW3NtVcS4bx6smGjLt5m+aimASNZGemludwrGFdAnW8chx7SPkvWUyeQN578/me/mvD1k80tWYN3JlNovJtodSeQ5zPcvK+Iud0Zzc8DOU2Uao6YAsGjLUXzCuQBBN8oHEgnymVqu5EFognrE2yv4wPWgVW8DJmO20DKFSSXOGUaRYA",
+                  "alt": "srgsgswaegweg"
+                }
+              },
+              "video": {},
+              "code": {}
+            },
+            "slide2": {
+              "text": {
+                "text1": {
+                  "height": "30",
+                  "width": "30",
+                  "text": "sdsdhbwerhr",
+                  "fontSize": "20",
+                  "textColour": "yellow"
+                }
+              },
+              "image": {},
+              "video": {},
+              "code": {}
+            },
+            "slide3": {
+              "text": {},
+              "image": {},
+              "video": {},
+              "code": {}
+            },
+            "slide4": {
+              "text": {},
+              "image": {},
+              "video": {},
+              "code": {}
+            },
+            "slide5": {
+              "text": {},
+              "image": {},
+              "video": {},
+              "code": {}
+            }
+          }
+        }
+      }
+    },
+    "iqtiar@gmail.com": {
+      "name": "iqti",
+      "password": "iqti",
+      "store": {}
+    }
+  }
+}
