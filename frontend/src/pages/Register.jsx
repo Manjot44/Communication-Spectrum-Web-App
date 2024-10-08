@@ -57,7 +57,7 @@ function Register ({ setTokenFunc }) {
                 <TextField className='login-input-box' id="register-confirmpass-box" label="Confirm Password" variant="outlined" type="password" onChange={e => setConfirmPass(e.target.value)} value ={confirmPass} onKeyDown={handleKeyDown} /> <br /><br />
                 <Button onClick={newUserRequest} variant="contained" style={{ backgroundColor: '#000CA4', width: '75%', borderRadius: "20px", fontFamily: 'Poppins' }}>Register</Button>
                 <br/><br/>
-                <p><a class="link-opacity-100" href="/" style={{ color: '#5A89F7', fontFamily: 'Poppins' }}>Already have an account? Log in</a></p>
+                <p><a class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/" style={{ fontFamily: 'Poppins' }}>Already have an account? <b>Log in</b></a></p>
             </div>
         </div>
     </>
