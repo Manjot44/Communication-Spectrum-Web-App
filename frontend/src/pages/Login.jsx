@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Logo from './mycomm.png'
+import Logo from '../assets/mycomm.png';
+import Apple from '../assets/apple.png';
+import Facebook from '../assets/Facebook.png';
+import Google from '../assets/Google.png';
+import '../App.css';
 
 function Login ({ setTokenFunc }) {
     const [email, setEmail] = React.useState('');
@@ -13,45 +18,46 @@ function Login ({ setTokenFunc }) {
     // Submits the login form when the enter key is pressed in any of the fields
     function handleKeyDown (event) {
         if (event.key === 'Enter') {
-        newUserRequest();
+            newUserRequest();
         }
-    }
-
-    // Register button directs to register
-    function goToRegister () {
-        navigate('/register');
     }
 
     // POST request for logging in a new user
     const newUserRequest = async () => {
         console.log(email, password);
         if (email !== '' && password !== '') {
-        try {
-            const response = await axios.post('http://localhost:5005/admin/auth/login', {
-            email,
-            password
-            });
-            setTokenFunc(response.data.token);
-            navigate('/dashboard');
-        } catch (err) {
-            alert(err.response.data.error);
-        }
+            try {
+                const response = await axios.post('http://localhost:5005/admin/auth/login', {
+                    email,
+                    password
+                });
+                setTokenFunc(response.data.token);
+                navigate('/home');
+            } catch (err) {
+                alert(err.response.data.error);
+            }
         } else if (email === '' || password === '') {
-        alert('Please fill in all fields');
+            alert('Please fill in all fields');
         }
     }
 
     return (
     <>
         <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-        <div id='background-container' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#000CA4' }}>
-            <div id='outside-box' style={{ width: '30%', height: '60vh', textAlign: 'center', backgroundColor: 'white', borderRadius: '15px' }}>
-                <img src={Logo} alt="MyComms Logo" style={{ maxWidth: '70%', height: 'auto'}}/>
-                <h2 style={{ fontFamily: 'Poppins', color: 'Black' }}>Login to your account</h2>
-                <TextField id="login-email-box" label="Email" variant="outlined" type='text' onChange={e => setEmail(e.target.value)} value ={email} onKeyDown={handleKeyDown} style={{ backgroundColor: '#eff6ff', width: '75%' }}/> <br /><br />
-                <TextField id="login-pass-box" label="Password" variant="outlined" type='password' onChange={e => setPassword(e.target.value)} value ={password} onKeyDown={handleKeyDown} style={{ backgroundColor: '#eff6ff', width: '75%' }}/> <br /><br />
-                <Button onClick={newUserRequest} variant="contained">Login</Button>
-                <Button onClick={goToRegister} variant="contained">Register</Button> <br /><br />
+        <div id='background-container' class="d-flex justify-content-center align-items-center login-background">
+            <div id='outside-box' class="mx-auto login-form">
+                <img src={Logo} alt="MyComms Logo" class='login-logo'/>
+                <h3 class='login-text'>Log In to your account</h3>
+                <TextField className='login-input-box' id="login-email-box" label="Email" variant="outlined" type='text' onChange={e => setEmail(e.target.value)} value ={email} onKeyDown={handleKeyDown}/> <br /><br />
+                <TextField className='login-input-box' id="login-pass-box" label="Password" variant="outlined" type='password' onChange={e => setPassword(e.target.value)} value ={password} onKeyDown={handleKeyDown}/> <br /><br />
+                <Button onClick={newUserRequest} variant="contained" style={{ backgroundColor: '#000CA4', width: '75%', borderRadius: "20px", fontFamily: 'Poppins' }}>Login</Button><br /><br />
+                <p><a class="link-opacity-100" href="/register" style={{ fontFamily: 'Poppins', color: '#5A89F7' }}>Dont have an account?</a></p>
+                <p style={{ fontFamily: 'Poppins' }}>Or log in with socials</p>
+                <div className="d-flex justify-content-around mx-auto" style= {{ width: '75%' }}>
+                    <img src={Apple} alt="apple logo" className="login-alternate-signin"/>
+                    <img src={Google} alt="google logo" className="login-alternate-signin"/>
+                    <img src={Facebook} alt="facebook logo" className="login-alternate-signin"/>
+                </div>
             </div>
         </div>
     </>

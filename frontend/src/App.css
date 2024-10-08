@@ -1,3 +1,47 @@
+/* LOGIN SCREEN */
+.login-background {
+  min-height: 100vh;
+  background-color: #000CA4;
+}
+
+.login-form {
+  width: 30%;
+  height: 80vh;
+  text-align: center;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.login-logo {
+  max-width: 70%;
+  height: auto
+}
+
+.login-text {
+  font-family: 'Poppins';
+  color: black;
+  font-weight: bold;
+}
+
+.login-input-box {
+  font-family: 'Poppins';
+  background-color: #eff6ff;
+  width: 75%;
+}
+
+.login-alternate-signin{
+  max-width: 20%;
+  height: auto
+}
+
+.login-button {
+  font-family: 'Poppins';
+  background-color: #000CA4;
+  width: 75%;
+  border-radius: 20px;
+}
+
+/* REACT SET UP STUFF */
 .App {
   text-align: center;
 }
