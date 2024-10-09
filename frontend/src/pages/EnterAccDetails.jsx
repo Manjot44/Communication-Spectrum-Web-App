@@ -28,8 +28,13 @@ function EnterAccDetails ({ token, setTokenFunc }) {
         }
     }
 
+    // Check to make sure all the fields are filled in
     const handleCreateButton = () => {
-        createAccProfile();
+        if (name === '' || email === '' || profession === '' || country === '' || postcode === '' || date === '') {
+            alert('Please fill in all fields')
+        } else {
+            createAccProfile();
+        }
     }
 
     // Get the current presentation database of user and append acc profile to json
