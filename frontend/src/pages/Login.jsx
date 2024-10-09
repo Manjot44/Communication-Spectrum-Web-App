@@ -61,6 +61,7 @@ function Login ({ setTokenFunc }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    type='Password'
                 />
                 <br /><br />
 
