@@ -1,11 +1,15 @@
-# Dockerfile for React frontend
-# Taken from Docker Primer
+# FROM baseImage:tag - this specifies the base image and its version
 FROM node:14
-
-WORKDIR /usr/src/server
-COPY package*.json ./
-RUN npm install
+# WORKDIR /the/workdir/path - path to use as the working directory
+WORKDIR /app/backend
+RUN mkdir backend
+# Copy package.json files
+COPY ./backend/package*.json ./backend
+# RUN is used to run commands inside the container. Here we want to install all required modules from package.json before we actually run our program
+RUN npm install --prefix ./backend
+# Copy files or folders from source (on your laptop) to the dest path (in the image)
 COPY . .
-
+# EXPOSE is used to specify all ports in the container that we will need
 EXPOSE 5005
-CMD ["npm", "start"]
+# CMD specifies the command used to start the application. We can only have one CMD statement in our Dockerfile
+CMD ["npm", "start", "--prefix", "./backend"]
