@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import EnterAccDetails from './pages/EnterAccDetails';
 import UserManage from './pages/UserManage';
-
+import EnterUserDetails from './pages/EnterUserDetails';
 
 function App () {
   let storageToken = null;
@@ -30,6 +30,7 @@ function App () {
           <Route path="/home" element={<Home token = {token} setTokenFunc = {updateToken} />} />
           <Route path="/enterAccDetails" element={<EnterAccDetails token = {token} setTokenFunc = {updateToken}/>} />
           <Route path="/UserManage" element={<UserManage token = {token} setTokenFunc = {updateToken} />} />
+          <Route path="/AddUser" element={<EnterUserDetails token={token} setTokenFunc = {updateToken} />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UserProfileContainer ({ token, setTokenFunc}) {
     const navigate = useNavigate();
-    const [profiles, setProfileData] = React.useState({});
+    const [profiles, setProfileData] = React.useState([]);
 
     React.useEffect(() => {
         axios.get('http://localhost:5005/store', {
@@ -24,11 +24,16 @@ function UserProfileContainer ({ token, setTokenFunc}) {
             console.log(token);
             console.error('Error fetching profiles:', error.response ? error.response.data : error.message);
         });
-    }, []);
+    }, [token]);
 
     function goToUserProfileContainer () {
         navigate('/home');
     }
+
+    // Navigate to the AddUser page
+    const handleAddUser = () => {
+        navigate('/AddUser');
+    };
     
     return (
         <>
@@ -36,9 +41,27 @@ function UserProfileContainer ({ token, setTokenFunc}) {
                 <div style={{ width:'85%'}} >
                     <Grid container spacing={2}>
                         {profiles && Object.entries(profiles).map(profile => (
-                            <UserProfileCircles profileName={profile[1].name}></UserProfileCircles>
+                            <UserProfileCircles 
+                                profileName={profile.Profile.name}
+                                picture={profile.Profile.profilePicture}>
+                            </UserProfileCircles>
                         ))}
-                        <Button style={{ width:'200px', height:'190px', border:"1px solid #26C3BA" }}>+</Button>
+                         <Button
+                            onClick={handleAddUser}
+                            style={{
+                                width: '200px',
+                                height: '190px',
+                                border: "1px solid #26C3BA",
+                                fontSize: '2rem',
+                                backgroundColor: '#26C3BA',
+                                color: 'white',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                            +
+                        </Button>
                     </Grid>
                 </div>
             </div>
