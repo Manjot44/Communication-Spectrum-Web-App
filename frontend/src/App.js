@@ -29,7 +29,7 @@ function App () {
           <Route path="/register" element={<Register setTokenFunc = {updateToken}/>} />
           <Route path="/home" element={<Home token = {token} setTokenFunc = {updateToken} />} />
           <Route path="/enterAccDetails" element={<EnterAccDetails token = {token} setTokenFunc = {updateToken}/>} />
-          <Route path="/usermanage" element={<UserManage token = {token} setTokenFunc = {updateToken} />} />
+          <Route path="/UserManage" element={<UserManage token = {token} setTokenFunc = {updateToken} />} />
         </Route>
       </Routes>
     </BrowserRouter>

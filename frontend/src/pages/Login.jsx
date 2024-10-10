@@ -32,7 +32,7 @@ function Login ({ setTokenFunc }) {
                     password
                 });
                 setTokenFunc(response.data.token);
-                navigate('/home');
+                navigate('/UserManage');
             } catch (err) {
                 alert(err.response.data.error);
             }
