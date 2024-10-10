@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 // Image assets
@@ -32,7 +33,9 @@ const Navbar = () => {
         </a>
       </div>
       <div className="profile-switch">
-        <button className="profile-btn">👤 Switch Profile</button>
+        <Link to="/usermanage">
+          <button className="profile-btn">👤 Switch Profile</button>
+        </Link>
       </div>
     </nav>
   );
