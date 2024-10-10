@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import EnterAccDetails from './pages/EnterAccDetails';
 import UserManage from './pages/UserManage';
+
 
 function App () {
   let storageToken = null;
@@ -26,6 +28,7 @@ function App () {
           <Route path="/" element={<Login setTokenFunc = {updateToken}/>} /> {/* First screen person will go to is login*/}
           <Route path="/register" element={<Register setTokenFunc = {updateToken}/>} />
           <Route path="/home" element={<Home token = {token} setTokenFunc = {updateToken} />} />
+          <Route path="/enterAccDetails" element={<EnterAccDetails token = {token} setTokenFunc = {updateToken}/>} />
           <Route path="/usermanage" element={<UserManage token = {token} setTokenFunc = {updateToken} />} />
         </Route>
       </Routes>
