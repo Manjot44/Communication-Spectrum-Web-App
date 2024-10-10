@@ -22,6 +22,23 @@ function AddUser({ token, setTokenFunc }) {
   let currentData = ""; // Variable to store existing data (if needed)
   let store = ""; // Placeholder for updated data to be sent back
 
+  // Submits the register form when the enter key is pressed in any of the fields
+  function handleKeyDown (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        handleCreateButton();
+    }
+  }
+  
+  // Check to make sure all the fields are filled in
+  const handleCreateButton = () => {
+    if (name === '' || dob === '' || postcode === '' || communication === '' || interests === '' || environments === '' || profilePicture === '') {
+        alert('Please fill in all fields')
+    } else {
+        createUserProfile();
+    }
+  }
+
   // Handle profile picture upload
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
