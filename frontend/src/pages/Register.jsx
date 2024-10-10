@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TextFieldComponent from '../components/TextFieldComponent';
 import '../App.css';
 import Logo from '../assets/mycomm.png';
 
@@ -17,8 +18,8 @@ function Register ({ setTokenFunc }) {
     // Submits the register form when the enter key is pressed in any of the fields
     function handleKeyDown (event) {
         if (event.key === 'Enter') {
-        event.preventDefault();
-        newUserRequest();
+            event.preventDefault();
+            newUserRequest();
         }
     }
 
@@ -28,12 +29,12 @@ function Register ({ setTokenFunc }) {
         if (password === confirmPass && name !== '' && email !== '' && password !== '' && confirmPass !== '') {
         try {
             const response = await axios.post('http://localhost:5005/admin/auth/register', {
-            email,
-            password,
-            name
+                email,
+                password,
+                name
             });
             setTokenFunc(response.data.token);
-            navigate('/dashboard');
+            navigate('/EnterAccDetails');
         } catch (err) {
             alert(err.response.data.error);
         }
@@ -51,10 +52,38 @@ function Register ({ setTokenFunc }) {
             <div id='outside-box' class="mx-auto login-form">
                 <img src={Logo} alt="MyComms Logo" class='login-logo'/>
                 <h3 class='login-text'>Create an account</h3>
-                <TextField className='login-input-box' id="register-name-box" label="Name" variant="outlined" type="text" onChange={e => setName(e.target.value)} value ={name} onKeyDown={handleKeyDown} /> <br /><br />
-                <TextField className='login-input-box' id="register-email-box" label="Email" variant="outlined" type="text" onChange={e => setEmail(e.target.value)} value ={email} onKeyDown={handleKeyDown} /> <br /><br />
-                <TextField className='login-input-box' id="register-pass-box" label="Password" variant="outlined" type="password" onChange={e => setPassword(e.target.value)} value ={password} onKeyDown={handleKeyDown} /> <br /><br />
-                <TextField className='login-input-box' id="register-confirmpass-box" label="Confirm Password" variant="outlined" type="password" onChange={e => setConfirmPass(e.target.value)} value ={confirmPass} onKeyDown={handleKeyDown} /> <br /><br />
+                
+                <TextFieldComponent
+                    label='Name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                />
+                <br /><br />
+                <TextFieldComponent
+                    label='Email'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                />
+                <br /><br />
+                <TextFieldComponent
+                    label='Password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    type='password'
+                />
+                <br /><br />
+                <TextFieldComponent
+                    label='Confirm Password'
+                    value={confirmPass}
+                    onChange={(e) => setConfirmPass(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    type='password'
+                />
+                <br /><br />
+                
                 <Button onClick={newUserRequest} variant="contained" style={{ backgroundColor: '#000CA4', width: '75%', borderRadius: "20px", fontFamily: 'Poppins' }}>Register</Button>
                 <br/><br/>
                 <p><a class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/" style={{ fontFamily: 'Poppins' }}>Already have an account? <b>Log in</b></a></p>
