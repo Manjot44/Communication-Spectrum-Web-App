@@ -30,6 +30,15 @@ function AddUser({ token, setTokenFunc }) {
     }
   }
   
+  // Check to make sure all the fields are filled in
+  const handleCreateButton = () => {
+    if (name === '' || dob === '' || postcode === '' || communication === '' || interests === '' || environments === '' || profilePicture === '') {
+        alert('Please fill in all fields')
+    } else {
+        createUserProfile();
+    }
+  }
+
   // Handle profile picture upload
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
