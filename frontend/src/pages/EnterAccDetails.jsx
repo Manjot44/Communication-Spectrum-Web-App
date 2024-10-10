@@ -80,7 +80,7 @@ function EnterAccDetails ({ token, setTokenFunc }) {
         } catch (err) {
             alert(err.response.data.error);
         }
-        navigate('/');
+        navigate('/UserManage');
     }
 
     return (
