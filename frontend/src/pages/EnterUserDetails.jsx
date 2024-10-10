@@ -64,21 +64,32 @@ function AddUser({ token, setTokenFunc }) {
             currentData = response.data.store;  // Get existing data from the response
             console.log('Current Store Data:', currentData);
 
-            // Create the new user profile
-            const newUserProfile = {
-                Profile: {
-                    name: name,
-                    dob: dob,
-                    postcode: postcode,
-                    communication: communication,
-                    interests: interests,
-                    environments: environments,
-                    profilePicture: profilePicture
-                },
-            };
+            // Make new ids for the user profiles
+            const dictLength = Object.keys(currentData.Users).length;
+            let newId = 1
+            if (dictLength !== 0) {
+                const keysArray = Object.keys(currentData.Users);
+                newId = parseInt(keysArray[keysArray.length - 1]) + 1;
+            }
 
-            // Use Object.assign to merge currentData and newUserProfile into a new object
-            store = Object.assign({}, currentData, newUserProfile);  // Merging the new user profile
+            const store = {
+                ...currentData,
+                Profile: {
+                    ...currentData.Profile,
+                },
+                Users: {
+                    ...currentData.Users,
+                        [newId]: {
+                            name: name,
+                            dob: dob,
+                            postcode: postcode,
+                            communication: communication,
+                            interests: interests,
+                            environments: environments,
+                            profilePicture: profilePicture
+                        }
+                }
+            };
 
             // Send the updated data back to the server
             await axios.put('http://localhost:5005/store', 
@@ -99,7 +110,8 @@ function AddUser({ token, setTokenFunc }) {
             <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
             <div id="background-container" className="d-flex justify-content-center align-items-center login-background">
                 <div id="outside-box" className="mx-auto login-form">
-                    <h1>Add New User</h1>
+                    <br/>
+                    <h4>Add New User</h4>
 
                     <TextFieldComponent
                         label="Name"
@@ -157,7 +169,7 @@ function AddUser({ token, setTokenFunc }) {
                         onChange={(e) => setEnvironments(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
-                    <br /><br />
+                    <br />
                     <div className="form-group">
                         <label htmlFor="profilePicture">Profile Picture</label>
                         <input

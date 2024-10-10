@@ -9,22 +9,19 @@ import Item from './Item';
 function UserProfileCircles ({ profileName, profilePicture }) {
     const navigate = useNavigate();
 
-    function goToUserProfileCircles () {
-        navigate('/home');
-    }
-    
     return (
         <>
+            <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
             <Grid container direction="column" spacing={0}>
                 <Grid item xs={12}>
                     <img
                         src={profilePicture}
                         className="profile-picture"
-                        style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                        style={{ width: '200px', height: '200px', borderRadius: '50%', border:'1px solid black'}}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Box sx={{ backgroundColor: '#6B4BEF', height: '40px', color: 'white' }}>
+                    <Box sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}>
                         {profileName}
                     </Box>
                 </Grid>

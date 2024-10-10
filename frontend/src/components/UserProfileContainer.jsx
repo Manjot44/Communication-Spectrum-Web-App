@@ -17,18 +17,13 @@ function UserProfileContainer ({ token, setTokenFunc}) {
                 Authorization: token,
             }
         }).then((response) => {
-            setProfileData(response.data.store.users);
+            setProfileData(response.data.store.Users);
             console.log(response.data.store)
-            console.log(profiles);
         }).catch((error) => {
             console.log(token);
             console.error('Error fetching profiles:', error.response ? error.response.data : error.message);
         });
     }, [token]);
-
-    function goToUserProfileContainer () {
-        navigate('/home');
-    }
 
     // Navigate to the AddUser page
     const handleAddUser = () => {
@@ -42,15 +37,15 @@ function UserProfileContainer ({ token, setTokenFunc}) {
                     <Grid container spacing={2}>
                         {profiles && Object.entries(profiles).map(profile => (
                             <UserProfileCircles 
-                                profileName={profile.Profile.name}
-                                picture={profile.Profile.profilePicture}>
+                                profileName={profile[1].name}
+                                profilePicture={profile[1].profilePicture}>
                             </UserProfileCircles>
                         ))}
-                         <Button
+                        <Button
                             onClick={handleAddUser}
                             style={{
                                 width: '200px',
-                                height: '190px',
+                                height: '200px',
                                 border: "1px solid #26C3BA",
                                 fontSize: '2rem',
                                 backgroundColor: '#26C3BA',
