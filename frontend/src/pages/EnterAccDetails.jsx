@@ -58,7 +58,8 @@ function EnterAccDetails ({ token, setTokenFunc }) {
                     postcode: postcode,
                     profession: profession,
                     subscribed: isSubscribed
-                }
+                },
+                Users: {}
             });
 
             // Put Request to Save the New Data

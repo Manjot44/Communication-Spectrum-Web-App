@@ -11,10 +11,6 @@ import '../App.css'
 function UserManage ({ token, setTokenFunc }) {
     const navigate = useNavigate();
 
-    function goToUserManage () {
-        navigate('/home');
-    }
-
     function logOut () {
         console.log(token);
         navigate('/')

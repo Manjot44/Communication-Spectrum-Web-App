@@ -6,23 +6,22 @@ import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Item from './Item';
 
-function UserProfileCircles ({ profileName }) {
+function UserProfileCircles ({ profileName, profilePicture }) {
     const navigate = useNavigate();
 
-    function goToUserProfileCircles () {
-        navigate('/home');
-    }
-    
     return (
         <>
+            <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
             <Grid container direction="column" spacing={0}>
                 <Grid item xs={12}>
-                    <Box sx={{ backgroundColor: 'white', border:'1px solid black', height: '150px', width:'200px' }}>
-                        Picture
-                    </Box>
+                    <img
+                        src={profilePicture}
+                        className="profile-picture"
+                        style={{ width: '200px', height: '200px', borderRadius: '50%', border:'1px solid black'}}
+                    />
                 </Grid>
                 <Grid item xs={12}>
-                    <Box sx={{ backgroundColor: '#6B4BEF', height: '40px', color: 'white' }}>
+                    <Box sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}>
                         {profileName}
                     </Box>
                 </Grid>
