@@ -10,26 +10,6 @@ import '../App.css'
 
 function UserManage ({ token, setTokenFunc }) {
     const navigate = useNavigate();
-    const [profiles, setProfileData] = React.useState({});
-
-    React.useEffect(() => {
-        axios.get('http://localhost:5005/store', {
-            headers: {
-                Authorization: token,
-            }
-        }).then((response) => {
-            setProfileData(response.data.store.users);
-            console.log(response.data.store)
-            console.log(profiles);
-        }).catch((error) => {
-            console.log(token);
-            console.error('Error fetching profiles:', error.response ? error.response.data : error.message);
-        });
-    }, []);
-
-    function goToUserManage () {
-        navigate('/home');
-    }
 
     function logOut () {
         console.log(token);
