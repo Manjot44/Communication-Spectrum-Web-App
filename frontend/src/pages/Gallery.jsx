@@ -52,6 +52,10 @@ function Gallery({ token, setTokenFunc }) {
     handleClose();
   }
 
+  function refreshPage() {
+    window.location.reload();
+  }
+
   // Handle the display of images
   React.useEffect(() => {
     axios.get('http://localhost:5005/store', {
@@ -112,6 +116,7 @@ function Gallery({ token, setTokenFunc }) {
       alert('Image added successfully');
       navigate('/home');
       navigate('/gallery');
+      refreshPage();
     } catch (error) {
         console.error('Error creating user:', error);
         alert('An error occurred while creating the user.');
