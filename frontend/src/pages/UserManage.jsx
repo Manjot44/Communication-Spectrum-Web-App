@@ -5,19 +5,32 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Item from '../components/Item';
 import UserProfileContainer from '../components/UserProfileContainer';
+import Logo from '../assets/mycomm.png';
+import '../App.css'
 
-function UserManage ({setTokenFunc}) {
+function UserManage ({ token, setTokenFunc }) {
     const navigate = useNavigate();
 
     function goToUserManage () {
         navigate('/home');
     }
-    
+
+    function logOut () {
+        console.log(token);
+        navigate('/')
+    }
+
     return (
         <>
-            <h1>Select User</h1>
-            <UserProfileContainer></UserProfileContainer>
-
+            <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
+            <div class='d-flex justify-content-between'>
+                <img src={Logo} alt="MyComms Logo" style={{ maxWidth: '15%', height: 'auto' }}/>
+                <Button style={{ width: '10%'}} onClick={logOut}>LOG OUT</Button>
+            </div>
+            <div class='d-flex justify-content-center align-items-center'>
+                <h1 class="login-text" style={{ marginTop: '15vh' }}>Select User Profile</h1>
+            </div>
+            <UserProfileContainer token={token}></UserProfileContainer>
         </>
     );
 }
