@@ -29,14 +29,19 @@ function UserProfileContainer ({ token, setTokenFunc}) {
     const handleAddUser = () => {
         navigate('/AddUser');
     };
-    
+
+    // Navigate to the home page for the user profile
+    const handleUser = () => {
+        navigate('/home')
+    }
+
     return (
         <>
             <div class='d-flex justify-content-center' style={{ display:'flex' }} >
                 <div style={{ width:'85%'}} >
                     <Grid container spacing={2}>
                         {profiles && Object.entries(profiles).map(profile => (
-                            <UserProfileCircles 
+                            <UserProfileCircles
                                 profileName={profile[1].name}
                                 profilePicture={profile[1].profilePicture}>
                             </UserProfileCircles>

@@ -88,6 +88,9 @@ function AddUser({ token, setTokenFunc }) {
                             environments: environments,
                             profilePicture: profilePicture
                         }
+                },
+                Photos: {
+                    ...currentData.Photos,
                 }
             };
 

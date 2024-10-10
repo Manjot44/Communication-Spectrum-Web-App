@@ -59,7 +59,8 @@ function EnterAccDetails ({ token, setTokenFunc }) {
                     profession: profession,
                     subscribed: isSubscribed
                 },
-                Users: {}
+                Users: {},
+                Photos: []
             });
 
             // Put Request to Save the New Data
