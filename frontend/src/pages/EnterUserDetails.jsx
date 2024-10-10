@@ -34,190 +34,154 @@ function AddUser({ token, setTokenFunc }) {
     }
   };
 
-  // Submits the form when the enter key is pressed
-  function handleKeyDown(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleCreateUser();
-    }
-  }
-
   // Validate all fields before submitting
   const handleCreateUser = () => {
-    if (
-      name === "" ||
-      dob === "" ||
-      postcode === "" ||
-      communication === "" ||
-      interests === "" ||
-      environments === ""
-    ) {
-      alert("Please fill in all fields");
-    } else {
-      createUserProfile(); // Create the user profile
-    }
+      if (name === '' || dob === '' || postcode === '' || communication === '' || interests === '' || environments === '') {
+          alert('Please fill in all fields');
+      } else {
+          createUserProfile();  // Create the user profile
+      }
   };
 
   // Function to fetch existing data and create the new user profile
   const createUserProfile = async () => {
-    try {
-      // Fetch existing store data
-      const response = await axios.get("http://localhost:5005/store", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      try {
+          // Fetch existing store data
+          const response = await axios.get('http://localhost:5005/store', {
+              headers: {
+                  Authorization: token,
+              },
+          });
 
-      currentData = response.data.store; // Get existing data from the response
-      console.log("Current Store Data:", currentData);
+          currentData = response.data.store;  // Get existing data from the response
+          console.log('Current Store Data:', currentData);
 
-      // Make new ids for the user profiles
-      const dictLength = Object.keys(currentData.Users).length;
-      let newId = 1;
-      if (dictLength !== 0) {
-        const keysArray = Object.keys(currentData.Users);
-        newId = parseInt(keysArray[keysArray.length - 1]) + 1;
+          // Make new ids for the user profiles
+          const dictLength = Object.keys(currentData.Users).length;
+          let newId = 1
+          if (dictLength !== 0) {
+              const keysArray = Object.keys(currentData.Users);
+              newId = parseInt(keysArray[keysArray.length - 1]) + 1;
+          }
+
+          const store = {
+              ...currentData,
+              Profile: {
+                  ...currentData.Profile,
+              },
+              Users: {
+                  ...currentData.Users,
+                      [newId]: {
+                          name: name,
+                          dob: dob,
+                          postcode: postcode,
+                          communication: communication,
+                          interests: interests,
+                          environments: environments,
+                          profilePicture: profilePicture
+                      }
+              },
+              Photos: {
+                  ...currentData.Photos,
+              }
+          };
+
+          // Send the updated data back to the server
+          await axios.put('http://localhost:5005/store', 
+              { store },  // Send the merged store data
+              { headers: { Authorization: token } }
+          );
+
+          alert('User profile created successfully');
+          navigate('/UserManage');  // Navigate back to UserManage on success
+      } catch (error) {
+          console.error('Error creating user:', error);
+          alert('An error occurred while creating the user.');
       }
-
-      const store = {
-        ...currentData,
-        Profile: {
-          ...currentData.Profile,
-        },
-        Users: {
-          ...currentData.Users,
-          [newId]: {
-            name: name,
-            dob: dob,
-            postcode: postcode,
-            communication: communication,
-            interests: interests,
-            environments: environments,
-            profilePicture: profilePicture,
-          },
-        },
-      };
-
-      // Send the updated data back to the server
-      await axios.put(
-        "http://localhost:5005/store",
-        { store }, // Send the merged store data
-        { headers: { Authorization: token } }
-      );
-
-      alert("User profile created successfully");
-      navigate("/UserManage"); // Navigate back to UserManage on success
-    } catch (error) {
-      console.error("Error creating user:", error);
-      alert("An error occurred while creating the user.");
-    }
   };
 
   return (
-    <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
-      <div
-        id="background-container"
-        className="d-flex justify-content-center align-items-center login-background"
-      >
-        <div id="outside-box" className="mx-auto login-form">
-          <br />
-          <h4>Add New User</h4>
+      <>
+          <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
+          <div id="background-container" className="d-flex justify-content-center align-items-center login-background">
+              <div id="outside-box" className="mx-auto login-form">
+                  <br/>
+                  <h4>Add New User</h4>
 
-          <TextFieldComponent
-            label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <br />
+                  <TextFieldComponent
+                      label="Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                  />
+                  <br /><br />
 
-          <SelectDOBComponent
-            label="Date of Birth"
-            value={dob}
-            onChange={(newDate) => setDob(newDate)}
-          />
-          <br />
-          <br />
+                  <SelectDOBComponent
+                      label="Date of Birth"
+                      value={dob}
+                      onChange={(newDate) => setDob(newDate)}
+                  />
+                  <br /><br />
 
-          <TextFieldComponent
-            label="Postcode"
-            value={postcode}
-            onChange={(e) => setPostcode(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <br />
+                  <TextFieldComponent
+                      label="Postcode"
+                      value={postcode}
+                      onChange={(e) => setPostcode(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                  />
+                  <br /><br />
 
-          <DropdownComponent
-            id="communication-form"
-            label="Communication Method"
-            value={communication}
-            onChange={(e) => setCommunication(e.target.value)}
-            options={[
-              { value: "Spoken Language", label: "Spoken Language" },
-              { value: "Body Language", label: "Body Language" },
-              { value: "Eye Contact", label: "Eye Contact" },
-              { value: "Hugs", label: "Hugs" },
-              { value: "Pointing", label: "Pointing" },
-              { value: "Visual Supports", label: "Visual Supports" },
-              { value: "AAC Devices", label: "AAC Devices" },
-              {
-                value: "Digital Communications",
-                label: "Digital Communications",
-              },
-              { value: "Basic Sign Language", label: "Basic Sign Language" },
-            ]}
-          />
-          <br />
-          <br />
+                  <DropdownComponent
+                      id="communication-form"
+                      label="Communication Method"
+                      value={communication}
+                      onChange={(e) => setCommunication(e.target.value)}
+                      options={[
+                          { value: 'Spoken Language', label: 'Spoken Language' },
+                          { value: 'Body Language', label: 'Body Language' },
+                          { value: 'Eye Contact', label: 'Eye Contact' },
+                          { value: 'Hugs', label: 'Hugs' },
+                          { value: 'Pointing', label: 'Pointing' },
+                          { value: 'Visual Supports', label: 'Visual Supports' },
+                          { value: 'AAC Devices', label: 'AAC Devices' },
+                          { value: 'Digital Communications', label: 'Digital Communications' },
+                          { value: 'Basic Sign Language', label: 'Basic Sign Language' }
+                      ]}
+                  />
+                  <br /><br />
 
-          <TextFieldComponent
-            label="Interests"
-            value={interests}
-            onChange={(e) => setInterests(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <br />
+                  <TextFieldComponent
+                      label="Interests"
+                      value={interests}
+                      onChange={(e) => setInterests(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                  />
+                  <br /><br />
 
-          <TextFieldComponent
-            label="Key Environments (e.g., home, school, workplaces)"
-            value={environments}
-            onChange={(e) => setEnvironments(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <div className="form-group">
-            <label htmlFor="profilePicture">Profile Picture</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureUpload}
-              className="form-control"
-            />
+                  <TextFieldComponent
+                      label="Key Environments (e.g., home, school, workplaces)"
+                      value={environments}
+                      onChange={(e) => setEnvironments(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                  />
+                  <br />
+                  <div className="form-group">
+                      <label htmlFor="profilePicture">Profile Picture</label>
+                      <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleProfilePictureUpload}
+                          className="form-control"
+                      />
+                  </div>
+                  <br />
+
+                  <Button onClick={handleCreateUser} variant="contained" style={{ backgroundColor: '#000CA4', width: '75%', borderRadius: "20px", fontFamily: 'Poppins' }}>
+                      Create New User
+                  </Button>
+              </div>
           </div>
-          <br />
-
-          <Button
-            onClick={handleCreateUser}
-            variant="contained"
-            style={{
-              backgroundColor: "#000CA4",
-              width: "75%",
-              borderRadius: "20px",
-              fontFamily: "Poppins",
-            }}
-          >
-            Create New User
-          </Button>
-        </div>
-      </div>
-    </>
+      </>
   );
 }
 

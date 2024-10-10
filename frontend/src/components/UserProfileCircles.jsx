@@ -9,10 +9,15 @@ import Item from './Item';
 function UserProfileCircles ({ profileName, profilePicture }) {
     const navigate = useNavigate();
 
+    // Navigate to the home page for the user profile
+    const handleUser = () => {
+        navigate('/home')
+    }
+
     return (
         <>
             <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-            <Grid container direction="column" spacing={0}>
+            <Grid container direction="column" spacing={0} onClick={handleUser}>
                 <Grid item xs={12}>
                     <img
                         src={profilePicture}

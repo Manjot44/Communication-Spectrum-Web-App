@@ -35,41 +35,44 @@ function UserProfileContainer({ token, setTokenFunc }) {
 
   // Navigate to the AddUser page
   const handleAddUser = () => {
-    navigate("/AddUser");
+      navigate('/AddUser');
   };
+
+  // Navigate to the home page for the user profile
+  const handleUser = () => {
+      navigate('/home')
+  }
 
   return (
     <>
-      <div class="d-flex justify-content-center" style={{ display: "flex" }}>
-        <div style={{ width: "85%" }}>
-          <Grid container spacing={2}>
-            {profiles &&
-              Object.entries(profiles).map((profile) => (
-                <UserProfileCircles
-                  profileName={profile[1].name}
-                  profilePicture={profile[1].profilePicture}
-                ></UserProfileCircles>
-              ))}
-            <Button
-              onClick={handleAddUser}
-              style={{
-                width: "200px",
-                height: "200px",
-                border: "1px solid #26C3BA",
-                fontSize: "2rem",
-                backgroundColor: "#26C3BA",
-                color: "white",
-                borderRadius: "50%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              +
-            </Button>
-          </Grid>
+        <div class='d-flex justify-content-center' style={{ display:'flex' }} >
+            <div style={{ width:'85%'}} >
+                <Grid container spacing={2}>
+                    {profiles && Object.entries(profiles).map(profile => (
+                        <UserProfileCircles
+                            profileName={profile[1].name}
+                            profilePicture={profile[1].profilePicture}>
+                        </UserProfileCircles>
+                    ))}
+                    <Button
+                        onClick={handleAddUser}
+                        style={{
+                            width: '200px',
+                            height: '200px',
+                            border: "1px solid #26C3BA",
+                            fontSize: '2rem',
+                            backgroundColor: '#26C3BA',
+                            color: 'white',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                        +
+                    </Button>
+                </Grid>
+            </div>
         </div>
-      </div>
     </>
   );
 }
