@@ -1,5 +1,12 @@
 import React from "react";
-import { Grid, Card, Typography, Button, TextField } from "@mui/material";
+import {
+  Grid,
+  Card,
+  Typography,
+  Button,
+  TextField,
+  Avatar,
+} from "@mui/material";
 import {
   Task,
   CalendarViewDay,
@@ -8,7 +15,7 @@ import {
   Warning,
   Checklist,
   CheckBox,
-} from "@mui/icons-material"; // Example icons
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
@@ -33,7 +40,6 @@ function Home() {
         </Typography>
 
         {/* 7 types of supports */}
-        {/* space around ensures they are equally space */}
         <Grid container spacing={2} justifyContent="space-around">
           <Grid item>
             <Button variant="contained" style={circularIconStyle}>
@@ -88,6 +94,18 @@ function Home() {
         >
           <Grid item xs={12} md={3}>
             <Card style={snapshotStyle}>
+              {/* Add avatar and name */}
+              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                <Avatar
+                  alt="Jamie"
+                  src="../assets/jamie-jamieson.jpg"
+                  style={avatarStyle}
+                />
+                <Typography variant="h6" style={{ marginTop: "10px" }}>
+                  Jamie Jamieson
+                </Typography>
+              </div>
+
               <Typography variant="h6">Support Snapshot</Typography>
               <Typography variant="body1">
                 Jamie uses verbal language and visual supports. He needs visual
@@ -129,7 +147,7 @@ function Home() {
               <TextField
                 label="Search"
                 variant="outlined"
-                fullWidth // Full width search bar
+                fullWidth
                 style={{
                   marginBottom: "20px",
                 }}
@@ -143,18 +161,16 @@ function Home() {
 }
 
 // Styles
-
-// Controls the page padding
 const pageWrapperStyle = {
   padding: "0 120px", // padding of the page left and right space
 };
 
 const circularIconStyle = {
   backgroundColor: "#6C63FF",
-  borderRadius: "50%", // make circular
-  width: "80px", // width and height should be same
+  borderRadius: "50%",
+  width: "80px",
   height: "80px",
-  display: "flex", // icon centering
+  display: "flex",
   alignItems: "center",
   justifyContent: "center",
   color: "#fff",
@@ -169,7 +185,7 @@ const snapshotStyle = {
 
 const recentSupportsStyle = {
   padding: "20px",
-  marginBottom: "20px", // Adds space between the recent supports and search
+  marginBottom: "20px",
   backgroundColor: "#f9f9f9",
 };
 
@@ -181,6 +197,12 @@ const supportCardStyle = {
 const searchRecentSupportsStyle = {
   padding: "20px",
   backgroundColor: "#f9f9f9",
+};
+
+const avatarStyle = {
+  width: "100px",
+  height: "100px",
+  margin: "0 auto",
 };
 
 export default Home;
