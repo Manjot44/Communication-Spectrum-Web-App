@@ -16,16 +16,17 @@ import {
   Checklist,
   CheckBox,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import '../App.css'
+
+// Styles
+const avatarStyle = {
+  width: "100px",
+  height: "100px",
+  margin: "0 auto",
+};
 
 function Home() {
-  const navigate = useNavigate();
-
-  function goToUserManage() {
-    navigate("/usermanage");
-  }
-
   return (
     <>
       <div style={{ paddingBottom: "20px" }}>
@@ -33,7 +34,7 @@ function Home() {
       </div>
 
       {/* Wrapper for padding on sides */}
-      <div style={pageWrapperStyle}>
+      <div class='page-wrapper-style'>
         {/* Title */}
         <Typography variant="h3" align="center" gutterBottom>
           Client Portal
@@ -42,43 +43,43 @@ function Home() {
         {/* 7 types of supports */}
         <Grid container spacing={2} justifyContent="space-around">
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <Task fontSize="large" />
             </Button>
             <Typography align="center">Task Analyses</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <CalendarViewDay fontSize="large" />
             </Button>
             <Typography align="center">Daily Schedules</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <CalendarViewWeek fontSize="large" />
             </Button>
             <Typography align="center">Weekly Calendars</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <Group fontSize="large" />
             </Button>
             <Typography align="center">Social Stories</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <Warning fontSize="large" />
             </Button>
             <Typography align="center">Environmental Supports</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <CheckBox fontSize="large" />
             </Button>
             <Typography align="center">Choice Boards</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" style={circularIconStyle}>
+            <Button variant="contained" class='circular-icon-style'>
               <Checklist fontSize="large" />
             </Button>
             <Typography align="center">First-Then</Typography>
@@ -93,7 +94,7 @@ function Home() {
           justifyContent="center"
         >
           <Grid item xs={12} md={3}>
-            <Card style={snapshotStyle}>
+            <Card class='snapshot-style'>
               {/* Add avatar and name */}
               <div style={{ textAlign: "center", marginBottom: "20px" }}>
                 <Avatar
@@ -126,23 +127,23 @@ function Home() {
           {/* Recent supports and Search recent supports */}
           <Grid item xs={12} md={9}>
             {/* Jamie's Recent Supports */}
-            <Card style={recentSupportsStyle}>
+            <Card class='recent-supports-style'>
               <Typography variant="h6">Jamie's Recent Supports</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={4}>
-                  <Card style={supportCardStyle} />
+                  <Card class='support-card-style' />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <Card style={supportCardStyle} />
+                  <Card class='support-card-style' />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <Card style={supportCardStyle} />
+                  <Card class='support-card-style' />
                 </Grid>
               </Grid>
             </Card>
 
             {/* Search Recent Supports */}
-            <Card style={searchRecentSupportsStyle}>
+            <Card class='search-recent-supports-style'>
               <Typography variant="h6">Search recent supports</Typography>
               <TextField
                 label="Search"
@@ -159,50 +160,5 @@ function Home() {
     </>
   );
 }
-
-// Styles
-const pageWrapperStyle = {
-  padding: "0 120px", // padding of the page left and right space
-};
-
-const circularIconStyle = {
-  backgroundColor: "#6C63FF",
-  borderRadius: "50%",
-  width: "80px",
-  height: "80px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "#fff",
-  margin: "0 auto",
-};
-
-const snapshotStyle = {
-  padding: "20px",
-  minHeight: "390px", // match the height of support
-  backgroundColor: "#f0f0f0",
-};
-
-const recentSupportsStyle = {
-  padding: "20px",
-  marginBottom: "20px",
-  backgroundColor: "#f9f9f9",
-};
-
-const supportCardStyle = {
-  backgroundColor: "orange",
-  height: "150px",
-};
-
-const searchRecentSupportsStyle = {
-  padding: "20px",
-  backgroundColor: "#f9f9f9",
-};
-
-const avatarStyle = {
-  width: "100px",
-  height: "100px",
-  margin: "0 auto",
-};
 
 export default Home;

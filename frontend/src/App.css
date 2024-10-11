@@ -41,6 +41,51 @@
   border-radius: 20px;
 }
 
+/* HOME PAGE */
+.page-wrapper-style {
+  padding: 0 120px;
+}
+
+.circular-icon-style {
+  background-color: #6C63FF;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin: 0 auto;
+}
+
+.avatar-style {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto
+}
+
+.snapshot-style {
+  padding: 20px;
+  min-height: 390px;
+  background-color: #f0f0f0
+}
+
+.recent-supports-style {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9
+}
+
+.support-card-style {
+  background-color: orange;
+  height: 150px
+}
+
+.search-recent-supports-style {
+  padding: 20px;
+  background-color: #f9f9f9
+}
+
 /* REACT SET UP STUFF */
 .App {
   text-align: center;
