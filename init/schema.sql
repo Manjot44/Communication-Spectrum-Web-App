@@ -5,7 +5,7 @@ create table Professionals (
     email       text not null unique,
     full_name   text,
     password    text,
-    location    text
+    location    text,
     dob         date,
     profession  text,
     postcode    integer,
