@@ -41,6 +41,104 @@
   border-radius: 20px;
 }
 
+/* HOME PAGE */
+.page-wrapper-style {
+  padding: 0 120px;
+}
+
+.circular-icon-style {
+  background-color: #6C63FF;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin: 0 auto;
+}
+
+.avatar-style {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto
+}
+
+.snapshot-style {
+  padding: 20px;
+  min-height: 390px;
+  background-color: #f0f0f0
+}
+
+.recent-supports-style {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9
+}
+
+.support-card-style {
+  background-color: orange;
+  height: 150px
+}
+
+.search-recent-supports-style {
+  padding: 20px;
+  background-color: #f9f9f9
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1a1ab8;
+  padding: 10px 20px;
+  color: white;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 40px; /* height of logoimage */
+  width: auto;
+}
+
+.navbar-links {
+  display: flex;
+}
+
+.nav-item {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  text-decoration: underline;
+}
+
+.profile-switch {
+  display: flex;
+  align-items: center;
+}
+
+.profile-btn {
+  background-color: #00c89c;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #00b08f;
+}
+
 /* REACT SET UP STUFF */
 .App {
   text-align: center;

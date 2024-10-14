@@ -1,19 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
-import Item from './Item';
 
 function GalleryPhotoComponent ({ profileName, profilePicture }) {
-  const navigate = useNavigate();
-
-  // Navigate to the home page for the user profile
-  const handleUser = () => {
-      navigate('/home')
-  }
-
   return (
     <>
       <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>

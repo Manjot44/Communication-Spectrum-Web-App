@@ -1,30 +1,9 @@
 import React from "react";
-import {
-  Grid2,
-  Card,
-  Typography,
-  Button,
-  TextField,
-  Avatar,
-  Box
-} from "@mui/material";
-import {
-  Task,
-  CalendarViewDay,
-  CalendarViewWeek,
-  Group,
-  Warning,
-  Checklist,
-  CheckBox,
-} from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { Grid2, Typography, Button } from "@mui/material";
 import Navbar from "../components/Navbar";
-import UserProfileCircles from "../components/UserProfileCircles";
 import GalleryPhotoComponent from "../components/GalleryPhotoComponent";
-import Grid from "@mui/material/Grid";
-import Modal from '@mui/material/Modal';
 import axios from 'axios';
-
+import AddPhotoModal from "../components/AddPhotoModal";
 
 function Gallery({ token, setTokenFunc }) {
   const [open, setOpen] = React.useState(false);
@@ -32,26 +11,8 @@ function Gallery({ token, setTokenFunc }) {
   const handleClose = () => setOpen(false);
   const [profilePicture, setProfilePicture] = React.useState('');
   const [profiles, setProfileData] = React.useState([]);
-  const navigate = useNavigate();
 
-  // Handle profile picture upload
-  const handleProfilePictureUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-        setProfilePicture(reader.result);  // Store base64 image
-    };
-    if (file) {
-        reader.readAsDataURL(file);  // Convert to base64
-    }
-  };
-
-  // Sort out upload button
-  const handleUpload = () => {
-    addImage();
-    handleClose();
-  }
-
+  // Refreshes page when new image is added
   function refreshPage() {
     window.location.reload();
   }
@@ -64,9 +25,7 @@ function Gallery({ token, setTokenFunc }) {
         }
     }).then((response) => {
         setProfileData(response.data.store.Photos);
-        console.log(response.data.store)
     }).catch((error) => {
-        console.log(token);
         console.error('Error fetching profiles:', error.response ? error.response.data : error.message);
     });
   }, [open]);
@@ -114,8 +73,6 @@ function Gallery({ token, setTokenFunc }) {
       );
 
       alert('Image added successfully');
-      navigate('/home');
-      navigate('/gallery');
       refreshPage();
     } catch (error) {
         console.error('Error creating user:', error);
@@ -125,37 +82,18 @@ function Gallery({ token, setTokenFunc }) {
 
   return (
     <>
-      <div style={{ paddingBottom: "20px" }}>
-        <Navbar />
-      </div>
+      <Navbar />
+      <br />
       <Typography variant="h3" align="center" gutterBottom>
         Gallery
       </Typography>
-      
-      <Modal
+
+      <AddPhotoModal 
         open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Upload a Photo
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <div className="form-group">
-              <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfilePictureUpload}
-                  className="form-control"
-              />
-            </div>
-            <br/>
-            <Button onClick={handleUpload}>Upload</Button>
-          </Typography>
-        </Box>
-      </Modal>
+        handleClose={handleClose}
+        handleProfilePictureUpload={(pic) => setProfilePicture(pic)}
+        handleUpload={addImage}
+      />
       
       <div class='d-flex justify-content-center' style={{ display:'flex' }} >
         <div style={{ width:'85%'}} >
@@ -180,66 +118,8 @@ function Gallery({ token, setTokenFunc }) {
           </Grid2>
         </div>
       </div>
-
     </>
   );
 }
-
-// Styles
-const pageWrapperStyle = {
-  padding: "0 120px", // padding of the page left and right space
-};
-
-const circularIconStyle = {
-  backgroundColor: "#6C63FF",
-  borderRadius: "50%",
-  width: "80px",
-  height: "80px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "#fff",
-  margin: "0 auto",
-};
-
-const snapshotStyle = {
-  padding: "20px",
-  minHeight: "390px", // match the height of support
-  backgroundColor: "#f0f0f0",
-};
-
-const recentSupportsStyle = {
-  padding: "20px",
-  marginBottom: "20px",
-  backgroundColor: "#f9f9f9",
-};
-
-const supportCardStyle = {
-  backgroundColor: "orange",
-  height: "150px",
-};
-
-const searchRecentSupportsStyle = {
-  padding: "20px",
-  backgroundColor: "#f9f9f9",
-};
-
-const avatarStyle = {
-  width: "100px",
-  height: "100px",
-  margin: "0 auto",
-};
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
 
 export default Gallery;
