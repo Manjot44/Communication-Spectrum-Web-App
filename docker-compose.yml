@@ -1,14 +1,4 @@
 services:
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: myuser       
-      POSTGRES_PASSWORD: mypassword 
-      POSTGRES_DB: MyCommsPro           
-    volumes:
-      - ./init:/docker-entrypoint-initdb.d # Mount init directory
-    ports:
-      - "5432:5432"
   redis:
     image: "redis:alpine"
     ports:
