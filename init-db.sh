@@ -25,4 +25,4 @@ for f in /docker-entrypoint-initdb.d/*.sql; do
 done
 
 # Keep PostgreSQL running in the foreground
-exec postgres
+wait

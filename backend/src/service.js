@@ -51,7 +51,9 @@ const DATABASE_FILE = './database.json';
 ***************************************************************/
 
 export const userLock = callback => new Promise((resolve, reject) => {
-  lock.acquire('userAuthLock', callback(resolve, reject));
+  lock.acquire('userAuthLock', done => {
+    callback(resolve, reject).then(done).catch(done);
+  });
 });
 
 /***************************************************************
@@ -73,18 +75,22 @@ export const getEmailFromAuthorization = async(authorization) => {
 
 export const login = async (email, password) => {
   return userLock(async (resolve, reject) => {
-    const { rows } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
-    if (rows.length > 0) {
-      const admin = rows[0];
-      const isPasswordValid = await bcrypt.compare(password, admin.password);
-      if (isPasswordValid) {
-        const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
-        resolve(token);
+    try {
+      const { rows } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
+      if (rows.length > 0) {
+        const admin = rows[0];
+        const isPasswordValid = await bcrypt.compare(password, admin.password);
+        if (isPasswordValid) {
+          const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
+          resolve(token);
+        } else {
+          reject(new Error('Invalid username or password'));
+        }
       } else {
         reject(new Error('Invalid username or password'));
       }
-    } else {
-      reject(new Error('Invalid username or password'));
+    } catch (error) {
+      reject(error);
     }
   });
 };
@@ -104,22 +110,26 @@ export const logout = (email) => userLock((resolve, reject) => {
 
 export const register = async (email, password, full_name, location, dob, profession, postcode, isSubbed) => {
   return userLock(async (resolve, reject) => {
-    const { rowCount } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
-    if (rowCount > 0) {
-      return reject(new Error('Email address already registered'));
+    try {
+      const { rowCount } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
+      if (rowCount > 0) {
+        return reject(new Error('Email address already registered'));
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const queryText = `
+        INSERT INTO "Professionals" (email, full_name, password, location, dob, profession, postcode, is_subbed)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING prof_id;
+      `;
+      const values = [email, full_name, hashedPassword, location, dob, profession, postcode, isSubbed];
+      await pool.query(queryText, values);
+      const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
+      resolve(token);
+    } catch (error) {
+      reject(error);
     }
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
-
-    const queryText = `
-      INSERT INTO "Professionals" (email, full_name, password, location, dob, profession, postcode, is_subbed)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING prof_id;
-    `;
-    const values = [email, full_name, hashedPassword, location, dob, profession, postcode, isSubbed];
-    await pool.query(queryText, values);
-    const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
-    resolve(token);
   });
 };
+
 // export const register = (email, password, name) => userLock((resolve, reject) => {
 //   if (email in admins) {
 //     return reject(new InputError('Email address already registered'));
