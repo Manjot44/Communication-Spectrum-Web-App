@@ -1,10 +1,9 @@
-// backend/config.js
-require('dotenv').config();
-
-module.exports = {
+const config = {
     user: 'myuser',
-    host: process.env.DB_HOST || 'localhost',
-    database: process.env.DB_NAME || 'MyCommsPro',
-    password: process.env.DB_PASSWORD || 'mypassword',
-    port: process.env.DB_PORT || 5432,
+    host: 'db',
+    database: 'MyCommsPro',
+    password: 'mypassword',
+    port: 5432,
 };
+
+export default config;

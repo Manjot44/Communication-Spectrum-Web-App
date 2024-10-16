@@ -4,7 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { Pool } from 'pg';
-import config from './config.js';
+import config from './config';
 import { InputError, AccessError } from "./error";
 import swaggerDocument from "../swagger.json";
 import {
@@ -12,9 +12,9 @@ import {
   login,
   logout,
   register,
-  getStore,
-  setStore,
-  save,
+  //getStore,
+  //setStore,
+  //save,
   dumpDataToSQLFile
 } from "./service";
 

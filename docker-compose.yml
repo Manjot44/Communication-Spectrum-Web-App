@@ -1,12 +1,12 @@
 services:
   db:
-    image: postgres:latest
+    build:
+      context: .
+      dockerfile: init/Dockerfile
     environment:
       POSTGRES_USER: myuser       
       POSTGRES_PASSWORD: mypassword 
       POSTGRES_DB: MyCommsPro           
-    volumes:
-      - ./init:/docker-entrypoint-initdb.d # Mount init directory
     ports:
       - "5432:5432"
   redis:
@@ -21,6 +21,8 @@ services:
       - "5005:5005"
     environment:
       - REDIS_HOST=redis
+    depends_on:
+      - db
   frontend:
     build:
       context: .
