@@ -3,7 +3,8 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import cors from "cors";
-
+import { Pool } from 'pg';
+import config from './config.js';
 import { InputError, AccessError } from "./error";
 import swaggerDocument from "../swagger.json";
 import {
@@ -14,9 +15,12 @@ import {
   getStore,
   setStore,
   save,
+  dumpDataToSQLFile
 } from "./service";
 
 const app = express();
+const pool = new Pool(config);
+export { pool };
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,8 +63,8 @@ app.post(
 app.post(
   "/admin/auth/register",
   catchErrors(async (req, res) => {
-    const { email, password, name } = req.body;
-    const token = await register(email, password, name);
+    const { email, password, full_name, location, dob, profession, postcode, isSubbed } = req.body;
+    const token = await register(email, password, full_name, location, dob, profession, postcode, isSubbed);
     return res.json({ token });
   })
 );
@@ -79,24 +83,47 @@ app.post(
                        Store Functions
 ***************************************************************/
 
-app.get(
-  "/store",
-  catchErrors(
-    authed(async (req, res, email) => {
-      return res.json({ store: await getStore(email) });
-    })
-  )
-);
+// app.get(
+//   "/store",
+//   catchErrors(
+//     authed(async (req, res, email) => {
+//       return res.json({ store: await getStore(email) });
+//     })
+//   )
+// );
 
-app.put(
-  "/store",
-  catchErrors(
-    authed(async (req, res, email) => {
-      await setStore(email, req.body.store);
-      return res.json({});
-    })
-  )
-);
+// app.put(
+//   "/store",
+//   catchErrors(
+//     authed(async (req, res, email) => {
+//       await setStore(email, req.body.store);
+//       return res.json({});
+//     })
+//   )
+// );
+
+
+
+/***************************************************************
+                       Closing Pool
+***************************************************************/
+// Function to gracefully close the pool and dump database
+const shutdown = async () => {
+  try {
+    await dumpDataToSQLFile();
+    await pool.end();
+    console.log('Connection pool has been closed.');
+    process.exit(0);
+  } catch (error) {
+    console.error('Error closing the pool', error);
+    process.exit(1);
+  }
+};
+
+// Handle termination signals
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
 
 /***************************************************************
                        Running Server
