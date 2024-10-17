@@ -84,10 +84,10 @@ export const login = async (email, password) => {
           const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
           resolve(token);
         } else {
-          reject(new Error('Invalid username or password'));
+          reject(new InputError('Invalid username or password'));
         }
       } else {
-        reject(new Error('Invalid username or password'));
+        reject(new InputError('Invalid username or password'));
       }
     } catch (error) {
       reject(error);
@@ -113,7 +113,7 @@ export const register = async (email, password, full_name, location, dob, profes
     try {
       const { rowCount } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
       if (rowCount > 0) {
-        return reject(new Error('Email address already registered'));
+        return reject(new InputError('Email address already registered'));
       }
       const hashedPassword = await bcrypt.hash(password, 10);
       const queryText = `
