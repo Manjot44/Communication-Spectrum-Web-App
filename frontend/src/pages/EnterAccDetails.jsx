@@ -39,11 +39,12 @@ function EnterAccDetails ({ token, setTokenFunc }) {
 
   const createAccProfile = async () => {
     try {
+      const formattedDate = date.format('YYYY-MM-DD');
       await axios.put("http://localhost:5005/admin/auth/complete_reg", {
         profession,
         country,
         postcode,
-        date,
+        date: formattedDate,
         isSubscribed
       },
       {

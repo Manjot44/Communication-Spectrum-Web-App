@@ -94,7 +94,7 @@ export const login = async (email, password) => {
   });
 };
 
-export const register = async (email, password, full_name) => {
+export const register = async (email, password, name) => {
   return userLock(async (resolve, reject) => {
     try {
       const pool = new Pool(config);
@@ -107,7 +107,7 @@ export const register = async (email, password, full_name) => {
         INSERT INTO "Professionals" (email, full_name, password)
         VALUES ($1, $2, $3) RETURNING prof_id;
       `;
-      const values = [email, full_name, hashedPassword];
+      const values = [email, name, hashedPassword];
       await pool.query(queryText, values);
       const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
       await pool.end();
@@ -118,20 +118,20 @@ export const register = async (email, password, full_name) => {
   });
 };
 
-export const complete_reg = async (email, profession, location, postcode, dob, is_subbed) => {
+export const complete_reg = async (email, profession, country, postcode, date, isSubscribed) => {
   return userLock(async (resolve, reject) => {
     try {
       const pool = new Pool(config);
       const queryText = `
         UPDATE "Professionals"
-        SET location = $1,
-            dob = $2,
-            profession = $3,
+        SET location = $3,
+            dob = $5,
+            profession = $2,
             postcode = $4,
-            is_subbed = $5
-        WHERE email = $6;  
+            is_subbed = $6
+        WHERE email = $1;
       `;
-      const values = [location, dob, profession, postcode, is_subbed, email];
+      const values = [email, profession, country, postcode, date, isSubscribed];
       await pool.query(queryText, values);
       await pool.end();
       resolve();

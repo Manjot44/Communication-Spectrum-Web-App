@@ -38,7 +38,7 @@ const catchErrors = (fn) => async (req, res) => {
 ***************************************************************/
 
 const authed = (fn) => async (req, res) => {
-  const email = getEmailFromAuthorization(req.header("Authorization"));
+  const email = await getEmailFromAuthorization(req.header("Authorization"));
   await fn(req, res, email);
 };
 
@@ -54,8 +54,8 @@ app.post(
 app.post(
   "/admin/auth/register",
   catchErrors(async (req, res) => {
-    const { email, password, full_name } = req.body;
-    const token = await register(email, password, full_name);
+    const { email, password, name } = req.body;
+    const token = await register(email, password, name);
     return res.json({ token });
   })
 );
@@ -64,8 +64,8 @@ app.put(
   "/admin/auth/complete_reg",
   catchErrors(
     authed(async (req, res, email) => {
-      const { profession, country, postcode, date, is_subscribed } = req.body;
-      await complete_reg(email, profession, country, postcode, date, is_subscribed);
+      const { profession, country, postcode, date, isSubscribed } = req.body;
+      await complete_reg(email, profession, country, postcode, date, isSubscribed);
       return res.json({});
     })
   )  
@@ -102,8 +102,6 @@ app.get("/", (req, res) => res.redirect("/docs"));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-//const configData = JSON.parse(fs.readFileSync("../frontend/src/config.json"));
-//const port = "BACKEND_PORT" in configData ? configData.BACKEND_PORT : 5005;
 const port = 5005;
 
 const server = app.listen(port, () => {
