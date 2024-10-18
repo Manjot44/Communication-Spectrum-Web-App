@@ -37,42 +37,14 @@ function EnterAccDetails ({ token, setTokenFunc }) {
     }
   }
 
-  // Get the current presentation database of user and append acc profile to json
-  let currentData = ''
-  let store = ''
   const createAccProfile = async () => {
-    axios.get('http://localhost:5005/store', {
-    headers: {
-      Authorization: token,
-    }
-    }).then((response) => {
-      currentData = response.data.store;
-
-      // Update the user with data of their account profile
-      store = Object.assign({}, currentData, {
-        Profile: {
-          name: name,
-          email: email,
-          dob: date,
-          location: country,
-          postcode: postcode,
-          profession: profession,
-          subscribed: isSubscribed
-        },
-        Users: {},
-        Photos: {}
-      });
-
-      // Put Request to Save the New Data
-      saveProfile();
-    })
-  }
-
-  // Save the account profile data to database
-  const saveProfile = async () => {
     try {
-      await axios.put('http://localhost:5005/store', {
-        store
+      await axios.put("http://localhost:5005/admin/auth/complete_reg", {
+        profession,
+        country,
+        postcode,
+        date,
+        isSubscribed
       },
       {
         headers: {
@@ -80,7 +52,7 @@ function EnterAccDetails ({ token, setTokenFunc }) {
         }
       });
     } catch (err) {
-      alert(err.response.data.error);
+        alert(err.response.data.error);
     }
     navigate('/UserManage');
   }

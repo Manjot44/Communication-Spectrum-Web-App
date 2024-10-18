@@ -1,9 +1,9 @@
-import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import AsyncLock from 'async-lock';
 import { InputError, AccessError, } from './error';
-import { pool } from './server';
+import { Pool } from 'pg';
+import config from './config';
 
 const lock = new AsyncLock();
 
@@ -64,9 +64,6 @@ export const getEmailFromAuthorization = async(authorization) => {
   try {
     const token = authorization.replace('Bearer ', '');
     const { email } = jwt.verify(token, JWT_SECRET);
-    // if (!(email in admins)) {
-    //   throw new AccessError('Invalid Token');
-    // }
     return email;
   } catch {
     throw new AccessError('Invalid token');
@@ -76,6 +73,7 @@ export const getEmailFromAuthorization = async(authorization) => {
 export const login = async (email, password) => {
   return userLock(async (resolve, reject) => {
     try {
+      const pool = new Pool(config);
       const { rows } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
       if (rows.length > 0) {
         const admin = rows[0];
@@ -89,40 +87,30 @@ export const login = async (email, password) => {
       } else {
         reject(new InputError('Invalid username or password'));
       }
+      await pool.end();
     } catch (error) {
       reject(error);
     }
   });
 };
 
-// export const login = (email, password) => userLock((resolve, reject) => {
-//   if (email in admins) {
-//     if (admins[email].password === password) {
-//       resolve(jwt.sign({ email, }, JWT_SECRET, { algorithm: 'HS256', }));
-//     }
-//   }
-//   reject(new InputError('Invalid username or password'));
-// });
-export const logout = (email) => userLock((resolve, reject) => {
-  //admins[email].sessionActive = false;
-  resolve();
-});
-
-export const register = async (email, password, full_name, location, dob, profession, postcode, isSubbed) => {
+export const register = async (email, password, full_name) => {
   return userLock(async (resolve, reject) => {
     try {
+      const pool = new Pool(config);
       const { rowCount } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
       if (rowCount > 0) {
         return reject(new InputError('Email address already registered'));
       }
       const hashedPassword = await bcrypt.hash(password, 10);
       const queryText = `
-        INSERT INTO "Professionals" (email, full_name, password, location, dob, profession, postcode, is_subbed)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING prof_id;
+        INSERT INTO "Professionals" (email, full_name, password)
+        VALUES ($1, $2, $3) RETURNING prof_id;
       `;
-      const values = [email, full_name, hashedPassword, location, dob, profession, postcode, isSubbed];
+      const values = [email, full_name, hashedPassword];
       await pool.query(queryText, values);
       const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
+      await pool.end();
       resolve(token);
     } catch (error) {
       reject(error);
@@ -130,43 +118,27 @@ export const register = async (email, password, full_name, location, dob, profes
   });
 };
 
-// export const register = (email, password, name) => userLock((resolve, reject) => {
-//   if (email in admins) {
-//     return reject(new InputError('Email address already registered'));
-//   }
-//   admins[email] = {
-//     name,
-//     password,
-//     store: {},
-//   };
-//   const token = jwt.sign({ email, }, JWT_SECRET, { algorithm: 'HS256', });
-//   resolve(token);
-// });
-
-/***************************************************************
-                       Cleanup Functions
-***************************************************************/
-
-// Function to dump data to SQL file
-export const dumpDataToSQLFile = async () => {
-  try {
-    const tables = ['Professionals', 'SupportUsers', 'Supports', 'Images', 'hasClient', 'hasSupport'];
-    
-    let sqlDump = '';
-    for (const table of tables) {
-      const { rows } = await pool.query(`SELECT * FROM "${table}"`);
-      for (const row of rows) {
-        const keys = Object.keys(row).map(key => `"${key}"`).join(', ');
-        const values = Object.values(row).map(value => `'${value}'`).join(', ');
-        sqlDump += `INSERT INTO "${table}" (${keys}) VALUES (${values});\n`;
-      }
+export const complete_reg = async (email, profession, location, postcode, dob, is_subbed) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const pool = new Pool(config);
+      const queryText = `
+        UPDATE "Professionals"
+        SET location = $1,
+            dob = $2,
+            profession = $3,
+            postcode = $4,
+            is_subbed = $5
+        WHERE email = $6;  
+      `;
+      const values = [location, dob, profession, postcode, is_subbed, email];
+      await pool.query(queryText, values);
+      await pool.end();
+      resolve();
+    } catch (error) {
+      reject(error);
     }
-
-    fs.writeFileSync('../../init/zdump.sql', sqlDump);
-    console.log('Database dump created successfully.');
-  } catch (error) {
-    console.error('Error creating database dump:', error);
-  }
+  });
 };
 
 /***************************************************************

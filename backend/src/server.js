@@ -1,26 +1,17 @@
-import fs from "fs";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { Pool } from 'pg';
-import config from './config';
 import { InputError, AccessError } from "./error";
 import swaggerDocument from "../swagger.json";
 import {
   getEmailFromAuthorization,
   login,
-  logout,
   register,
-  //getStore,
-  //setStore,
-  //save,
-  dumpDataToSQLFile
+  complete_reg
 } from "./service";
 
 const app = express();
-const pool = new Pool(config);
-export { pool };
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -63,20 +54,21 @@ app.post(
 app.post(
   "/admin/auth/register",
   catchErrors(async (req, res) => {
-    const { email, password, full_name, location, dob, profession, postcode, isSubbed } = req.body;
-    const token = await register(email, password, full_name, location, dob, profession, postcode, isSubbed);
+    const { email, password, full_name } = req.body;
+    const token = await register(email, password, full_name);
     return res.json({ token });
   })
 );
 
-app.post(
-  "/admin/auth/logout",
+app.put(
+  "/admin/auth/complete_reg",
   catchErrors(
     authed(async (req, res, email) => {
-      await logout(email);
+      const { profession, country, postcode, date, is_subscribed } = req.body;
+      await complete_reg(email, profession, country, postcode, date, is_subscribed);
       return res.json({});
     })
-  )
+  )  
 );
 
 /***************************************************************
@@ -102,29 +94,6 @@ app.post(
 //   )
 // );
 
-
-
-/***************************************************************
-                       Closing Pool
-***************************************************************/
-// Function to gracefully close the pool and dump database
-const shutdown = async () => {
-  try {
-    await dumpDataToSQLFile();
-    await pool.end();
-    console.log('Connection pool has been closed.');
-    process.exit(0);
-  } catch (error) {
-    console.error('Error closing the pool', error);
-    process.exit(1);
-  }
-};
-
-// Handle termination signals
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
-
-
 /***************************************************************
                        Running Server
 ***************************************************************/
@@ -133,8 +102,9 @@ app.get("/", (req, res) => res.redirect("/docs"));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const configData = JSON.parse(fs.readFileSync("../frontend/src/config.json"));
-const port = "BACKEND_PORT" in configData ? configData.BACKEND_PORT : 5000;
+//const configData = JSON.parse(fs.readFileSync("../frontend/src/config.json"));
+//const port = "BACKEND_PORT" in configData ? configData.BACKEND_PORT : 5005;
+const port = 5005;
 
 const server = app.listen(port, () => {
   console.log(`Backend has started, now listening on port ${port}!`);

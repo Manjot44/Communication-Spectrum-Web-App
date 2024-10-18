@@ -2,11 +2,10 @@
 # Taken from Docker Primer
 FROM node:14
 
-WORKDIR /app/frontend
-RUN mkdir frontend
-COPY ./frontend/package*.json ./frontend
-RUN npm install --prefix ./frontend
+WORKDIR /app
+COPY ./package*.json .
+RUN npm install
 COPY . .
 
 EXPOSE 3000
-CMD ["npm", "start", "--prefix", "./frontend"]
+CMD ["npm", "start"]
