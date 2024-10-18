@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import AsyncLock from 'async-lock';
 import { InputError, AccessError, } from './error';
 import { Pool } from 'pg';
@@ -23,7 +22,7 @@ export const userLock = callback => new Promise((resolve, reject) => {
                        Auth Functions
 ***************************************************************/
 
-export const getEmailFromAuthorization = async(authorization) => {
+export const getEmailFromAuthorization = authorization => {
   try {
     const token = authorization.replace('Bearer ', '');
     const { email } = jwt.verify(token, JWT_SECRET);
