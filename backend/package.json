@@ -7,7 +7,7 @@
     "test": "jest test/*",
     "lint": "eslint src/*.js",
     "start": "node -r esm src/server.js",
-    "dev": "nodemon -r esm src/server.js --ignore database.json"
+    "dev": "npm run lint && nodemon -r esm src/server.js"
   },
   "author": "",
   "license": "ISC",

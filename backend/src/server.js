@@ -8,7 +8,10 @@ import {
   getEmailFromAuthorization,
   login,
   register,
-  complete_reg
+  complete_reg,
+  create_user,
+  create_client,
+  get_clients
 } from "./service";
 
 const app = express();
@@ -20,7 +23,6 @@ app.use(bodyParser.json({ limit: "50mb" }));
 const catchErrors = (fn) => async (req, res) => {
   try {
     await fn(req, res);
-    // save();
   } catch (err) {
     if (err instanceof InputError) {
       res.status(400).send({ error: err.message });
@@ -34,7 +36,7 @@ const catchErrors = (fn) => async (req, res) => {
 };
 
 /***************************************************************
-                       Auth Function
+                       Auth Functions
 ***************************************************************/
 
 const authed = (fn) => async (req, res) => {
@@ -71,28 +73,31 @@ app.put(
   )  
 );
 
+
 /***************************************************************
-                       Store Functions
+                    Support User Functions
 ***************************************************************/
 
-// app.get(
-//   "/store",
-//   catchErrors(
-//     authed(async (req, res, email) => {
-//       return res.json({ store: await getStore(email) });
-//     })
-//   )
-// );
+app.post(
+  "/admin/new_user",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { name, dob, postcode, communication, interests, environments, profilePicture } = req.body;
+      const user_id = await create_user(name, dob, postcode, communication, interests, environments, profilePicture);
+      await create_client(email, user_id);
+      return res.json({});
+    })
+  )
+);
 
-// app.put(
-//   "/store",
-//   catchErrors(
-//     authed(async (req, res, email) => {
-//       await setStore(email, req.body.store);
-//       return res.json({});
-//     })
-//   )
-// );
+app.get(
+  "/get_clients",
+  catchErrors(
+    authed(async (req, res, email) => {
+      return res.json({ clients: await get_clients(email) })
+    })
+  )
+);
 
 /***************************************************************
                        Running Server

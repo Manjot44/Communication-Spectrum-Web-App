@@ -9,7 +9,6 @@ drop table if exists "hasSupport" cascade;
 -- Tables
 
 create table "Professionals" (
-    prof_id     serial not null unique,
     email       text not null unique,
     full_name   text,
     password    text,
@@ -18,7 +17,7 @@ create table "Professionals" (
     profession  text,
     postcode    integer,
     is_subbed   bool,
-    primary key (prof_id)    
+    primary key (email)    
 );
 
 create table "SupportUsers" (
@@ -29,6 +28,7 @@ create table "SupportUsers" (
     snapshot    text,
     comm_env    text,
     interests   text,
+    profile_pic text,
     primary key (user_id)
 );
 
@@ -36,7 +36,7 @@ create table "Supports" (
     support_id  serial not null unique,
     name        text,
     category    integer,
-    prof_id     integer not null references "Professionals"(prof_id),
+    prof_id     text not null references "Professionals"(email),
     primary key (support_id)
 );
 
@@ -48,7 +48,7 @@ create table "Images" (
 );
 
 create table "hasClient" (
-    prof_id     integer not null references "Professionals"(prof_id),
+    prof_id     text not null references "Professionals"(email),
     user_id     integer not null references "SupportUsers"(user_id),
     primary key (prof_id,user_id)
 );

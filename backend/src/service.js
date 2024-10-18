@@ -8,43 +8,6 @@ import config from './config';
 const lock = new AsyncLock();
 
 const JWT_SECRET = 'llamallamaduck';
-const DATABASE_FILE = './database.json';
-
-/***************************************************************
-                       State Management
-***************************************************************/
-
-// let admins = {};
-
-// const sessionTimeouts = {};
-
-// const update = (admins) =>
-//   new Promise((resolve, reject) => {
-//     lock.acquire('saveData', () => {
-//       try {
-//         fs.writeFileSync(DATABASE_FILE, JSON.stringify({
-//           admins,
-//         }, null, 2));
-//         resolve();
-//       } catch {
-//         reject(new Error('Writing to database failed'));
-//       }
-//     });
-//   });
-
-// export const save = () => update(admins);
-// export const reset = () => {
-//   update({});
-//   admins = {};
-// };
-
-// try {
-//   const data = JSON.parse(fs.readFileSync(DATABASE_FILE));
-//   admins = data.admins;
-// } catch {
-//   console.log('WARNING: No database found, create a new one');
-//   save();
-// }
 
 /***************************************************************
                        Helper Functions
@@ -105,7 +68,7 @@ export const register = async (email, password, name) => {
       const hashedPassword = await bcrypt.hash(password, 10);
       const queryText = `
         INSERT INTO "Professionals" (email, full_name, password)
-        VALUES ($1, $2, $3) RETURNING prof_id;
+        VALUES ($1, $2, $3);
       `;
       const values = [email, name, hashedPassword];
       await pool.query(queryText, values);
@@ -142,14 +105,63 @@ export const complete_reg = async (email, profession, country, postcode, date, i
 };
 
 /***************************************************************
-                       Store Functions
+                    Support User Functions
 ***************************************************************/
 
-// export const getStore = (email) => userLock((resolve, reject) => {
-//   resolve(admins[email].store);
-// });
+export const create_user = async (name, dob, postcode, communication, interests, environments, profilePicture) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const pool = new Pool(config);
+      const queryText = `
+        INSERT INTO "SupportUsers" (name, dob, postcode, snapshot, comm_env, interests, profile_pic)
+        VALUES ($1, $2, $3, $4, $6, $5, $7) RETURNING user_id;
+      `;
+      const values = [name, dob, postcode, communication, interests, environments, profilePicture];
+      const result = await pool.query(queryText, values);
+      const user_id = result.rows[0].user_id;
+      await pool.end();
+      resolve(user_id);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
-// export const setStore = (email, store) => userLock((resolve, reject) => {
-//   admins[email].store = store;
-//   resolve();
-// });
+export const create_client = async (email, user_id) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const pool = new Pool(config);
+      const queryText = `
+        INSERT INTO "hasClient" (prof_id, user_id)
+        VALUES ($1, $2);
+      `;
+      const values = [email, user_id];
+      await pool.query(queryText, values);
+      await pool.end();
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const get_clients = async (email) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const pool = new Pool(config);
+      const queryText = `
+        SELECT p.email, s.name, s.profile_pic
+        FROM "hasClient" h
+          JOIN "Professionals" p on p.email = h.prof_id
+          JOIN "SupportUsers" s on s.user_id = h.user_id
+        WHERE p.email = $1;
+      `;
+      const values = [email];
+      const clients = await pool.query(queryText, values);
+      await pool.end();
+      resolve(clients.rows);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
