@@ -28,7 +28,6 @@ function Login({ setTokenFunc }) {
 
   // POST request for logging in a new user
   const newUserRequest = async () => {
-    console.log(email, password);
     if (email !== "" && password !== "") {
       try {
         const response = await axios.post(
@@ -38,7 +37,7 @@ function Login({ setTokenFunc }) {
             password,
           }
         );
-        setTokenFunc(response.data.token);
+        await setTokenFunc(response.data.token);
         navigate("/UserManage");
       } catch (err) {
         alert(err.response.data.error);

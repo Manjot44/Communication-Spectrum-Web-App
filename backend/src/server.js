@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { InputError, AccessError } from "./error";
 import swaggerDocument from "../swagger.json";
+import { Pool } from 'pg';
+import config from './config';
 import {
   getEmailFromAuthorization,
   login,
@@ -15,6 +17,8 @@ import {
 } from "./service";
 
 const app = express();
+
+export const pool  = new Pool(config);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,6 +47,15 @@ const authed = (fn) => async (req, res) => {
   const email = await getEmailFromAuthorization(req.header("Authorization"));
   await fn(req, res, email);
 };
+
+app.get(
+  "/authenticate",
+  catchErrors(
+    authed(async (req, res, email) => {
+      return res.json({ authenticated: true })
+    })
+  )
+);
 
 app.post(
   "/admin/auth/login",

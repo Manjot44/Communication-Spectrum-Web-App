@@ -43,8 +43,8 @@ function Register({ setTokenFunc }) {
             name,
           }
         );
-        setTokenFunc(response.data.token);
-        navigate("/EnterAccDetails");
+        await setTokenFunc(response.data.token); 
+        navigate('/enterAccDetails'); 
       } catch (err) {
         alert(err.response.data.error);
       }
