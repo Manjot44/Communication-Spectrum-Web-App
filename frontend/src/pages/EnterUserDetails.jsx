@@ -60,55 +60,24 @@ function AddUser({ token, setTokenFunc }) {
     }
   };
 
-  // Function to fetch existing data and create the new user profile
+  // Function to create the new user profile
   const createUserProfile = async () => {
-  try {
-    // Fetch existing store data
-    const response = await axios.get('http://localhost:5005/store', {
-      headers: {
-      Authorization: token,
+    try {
+      const formattedDate = dob.format('YYYY-MM-DD');
+      await axios.post("http://localhost:5005/admin/new_user", {
+        name,
+        dob: formattedDate,
+        postcode,
+        communication,
+        interests,
+        environments,
+        profilePicture
       },
-    });
-
-    currentData = response.data.store;  // Get existing data from the response
-    console.log('Current Store Data:', currentData);
-
-    // Make new ids for the user profiles
-    const dictLength = Object.keys(currentData.Users).length;
-    let newId = 1
-    if (dictLength !== 0) {
-      const keysArray = Object.keys(currentData.Users);
-      newId = parseInt(keysArray[keysArray.length - 1]) + 1;
-    }
-
-    const store = {
-      ...currentData,
-      Profile: {
-      ...currentData.Profile,
-      },
-      Users: {
-      ...currentData.Users,
-        [newId]: {
-          name: name,
-          dob: dob,
-          postcode: postcode,
-          communication: communication,
-          interests: interests,
-          environments: environments,
-          profilePicture: profilePicture
+      {
+        headers: {
+          Authorization: token,
         }
-      },
-      Photos: {
-      ...currentData.Photos,
-      }
-    };
-
-    // Send the updated data back to the server
-    await axios.put('http://localhost:5005/store', 
-      { store },  // Send the merged store data
-      { headers: { Authorization: token } }
-    );
-
+      });
     alert('User profile created successfully');
     navigate('/UserManage');  // Navigate back to UserManage on success
   } catch (error) {

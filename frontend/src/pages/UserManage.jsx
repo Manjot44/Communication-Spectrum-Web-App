@@ -12,8 +12,8 @@ function UserManage({ token, setTokenFunc }) {
   const navigate = useNavigate();
 
   function logOut() {
-    // For debug: prints user token
-    // console.log(token);
+    localStorage.removeItem('token');
+    setTokenFunc(null);
     navigate("/");
   }
 

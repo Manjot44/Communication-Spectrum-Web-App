@@ -12,13 +12,13 @@ function UserProfileContainer({ token, setTokenFunc }) {
 
   React.useEffect(() => {
     axios
-      .get("http://localhost:5005/store", {
+      .get("http://localhost:5005/get_clients", {
         headers: {
           Authorization: token,
         },
       })
       .then((response) => {
-        setProfileData(response.data.store.Users);
+        setProfileData(response.data.clients);
       })
       .catch((error) => {
         console.error(
@@ -38,10 +38,10 @@ function UserProfileContainer({ token, setTokenFunc }) {
       <div class='d-flex justify-content-center' style={{ display:'flex' }} >
         <div style={{ width:'85%'}} >
           <Grid container spacing={2}>
-              {profiles && Object.entries(profiles).map(profile => (
+              {profiles && profiles.map(profile => (
                 <UserProfileCircles
-                  profileName={profile[1].name}
-                  profilePicture={profile[1].profilePicture}>
+                  profileName={profile.name}
+                  profilePicture={profile.profile_pic}>
                 </UserProfileCircles>
               ))}
               <Button

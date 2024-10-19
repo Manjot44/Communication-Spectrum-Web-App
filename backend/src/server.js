@@ -1,19 +1,17 @@
-import fs from "fs";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import cors from "cors";
-
 import { InputError, AccessError } from "./error";
 import swaggerDocument from "../swagger.json";
 import {
   getEmailFromAuthorization,
   login,
-  logout,
   register,
-  getStore,
-  setStore,
-  save,
+  complete_reg,
+  create_user,
+  create_client,
+  get_clients
 } from "./service";
 
 const app = express();
@@ -25,7 +23,6 @@ app.use(bodyParser.json({ limit: "50mb" }));
 const catchErrors = (fn) => async (req, res) => {
   try {
     await fn(req, res);
-    save();
   } catch (err) {
     if (err instanceof InputError) {
       res.status(400).send({ error: err.message });
@@ -39,11 +36,11 @@ const catchErrors = (fn) => async (req, res) => {
 };
 
 /***************************************************************
-                       Auth Function
+                       Auth Functions
 ***************************************************************/
 
 const authed = (fn) => async (req, res) => {
-  const email = getEmailFromAuthorization(req.header("Authorization"));
+  const email = await getEmailFromAuthorization(req.header("Authorization"));
   await fn(req, res, email);
 };
 
@@ -65,35 +62,39 @@ app.post(
   })
 );
 
-app.post(
-  "/admin/auth/logout",
+app.put(
+  "/admin/auth/complete_reg",
   catchErrors(
     authed(async (req, res, email) => {
-      await logout(email);
+      const { profession, country, postcode, date, isSubscribed } = req.body;
+      await complete_reg(email, profession, country, postcode, date, isSubscribed);
       return res.json({});
     })
-  )
+  )  
 );
+
 
 /***************************************************************
-                       Store Functions
+                    Support User Functions
 ***************************************************************/
 
-app.get(
-  "/store",
+app.post(
+  "/admin/new_user",
   catchErrors(
     authed(async (req, res, email) => {
-      return res.json({ store: await getStore(email) });
+      const { name, dob, postcode, communication, interests, environments, profilePicture } = req.body;
+      const user_id = await create_user(name, dob, postcode, communication, interests, environments, profilePicture);
+      await create_client(email, user_id);
+      return res.json({});
     })
   )
 );
 
-app.put(
-  "/store",
+app.get(
+  "/get_clients",
   catchErrors(
     authed(async (req, res, email) => {
-      await setStore(email, req.body.store);
-      return res.json({});
+      return res.json({ clients: await get_clients(email) })
     })
   )
 );
@@ -106,8 +107,7 @@ app.get("/", (req, res) => res.redirect("/docs"));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const configData = JSON.parse(fs.readFileSync("../frontend/src/config.json"));
-const port = "BACKEND_PORT" in configData ? configData.BACKEND_PORT : 5000;
+const port = 5005;
 
 const server = app.listen(port, () => {
   console.log(`Backend has started, now listening on port ${port}!`);
