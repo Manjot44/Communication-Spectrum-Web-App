@@ -61,11 +61,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Login setTokenFunc={updateToken} />} /> {/* First screen person will go to is login */}
         <Route path="/register" element={<Register setTokenFunc={updateToken} />} />
-        <Route path="/home" element={<Home token={token} setTokenFunc={updateToken} />} />
+        <Route path="/home/:profileID" element={<ProtectedRoute element={Home} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
         <Route path="/enterAccDetails" element={<ProtectedRoute element={EnterAccDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
         <Route path="/UserManage" element={<ProtectedRoute element={UserManage} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
         <Route path="/AddUser" element={<ProtectedRoute element={EnterUserDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/Gallery" element={<Gallery token={token} setTokenFunc={updateToken} />} />
+        <Route path="/Gallery/:profileID" element={<ProtectedRoute element={Gallery} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
       </Routes>
     </BrowserRouter>
   );

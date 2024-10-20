@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Grid2, Typography, Button } from "@mui/material";
 import Navbar from "../components/Navbar";
 import GalleryPhotoComponent from "../components/GalleryPhotoComponent";
@@ -6,11 +7,12 @@ import axios from 'axios';
 import AddPhotoModal from "../components/AddPhotoModal";
 
 function Gallery({ token, setTokenFunc }) {
-  const [open, setOpen] = React.useState(false);
+  const { profileID } = useParams();
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [profilePicture, setProfilePicture] = React.useState('');
-  const [profiles, setProfileData] = React.useState([]);
+  const [image, setImage] = useState('');
+  const [images, setImages] = useState([]);
 
   // Refreshes page when new image is added
   function refreshPage() {
@@ -18,71 +20,39 @@ function Gallery({ token, setTokenFunc }) {
   }
 
   // Handle the display of images
-  React.useEffect(() => {
-    axios.get('http://localhost:5005/store', {
+  useEffect(() => {
+    axios.get(`http://localhost:5005/get_images/${profileID}`, {
         headers: {
             Authorization: token,
         }
     }).then((response) => {
-        setProfileData(response.data.store.Photos);
+        setImages(response.data.images);
     }).catch((error) => {
-        console.error('Error fetching profiles:', error.response ? error.response.data : error.message);
+        console.error('Error fetching images:', error.response ? error.response.data : error.message);
     });
-  }, [open]);
+  }, [profileID, token, open]);
 
-  let currentData = '';  // Variable to store existing data (if needed)
   const addImage = async () => {
     try {
-      // Fetch existing store data
-      const response = await axios.get('http://localhost:5005/store', {
-          headers: {
-              Authorization: token,
-          },
-      });
-
-      currentData = response.data.store;  // Get existing data from the response
-      
-      // Make new ids for the user profiles
-      const dictLength = Object.keys(currentData.Photos).length;
-      let newId = 1
-      if (dictLength !== 0) {
-          const keysArray = Object.keys(currentData.Photos);
-          newId = parseInt(keysArray[keysArray.length - 1]) + 1;
-      }
-      
-      const store = {
-        ...currentData,
-        Profile: {
-          ...currentData.Profile,
-        },
-        Users: {
-          ...currentData.Users,
-        },
-        Photos: {
-          ...currentData.Photos,
-            [newId]: {
-              link: profilePicture
-            }
+      await axios.post(`http://localhost:5005/add_image/${profileID}`, {
+        image
+      },
+      {
+        headers: {
+          Authorization: token,
         }
-      };
-
-      // Send the updated data back to the server
-      await axios.put('http://localhost:5005/store', 
-          { store },  // Send the merged store data
-          { headers: { Authorization: token } }
-      );
-
+      });
       alert('Image added successfully');
       refreshPage();
     } catch (error) {
-        console.error('Error creating user:', error);
-        alert('An error occurred while creating the user.');
+        console.error('Error adding image:', error);
+        alert('An error occurred while adding the image.');
     }
   }
 
   return (
     <>
-      <Navbar />
+      <Navbar profileID={profileID}/>
       <br />
       <Typography variant="h3" align="center" gutterBottom>
         Gallery
@@ -91,7 +61,7 @@ function Gallery({ token, setTokenFunc }) {
       <AddPhotoModal 
         open={open}
         handleClose={handleClose}
-        handleProfilePictureUpload={(pic) => setProfilePicture(pic)}
+        handleProfilePictureUpload={(pic) => setImage(pic)}
         handleUpload={addImage}
       />
       
@@ -99,10 +69,10 @@ function Gallery({ token, setTokenFunc }) {
         <div style={{ width:'85%'}} >
           <Grid2 container spacing={2}>
             
-            {profiles && Object.entries(profiles).map(profile => (
+            {images && images.map(image => (
                 <GalleryPhotoComponent
-                  profileName={""}
-                  profilePicture={profile[1].link}>
+                  key={image.img_id}
+                  image={image.url}>
                 </GalleryPhotoComponent>
             ))}
             

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import {
   Grid,
   Card,
@@ -26,11 +28,27 @@ const avatarStyle = {
   margin: "0 auto",
 };
 
-function Home() {
+function Home({ token, setTokenFunc }) {
+  const { profileID } = useParams(); 
+  const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5005/get_client/${profileID}`, {
+        headers: {
+          Authorization: token,
+        }
+      })
+      .then((response) => setProfileData(response.data.client))
+      .catch((error) => console.error('Error fetching user data:', error));
+  }, [profileID, token]);
+
+  if (!profileData) return <div>Loading...</div>;
+  
   return (
     <>
       <div style={{ paddingBottom: "20px" }}>
-        <Navbar />
+        <Navbar profileID={profileID}/>
       </div>
 
       {/* Wrapper for padding on sides */}
@@ -98,37 +116,38 @@ function Home() {
               {/* Add avatar and name */}
               <div style={{ textAlign: "center", marginBottom: "20px" }}>
                 <Avatar
-                  alt="Jamie"
-                  src="../assets/jamie-jamieson.jpg"
+                  alt={profileData.name}
+                  src={profileData.profile_pic}
                   style={avatarStyle}
                 />
                 <Typography variant="h6" style={{ marginTop: "10px" }}>
-                  Jamie Jamieson
+                  {profileData.name}
                 </Typography>
               </div>
 
               <Typography variant="h6">Support Snapshot</Typography>
               <Typography variant="body1">
-                Jamie uses verbal language and visual supports. He needs visual
-                forewarnings for changes and non-preferred routines.
+                {profileData.snapshot}
               </Typography>
               <Typography variant="h6" style={{ marginTop: "25px" }}>
-                Notes
+                Interests
               </Typography>
-              <Typography variant="body2">
-                Various notes about Jamie. There are many notes about Jamie. So
-                many, we decided not to put them all here. But thankfully we can
-                see the size of text is smaller here, which allows us to write a
-                bit more if we need to. Great design.
+              <Typography variant="body1">
+                {profileData.interests}
+              </Typography>
+              <Typography variant="h6" style={{ marginTop: "25px" }}>
+                Key Environments
+              </Typography>
+              <Typography variant="body1">
+                {profileData.comm_env}
               </Typography>
             </Card>
           </Grid>
 
           {/* Recent supports and Search recent supports */}
           <Grid item xs={12} md={9}>
-            {/* Jamie's Recent Supports */}
             <Card class='recent-supports-style'>
-              <Typography variant="h6">Jamie's Recent Supports</Typography>
+              <Typography variant="h6">{profileData.name}'s Recent Supports</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={4}>
                   <Card class='support-card-style' />

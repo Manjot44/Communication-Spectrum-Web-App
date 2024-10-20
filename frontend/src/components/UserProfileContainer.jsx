@@ -15,7 +15,7 @@ function UserProfileContainer({ token, setTokenFunc }) {
       .get("http://localhost:5005/get_clients", {
         headers: {
           Authorization: token,
-        },
+        }
       })
       .then((response) => {
         setProfileData(response.data.clients);
@@ -41,7 +41,8 @@ function UserProfileContainer({ token, setTokenFunc }) {
               {profiles && profiles.map(profile => (
                 <UserProfileCircles
                   profileName={profile.name}
-                  profilePicture={profile.profile_pic}>
+                  profilePicture={profile.profile_pic}
+                  profileID={profile.user_id}>
                 </UserProfileCircles>
               ))}
               <Button

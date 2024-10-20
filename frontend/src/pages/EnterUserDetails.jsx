@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -18,9 +18,6 @@ function AddUser({ token, setTokenFunc }) {
   const [environments, setEnvironments] = React.useState("");
   const [profilePicture, setProfilePicture] = React.useState("");
   const navigate = useNavigate();
-
-  let currentData = ""; // Variable to store existing data (if needed)
-  let store = ""; // Placeholder for updated data to be sent back
 
   // Submits the register form when the enter key is pressed in any of the fields
   function handleKeyDown (event) {

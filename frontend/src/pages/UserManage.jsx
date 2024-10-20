@@ -1,9 +1,6 @@
 import React from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Item from "../components/Item";
 import UserProfileContainer from "../components/UserProfileContainer";
 import Logo from "../assets/mycomm.png";
 import "../App.css";

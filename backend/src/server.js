@@ -13,7 +13,10 @@ import {
   complete_reg,
   create_user,
   create_client,
-  get_clients
+  get_clients,
+  get_client,
+  get_images,
+  add_image
 } from "./service";
 
 const app = express();
@@ -52,7 +55,7 @@ app.get(
   "/authenticate",
   catchErrors(
     authed(async (req, res, email) => {
-      return res.json({ authenticated: true })
+      return res.json({ authenticated: true });
     })
   )
 );
@@ -86,7 +89,6 @@ app.put(
   )  
 );
 
-
 /***************************************************************
                     Support User Functions
 ***************************************************************/
@@ -107,7 +109,43 @@ app.get(
   "/get_clients",
   catchErrors(
     authed(async (req, res, email) => {
-      return res.json({ clients: await get_clients(email) })
+      return res.json({ clients: await get_clients(email) });
+    })
+  )
+);
+
+app.get(
+  "/get_client/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      return res.json({ client: await get_client(profileID)});
+    })
+  )
+);
+
+/***************************************************************
+                      Images Functions
+***************************************************************/
+
+app.get(
+  "/get_images/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      return res.json({ images: await get_images(profileID)});
+    })
+  )
+);
+
+app.post(
+  "/add_image/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      const { image } = req.body;
+      await add_image(profileID, image);
+      return res.json({});
     })
   )
 );
