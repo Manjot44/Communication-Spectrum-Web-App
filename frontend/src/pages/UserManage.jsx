@@ -11,9 +11,9 @@ import "../App.css";
 function UserManage({ token, setTokenFunc }) {
   const navigate = useNavigate();
 
-  function logOut() {
+  const logOut = async() => {
     localStorage.removeItem('token');
-    setTokenFunc(null);
+    await setTokenFunc(null);
     navigate("/");
   }
 

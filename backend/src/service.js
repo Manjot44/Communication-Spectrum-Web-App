@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import AsyncLock from 'async-lock';
+import bcrypt from 'bcrypt';
 import { InputError, AccessError, } from './error';
-import { Pool } from 'pg';
-import config from './config';
+import { pool } from './server'
 
 const lock = new AsyncLock();
 
@@ -22,10 +22,14 @@ export const userLock = callback => new Promise((resolve, reject) => {
                        Auth Functions
 ***************************************************************/
 
-export const getEmailFromAuthorization = authorization => {
+export const getEmailFromAuthorization = async (authorization) => {
   try {
     const token = authorization.replace('Bearer ', '');
     const { email } = jwt.verify(token, JWT_SECRET);
+    const { rows } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
+    if (rows.length !== 1) {
+      throw new AccessError('Invalid token');
+    }
     return email;
   } catch {
     throw new AccessError('Invalid token');
@@ -35,7 +39,6 @@ export const getEmailFromAuthorization = authorization => {
 export const login = async (email, password) => {
   return userLock(async (resolve, reject) => {
     try {
-      const pool = new Pool(config);
       const { rows } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
       if (rows.length > 0) {
         const admin = rows[0];
@@ -49,7 +52,6 @@ export const login = async (email, password) => {
       } else {
         reject(new InputError('Invalid username or password'));
       }
-      await pool.end();
     } catch (error) {
       reject(error);
     }
@@ -59,7 +61,6 @@ export const login = async (email, password) => {
 export const register = async (email, password, name) => {
   return userLock(async (resolve, reject) => {
     try {
-      const pool = new Pool(config);
       const { rowCount } = await pool.query('SELECT * FROM "Professionals" WHERE email = $1', [email]);
       if (rowCount > 0) {
         return reject(new InputError('Email address already registered'));
@@ -72,7 +73,6 @@ export const register = async (email, password, name) => {
       const values = [email, name, hashedPassword];
       await pool.query(queryText, values);
       const token = jwt.sign({ email }, JWT_SECRET, { algorithm: 'HS256' });
-      await pool.end();
       resolve(token);
     } catch (error) {
       reject(error);
@@ -83,7 +83,6 @@ export const register = async (email, password, name) => {
 export const complete_reg = async (email, profession, country, postcode, date, isSubscribed) => {
   return userLock(async (resolve, reject) => {
     try {
-      const pool = new Pool(config);
       const queryText = `
         UPDATE "Professionals"
         SET location = $3,
@@ -95,7 +94,6 @@ export const complete_reg = async (email, profession, country, postcode, date, i
       `;
       const values = [email, profession, country, postcode, date, isSubscribed];
       await pool.query(queryText, values);
-      await pool.end();
       resolve();
     } catch (error) {
       reject(error);
@@ -110,7 +108,6 @@ export const complete_reg = async (email, profession, country, postcode, date, i
 export const create_user = async (name, dob, postcode, communication, interests, environments, profilePicture) => {
   return userLock(async (resolve, reject) => {
     try {
-      const pool = new Pool(config);
       const queryText = `
         INSERT INTO "SupportUsers" (name, dob, postcode, snapshot, comm_env, interests, profile_pic)
         VALUES ($1, $2, $3, $4, $6, $5, $7) RETURNING user_id;
@@ -118,7 +115,6 @@ export const create_user = async (name, dob, postcode, communication, interests,
       const values = [name, dob, postcode, communication, interests, environments, profilePicture];
       const result = await pool.query(queryText, values);
       const user_id = result.rows[0].user_id;
-      await pool.end();
       resolve(user_id);
     } catch (error) {
       reject(error);
@@ -129,14 +125,12 @@ export const create_user = async (name, dob, postcode, communication, interests,
 export const create_client = async (email, user_id) => {
   return userLock(async (resolve, reject) => {
     try {
-      const pool = new Pool(config);
       const queryText = `
         INSERT INTO "hasClient" (prof_id, user_id)
         VALUES ($1, $2);
       `;
       const values = [email, user_id];
       await pool.query(queryText, values);
-      await pool.end();
       resolve();
     } catch (error) {
       reject(error);
@@ -147,7 +141,6 @@ export const create_client = async (email, user_id) => {
 export const get_clients = async (email) => {
   return userLock(async (resolve, reject) => {
     try {
-      const pool = new Pool(config);
       const queryText = `
         SELECT p.email, s.name, s.profile_pic
         FROM "hasClient" h
@@ -157,7 +150,6 @@ export const get_clients = async (email) => {
       `;
       const values = [email];
       const clients = await pool.query(queryText, values);
-      await pool.end();
       resolve(clients.rows);
     } catch (error) {
       reject(error);
