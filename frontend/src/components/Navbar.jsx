@@ -6,34 +6,34 @@ import '../App.css';
 // Logos
 import Logo from "../assets/mycomms_white.png";
 
-const Navbar = () => {
+const Navbar = ({ profileID }) => {
   return (
     <nav className="navbar">
       <div className="logo">
         <img src={Logo} alt="MyComms logo" className="logo-img" />
       </div>
       <div className="navbar-links">
-        <a href="/home" className="nav-item">
+        <Link to={`/home/${profileID}`} className="nav-item">
           Home
-        </a>
-        <a href="/explore" className="nav-item">
+        </Link>
+        <Link to={`/explore/${profileID}`} className="nav-item">
           Explore
-        </a>
-        <a href="/gallery" className="nav-item">
+        </Link>
+        <Link to={`/gallery/${profileID}`} className="nav-item">
           Gallery
-        </a>
-        <a href="/templates" className="nav-item">
+        </Link>
+        <Link to={`/templates/${profileID}`} className="nav-item">
           Templates
-        </a>
-        <a href="/learn" className="nav-item">
+        </Link>
+        <Link to={`/learn/${profileID}`} className="nav-item">
           Learn
-        </a>
-        <a href="/categories" className="nav-item">
+        </Link>
+        <Link to={`/categories/${profileID}`} className="nav-item">
           Categories
-        </a>
+        </Link>
       </div>
       <div className="profile-switch">
-        <Link to="/usermanage">
+        <Link to="/UserManage">
           <button className="profile-btn">👤 Switch Profile</button>
         </Link>
       </div>

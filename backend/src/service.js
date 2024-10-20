@@ -142,7 +142,7 @@ export const get_clients = async (email) => {
   return userLock(async (resolve, reject) => {
     try {
       const queryText = `
-        SELECT p.email, s.name, s.profile_pic
+        SELECT p.email, s.name, s.profile_pic, s.user_id
         FROM "hasClient" h
           JOIN "Professionals" p on p.email = h.prof_id
           JOIN "SupportUsers" s on s.user_id = h.user_id
@@ -153,6 +153,48 @@ export const get_clients = async (email) => {
       resolve(clients.rows);
     } catch (error) {
       reject(error);
+    }
+  });
+};
+
+export const get_client = async (profileID) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const client = await pool.query('SELECT * FROM "SupportUsers" WHERE user_id = $1', [profileID]);
+      resolve(client.rows[0]);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/***************************************************************
+                      Images Functions
+***************************************************************/
+
+export const get_images = async (profileID) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const images = await pool.query('SELECT * FROM "Images" WHERE user_id = $1', [profileID]);
+      resolve(images.rows);
+    } catch (error) {
+      reject(error)
+    }
+  });
+};
+
+export const add_image = async (profileID, image) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const queryText = `
+        INSERT INTO "Images" (url, user_id)
+        VALUES ($1, $2);
+      `;
+      const values = [image, profileID];
+      await pool.query(queryText, values);
+      resolve();
+    } catch (error) {
+      reject(error)
     }
   });
 };
