@@ -12,7 +12,7 @@ function Gallery({ token, setTokenFunc }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [image, setImage] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(null);
 
   // Refreshes page when new image is added
   function refreshPage() {
@@ -54,6 +54,8 @@ function Gallery({ token, setTokenFunc }) {
         alert('An error occurred while adding the image.');
     }
   }
+
+  if (!images) return <div>Loading...</div>;
 
   return (
     <>
