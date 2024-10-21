@@ -33,7 +33,7 @@ function Home({ token, setTokenFunc }) {
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchClient = async () => {
       try {
         const response = await axios.get(`http://localhost:5005/get_client/${profileID}`, {
           headers: {
@@ -46,7 +46,7 @@ function Home({ token, setTokenFunc }) {
       }
     };
   
-    fetchImages();
+    fetchClient();
   }, [profileID, token, open]);
 
   if (!profileData) return <div>Loading...</div>;
