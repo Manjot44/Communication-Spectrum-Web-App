@@ -119,7 +119,7 @@ app.get(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      return res.json({ client: await get_client(profileID)});
+      return res.json({ client: await get_client(email, profileID)});
     })
   )
 );
@@ -133,7 +133,7 @@ app.get(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      return res.json({ images: await get_images(profileID)});
+      return res.json({ images: await get_images(email, profileID)});
     })
   )
 );
@@ -144,7 +144,7 @@ app.post(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       const { image } = req.body;
-      await add_image(profileID, image);
+      await add_image(email, profileID, image);
       return res.json({});
     })
   )

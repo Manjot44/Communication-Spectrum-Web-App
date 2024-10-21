@@ -12,7 +12,7 @@ function Gallery({ token, setTokenFunc }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [image, setImage] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(null);
 
   // Refreshes page when new image is added
   function refreshPage() {
@@ -21,15 +21,20 @@ function Gallery({ token, setTokenFunc }) {
 
   // Handle the display of images
   useEffect(() => {
-    axios.get(`http://localhost:5005/get_images/${profileID}`, {
-        headers: {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5005/get_images/${profileID}`, {
+          headers: {
             Authorization: token,
-        }
-    }).then((response) => {
+          }
+        });
         setImages(response.data.images);
-    }).catch((error) => {
-        console.error('Error fetching images:', error.response ? error.response.data : error.message);
-    });
+      } catch (err) {
+        alert(err.response.data.error);
+      }
+    };
+  
+    fetchImages();
   }, [profileID, token, open]);
 
   const addImage = async () => {
@@ -49,6 +54,8 @@ function Gallery({ token, setTokenFunc }) {
         alert('An error occurred while adding the image.');
     }
   }
+
+  if (!images) return <div>Loading...</div>;
 
   return (
     <>
