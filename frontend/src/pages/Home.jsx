@@ -33,15 +33,21 @@ function Home({ token, setTokenFunc }) {
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5005/get_client/${profileID}`, {
-        headers: {
-          Authorization: token,
-        }
-      })
-      .then((response) => setProfileData(response.data.client))
-      .catch((error) => console.error('Error fetching user data:', error));
-  }, [profileID, token]);
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5005/get_client/${profileID}`, {
+          headers: {
+            Authorization: token,
+          }
+        });
+        setProfileData(response.data.client);
+      } catch (err) {
+        alert(err.response.data.error);
+      }
+    };
+  
+    fetchImages();
+  }, [profileID, token, open]);
 
   if (!profileData) return <div>Loading...</div>;
   

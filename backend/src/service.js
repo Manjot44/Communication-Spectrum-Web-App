@@ -18,6 +18,18 @@ export const userLock = callback => new Promise((resolve, reject) => {
   });
 });
 
+export const checkClientAuth = async (email, profileID) => {
+  const queryText = `
+      SELECT p.email, s.user_id
+      FROM "hasClient" h
+        JOIN "Professionals" p on p.email = h.prof_id
+        JOIN "SupportUsers" s on s.user_id = h.user_id
+      WHERE p.email = $1 AND s.user_id = $2;
+      `;
+      const { rows } = await pool.query(queryText, [email, profileID]);
+      return rows;
+}
+
 /***************************************************************
                        Auth Functions
 ***************************************************************/
@@ -157,11 +169,16 @@ export const get_clients = async (email) => {
   });
 };
 
-export const get_client = async (profileID) => {
+export const get_client = async (email, profileID) => {
   return userLock(async (resolve, reject) => {
     try {
-      const client = await pool.query('SELECT * FROM "SupportUsers" WHERE user_id = $1', [profileID]);
-      resolve(client.rows[0]);
+      const rows = await checkClientAuth(email, profileID);
+      if (rows.length > 0) {
+        const client = await pool.query('SELECT * FROM "SupportUsers" WHERE user_id = $1', [profileID]);
+        resolve(client.rows[0]);
+      } else {
+        reject(new AccessError('You do not have access to this client'))
+      }
     } catch (error) {
       reject(error);
     }
@@ -172,27 +189,37 @@ export const get_client = async (profileID) => {
                       Images Functions
 ***************************************************************/
 
-export const get_images = async (profileID) => {
+export const get_images = async (email, profileID) => {
   return userLock(async (resolve, reject) => {
     try {
-      const images = await pool.query('SELECT * FROM "Images" WHERE user_id = $1', [profileID]);
-      resolve(images.rows);
+      const rows = await checkClientAuth(email, profileID);
+      if (rows.length > 0) {
+        const images = await pool.query('SELECT * FROM "Images" WHERE user_id = $1', [profileID]);
+        resolve(images.rows);
+      } else {
+        reject(new AccessError('You do not have access to this client'))
+      }
     } catch (error) {
       reject(error)
     }
   });
 };
 
-export const add_image = async (profileID, image) => {
+export const add_image = async (email, profileID, image) => {
   return userLock(async (resolve, reject) => {
     try {
-      const queryText = `
-        INSERT INTO "Images" (url, user_id)
-        VALUES ($1, $2);
-      `;
-      const values = [image, profileID];
-      await pool.query(queryText, values);
-      resolve();
+      const rows = await checkClientAuth(email, profileID);
+      if (rows.length > 0) {
+        const queryText = `
+          INSERT INTO "Images" (url, user_id)
+          VALUES ($1, $2);
+        `;
+        const values = [image, profileID];
+        await pool.query(queryText, values);
+        resolve();
+      } else {
+        reject(new AccessError('You do not have access to this client'))
+      }
     } catch (error) {
       reject(error)
     }
