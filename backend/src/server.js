@@ -4,8 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { InputError, AccessError } from "./error";
 import swaggerDocument from "../swagger.json";
-import { Pool } from 'pg';
-import config from './config';
+import { Pool } from "pg";
+import config from "./config";
 import {
   getEmailFromAuthorization,
   login,
@@ -16,12 +16,13 @@ import {
   get_clients,
   get_client,
   get_images,
-  add_image
+  add_image,
+  delete_user,
 } from "./service";
 
 const app = express();
 
-export const pool  = new Pool(config);
+export const pool = new Pool(config);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -83,10 +84,17 @@ app.put(
   catchErrors(
     authed(async (req, res, email) => {
       const { profession, country, postcode, date, isSubscribed } = req.body;
-      await complete_reg(email, profession, country, postcode, date, isSubscribed);
+      await complete_reg(
+        email,
+        profession,
+        country,
+        postcode,
+        date,
+        isSubscribed
+      );
       return res.json({});
     })
-  )  
+  )
 );
 
 /***************************************************************
@@ -97,8 +105,24 @@ app.post(
   "/admin/new_user",
   catchErrors(
     authed(async (req, res, email) => {
-      const { name, dob, postcode, communication, interests, environments, profilePicture } = req.body;
-      const user_id = await create_user(name, dob, postcode, communication, interests, environments, profilePicture);
+      const {
+        name,
+        dob,
+        postcode,
+        communication,
+        interests,
+        environments,
+        profilePicture,
+      } = req.body;
+      const user_id = await create_user(
+        name,
+        dob,
+        postcode,
+        communication,
+        interests,
+        environments,
+        profilePicture
+      );
       await create_client(email, user_id);
       return res.json({});
     })
@@ -119,7 +143,18 @@ app.get(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      return res.json({ client: await get_client(email, profileID)});
+      return res.json({ client: await get_client(email, profileID) });
+    })
+  )
+);
+
+app.delete(
+  "/admin/delete_user/:user_id",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { user_id } = req.params;
+      await delete_user(email, user_id); // Delete user function
+      return res.json({ message: "Profile deleted successfully" });
     })
   )
 );
@@ -133,7 +168,7 @@ app.get(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      return res.json({ images: await get_images(email, profileID)});
+      return res.json({ images: await get_images(email, profileID) });
     })
   )
 );
