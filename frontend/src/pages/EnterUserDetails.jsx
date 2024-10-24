@@ -88,83 +88,94 @@ function AddUser({ token, setTokenFunc }) {
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
     <div id="background-container" className="d-flex justify-content-center align-items-center login-background">
       <div id="outside-box" className="mx-auto login-form">
-      <br/>
-      <h4>Add New User</h4>
+        <br/>
+        <h4>Add New User</h4>
 
-      <TextFieldComponent
-        label="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      <br /><br />
+        <TextFieldComponent
+          label="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <br /><br />
 
-      <SelectDOBComponent
-        label="Date of Birth"
-        value={dob}
-        onChange={(newDate) => setDob(newDate)}
-      />
-      <br /><br />
+        <SelectDOBComponent
+          label="Date of Birth"
+          value={dob}
+          onChange={(newDate) => setDob(newDate)}
+        />
+        <br /><br />
 
-      <TextFieldComponent
-        label="Postcode"
-        value={postcode}
-        onChange={(e) => setPostcode(e.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      <br /><br />
+        <TextFieldComponent
+          label="Postcode"
+          value={postcode}
+          onChange={(e) => setPostcode(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <br /><br />
 
-      <DropdownComponent
-        id="communication-form"
-        label="Communication Method"
-        value={communication}
-        onChange={(e) => setCommunication(e.target.value)}
-          options={[
-              { value: 'Spoken Language', label: 'Spoken Language' },
-              { value: 'Body Language', label: 'Body Language' },
-              { value: 'Eye Contact', label: 'Eye Contact' },
-              { value: 'Hugs', label: 'Hugs' },
-              { value: 'Pointing', label: 'Pointing' },
-              { value: 'Visual Supports', label: 'Visual Supports' },
-              { value: 'AAC Devices', label: 'AAC Devices' },
-              { value: 'Digital Communications', label: 'Digital Communications' },
-              { value: 'Basic Sign Language', label: 'Basic Sign Language' }
-            ]}
+        <DropdownComponent
+          id="communication-form"
+          label="Communication Method"
+          value={communication}
+          onChange={(e) => setCommunication(e.target.value)}
+            options={[
+                { value: 'Spoken Language', label: 'Spoken Language' },
+                { value: 'Body Language', label: 'Body Language' },
+                { value: 'Eye Contact', label: 'Eye Contact' },
+                { value: 'Hugs', label: 'Hugs' },
+                { value: 'Pointing', label: 'Pointing' },
+                { value: 'Visual Supports', label: 'Visual Supports' },
+                { value: 'AAC Devices', label: 'AAC Devices' },
+                { value: 'Digital Communications', label: 'Digital Communications' },
+                { value: 'Basic Sign Language', label: 'Basic Sign Language' }
+              ]}
+        />
+        <br /><br />
+
+        <TextFieldComponent
+          label="Interests"
+          value={interests}
+          onChange={(e) => setInterests(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <br /><br />
+
+        <TextFieldComponent
+          label="Key Environments (e.g., home, school, workplaces)"
+          value={environments}
+          onChange={(e) => setEnvironments(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <br />
+        <br />
+        <div className='form-group mx-auto' style={{ width: '75%' }}>
+          <label htmlFor="profilePicture">Profile Picture</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleProfilePictureUpload}
+            className="form-control"
           />
-          <br /><br />
-
-          <TextFieldComponent
-            label="Interests"
-            value={interests}
-            onChange={(e) => setInterests(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br /><br />
-
-          <TextFieldComponent
-            label="Key Environments (e.g., home, school, workplaces)"
-            value={environments}
-            onChange={(e) => setEnvironments(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <div className="form-group">
-            <label htmlFor="profilePicture">Profile Picture</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureUpload}
-              className="form-control"
-            />
-          </div>
-          <br />
-
-          <Button onClick={handleCreateUser} variant="contained" style={{ backgroundColor: '#000CA4', width: '75%', borderRadius: "20px", fontFamily: 'Poppins' }}>
-            Create New User
-          </Button>
         </div>
+        <br />
+        <Button onClick={handleCreateUser} variant="contained" style={{ backgroundColor: '#000CA4', width: '75%', borderRadius: "20px", fontFamily: 'Poppins' }}>
+          Create New User
+        </Button>
+        <br />
+        <br />
+        <p>
+            <a
+              class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+              href="/UserManage"
+              style={{ fontFamily: "Poppins" }}
+            >
+            <b>Go Back</b>
+            </a>
+        </p>
       </div>
-    </>
+    </div>
+  </>
   );
 }
 
