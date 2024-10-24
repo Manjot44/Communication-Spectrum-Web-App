@@ -254,8 +254,15 @@ export const get_images = async (email, profileID) => {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
         const images = await pool.query(
-          'SELECT * FROM "Images" WHERE user_id = $1',
-          [profileID]
+          `
+          SELECT I.* 
+          FROM "Images" I
+          JOIN "ProfUserImageAccess" PUIA 
+            ON I.img_id = PUIA.img_id
+          WHERE PUIA.user_id = $1 
+            AND PUIA.prof_id = $2
+          `,
+          [profileID, email]
         );
         resolve(images.rows);
       } else {
@@ -272,12 +279,23 @@ export const add_image = async (email, profileID, image) => {
     try {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
-        const queryText = `
-          INSERT INTO "Images" (url, user_id)
-          VALUES ($1, $2);
+        // Insert the image into the Images table first
+        const insertImageQuery = `
+          INSERT INTO "Images" (url)
+          VALUES ($1)
+          RETURNING img_id;
         `;
-        const values = [image, profileID];
-        await pool.query(queryText, values);
+        const imageResult = await pool.query(insertImageQuery, [image]);
+        const img_id = imageResult.rows[0].img_id;
+
+        // Insert the relationship between the professional, user, and image into ProfUserImageAccess
+        const insertAccessQuery = `
+          INSERT INTO "ProfUserImageAccess" (img_id, prof_id, user_id)
+          VALUES ($1, $2, $3);
+        `;
+        const accessValues = [img_id, email, profileID];
+        await pool.query(insertAccessQuery, accessValues);
+
         resolve();
       } else {
         reject(new AccessError("You do not have access to this client"));

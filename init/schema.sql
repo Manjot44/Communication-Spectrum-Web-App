@@ -5,6 +5,7 @@ drop table if exists "Supports" cascade;
 drop table if exists "Images" cascade;
 drop table if exists "hasClient" cascade;
 drop table if exists "hasSupport" cascade;
+drop table if exists "ProfUserImageAccess" cascade;
 
 -- Tables
 
@@ -43,18 +44,25 @@ create table "Supports" (
 create table "Images" (
     img_id      serial not null unique,
     url         text,
-    user_id     integer not null references "SupportUsers"(user_id),
     primary key (img_id)
 );
 
 create table "hasClient" (
     prof_id     text not null references "Professionals"(email),
     user_id     integer not null references "SupportUsers"(user_id),
-    primary key (prof_id,user_id)
+    primary key (prof_id, user_id)
 );
 
 create table "hasSupport" (
     support_id  integer not null references "Supports"(support_id),
     user_id     integer not null references "SupportUsers"(user_id),
-    primary key (support_id,user_id)
+    primary key (support_id, user_id)
+);
+
+-- This table manages images linked to professionals and support users.
+create table "ProfUserImageAccess" (
+    img_id      integer not null references "Images"(img_id),
+    prof_id     text not null references "Professionals"(email),
+    user_id     integer not null references "SupportUsers"(user_id),
+    primary key (img_id, prof_id, user_id)
 );
