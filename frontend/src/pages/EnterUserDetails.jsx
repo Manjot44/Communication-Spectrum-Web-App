@@ -148,7 +148,7 @@ function AddUser({ token, setTokenFunc }) {
           onKeyDown={handleKeyDown}
         />
         <br />
-          
+        <br />
         <div className='form-group mx-auto' style={{ width: '75%' }}>
           <label htmlFor="profilePicture">Profile Picture</label>
           <input

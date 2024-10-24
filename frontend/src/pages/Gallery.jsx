@@ -38,20 +38,26 @@ function Gallery({ token, setTokenFunc }) {
   }, [profileID, token, open]);
 
   const addImage = async () => {
-    try {
-      await axios.post(`http://localhost:5005/add_image/${profileID}`, {
-        image
-      },
-      {
-        headers: {
-          Authorization: token,
-        }
-      });
-      alert('Image added successfully');
-      refreshPage();
-    } catch (error) {
-        console.error('Error adding image:', error);
-        alert('An error occurred while adding the image.');
+    // Check if an Image has been uploaded, if not raise error
+    if (image === '') {
+      alert('Please Upload a File')
+    } else {
+      try {
+        await axios.post(`http://localhost:5005/add_image/${profileID}`, {
+          image
+        },
+        {
+          headers: {
+            Authorization: token,
+          }
+        });
+        alert('Image added successfully');
+        setOpen(false)
+        // refreshPage();
+      } catch (error) {
+          console.error('Error adding image:', error);
+          alert('An error occurred while adding the image.');
+      }
     }
   }
 
