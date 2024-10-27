@@ -18,6 +18,7 @@ import {
   get_images,
   add_image,
   delete_user,
+  delete_image,
 } from "./service";
 
 const app = express();
@@ -181,6 +182,17 @@ app.post(
       const { image } = req.body;
       await add_image(email, profileID, image);
       return res.json({});
+    })
+  )
+);
+
+app.delete(
+  "/delete_image/:img_id",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { img_id } = req.params;
+      await delete_image(email, img_id); // Call to service layer
+      return res.json({ message: "Image deleted successfully" });
     })
   )
 );

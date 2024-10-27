@@ -1,26 +1,29 @@
-import React from 'react';
-import Grid from '@mui/material/Grid2';
+import React from "react";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-function GalleryPhotoComponent ({ image }) {
+function GalleryPhotoComponent({ image, onDelete }) {
   return (
-    <>
-      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-      <Grid container direction="column" spacing={0}>
-        <Grid item xs={12}>
-          <img
-            src={image}
-            alt=""
-            className="profile-picture"
-            style={{ width: '250px', height: '250px', border:'1px solid black'}}
-          />
-        </Grid>
-        {/* <Grid item xs={12}>
-          <Box sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}>
-            {profileName}
-          </Box>
-        </Grid> */}
-      </Grid>
-    </>
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <img
+        src={image}
+        alt="Gallery Item"
+        style={{ width: "100%", height: "auto" }}
+      />
+      <IconButton
+        aria-label="delete"
+        onClick={onDelete}
+        style={{
+          position: "absolute",
+          top: "5px",
+          right: "5px",
+          color: "red",
+          backgroundColor: "white",
+        }}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </div>
   );
 }
 
