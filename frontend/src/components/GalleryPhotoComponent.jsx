@@ -1,30 +1,32 @@
 import React from "react";
-import { IconButton } from "@mui/material";
+import { Card, CardMedia, CardActions, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
-function GalleryPhotoComponent({ image, onDelete }) {
+const GalleryPhotoComponent = ({ image, onDelete, onRemoveBackground }) => {
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
-      <img
-        src={image}
-        alt="Gallery Item"
-        style={{ width: "100%", height: "auto" }}
+    <Card style={{ maxWidth: 250, margin: "10px" }}>
+      {" "}
+      {/* Adjusted styling */}
+      <CardMedia
+        component="img"
+        height="140"
+        image={image}
+        alt="Gallery Image"
+        style={{ objectFit: "cover" }}
       />
-      <IconButton
-        aria-label="delete"
-        onClick={onDelete}
-        style={{
-          position: "absolute",
-          top: "5px",
-          right: "5px",
-          color: "red",
-          backgroundColor: "white",
-        }}
-      >
-        <DeleteIcon />
-      </IconButton>
-    </div>
+      <CardActions>
+        {/* Delete button */}
+        <IconButton onClick={onDelete} aria-label="delete">
+          <DeleteIcon />
+        </IconButton>
+        {/* Remove Background button */}
+        <IconButton onClick={onRemoveBackground} aria-label="remove background">
+          <AutoFixHighIcon />
+        </IconButton>
+      </CardActions>
+    </Card>
   );
-}
+};
 
 export default GalleryPhotoComponent;

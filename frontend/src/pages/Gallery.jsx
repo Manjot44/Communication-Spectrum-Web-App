@@ -14,11 +14,6 @@ function Gallery({ token, setTokenFunc }) {
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
 
-  // Refreshes page when new image is added
-  function refreshPage() {
-    window.location.reload();
-  }
-
   // Fetch images
   useEffect(() => {
     const fetchImages = async () => {
@@ -87,6 +82,34 @@ function Gallery({ token, setTokenFunc }) {
     }
   };
 
+  // Remove background from image
+  const removeBackground = async (img_id, img_url) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5005/remove-background`,
+        { base64Image: img_url },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const updatedImage = response.data.base64Image;
+
+      // Update image URL in state
+      setImages((prevImages) =>
+        prevImages.map((img) =>
+          img.img_id === img_id ? { ...img, url: updatedImage } : img
+        )
+      );
+
+      alert("Background removed successfully.");
+    } catch (error) {
+      console.error("Error removing background:", error);
+      alert("An error occurred while removing the background.");
+    }
+  };
+
   if (!images) return <div>Loading...</div>;
 
   return (
@@ -113,6 +136,9 @@ function Gallery({ token, setTokenFunc }) {
                   key={image.img_id}
                   image={image.url}
                   onDelete={() => deleteImage(image.img_id)}
+                  onRemoveBackground={() =>
+                    removeBackground(image.img_id, image.url)
+                  }
                 />
               ))}
 
