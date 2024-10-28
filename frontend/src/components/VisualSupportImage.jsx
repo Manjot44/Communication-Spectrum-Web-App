@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function VisualSupportImage({ image, setImage }) {
+function VisualSupportImage({ image, setImage, uniqueID }) {
   // const [image, setImage] = useState(null);
 
   const handleImageChange = (event) => {
@@ -15,7 +15,7 @@ function VisualSupportImage({ image, setImage }) {
   };
 
   const handleDivClick = () => {
-    document.getElementById('fileInput').click();
+    document.getElementById(`fileInput-${uniqueID}`).click();
   };
 
   return (
@@ -41,7 +41,7 @@ function VisualSupportImage({ image, setImage }) {
       {!image && 'Click to select an image for Visual Support'}
       <input
         type="file"
-        id="fileInput"
+        id={`fileInput-${uniqueID}`}
         accept="image/*"
         style={{ display: 'none' }}
         onChange={handleImageChange}
