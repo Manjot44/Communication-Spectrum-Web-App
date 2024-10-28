@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid2, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, IconButton } from "@mui/material";
 import Navbar from "../components/Navbar";
 import GalleryPhotoComponent from "../components/GalleryPhotoComponent";
 import axios from "axios";
 import AddPhotoModal from "../components/AddPhotoModal";
+import CloseIcon from "@mui/icons-material/Close";
 
-function Gallery({ token, setTokenFunc }) {
+function Gallery({ token }) {
   const { profileID } = useParams();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // Fetch images
   useEffect(() => {
@@ -82,33 +84,7 @@ function Gallery({ token, setTokenFunc }) {
     }
   };
 
-  // Remove background from image
-  const removeBackground = async (img_id, img_url) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:5005/remove-background`,
-        { base64Image: img_url },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      const updatedImage = response.data.base64Image;
-
-      // Update image URL in state
-      setImages((prevImages) =>
-        prevImages.map((img) =>
-          img.img_id === img_id ? { ...img, url: updatedImage } : img
-        )
-      );
-
-      alert("Background removed successfully.");
-    } catch (error) {
-      console.error("Error removing background:", error);
-      alert("An error occurred while removing the background.");
-    }
-  };
+  const closeModal = () => setSelectedImage(null);
 
   if (!images) return <div>Loading...</div>;
 
@@ -127,18 +103,19 @@ function Gallery({ token, setTokenFunc }) {
         handleUpload={addImage}
       />
 
-      <div class="d-flex justify-content-center" style={{ display: "flex" }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ display: "flex" }}
+      >
         <div style={{ width: "85%" }}>
-          <Grid2 container spacing={2}>
+          <Grid container spacing={2}>
             {images &&
               images.map((image) => (
                 <GalleryPhotoComponent
                   key={image.img_id}
                   image={image.url}
                   onDelete={() => deleteImage(image.img_id)}
-                  onRemoveBackground={() =>
-                    removeBackground(image.img_id, image.url)
-                  }
+                  onClick={() => setSelectedImage(image.url)} // Set the selected image on click
                 />
               ))}
 
@@ -152,9 +129,48 @@ function Gallery({ token, setTokenFunc }) {
             >
               +
             </Button>
-          </Grid2>
+          </Grid>
         </div>
       </div>
+
+      {/* Enlarged Image Overlay */}
+      {selectedImage && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={closeModal} // Close on overlay click
+        >
+          <div style={{ position: "relative" }}>
+            <img
+              src={selectedImage}
+              alt="Enlarged View"
+              style={{ maxHeight: "90vh", maxWidth: "90vw" }}
+            />
+            <IconButton
+              onClick={closeModal}
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                color: "white",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
+        </div>
+      )}
     </>
   );
 }

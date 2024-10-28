@@ -1,7 +1,7 @@
 /* LOGIN SCREEN */
 .login-background {
   min-height: 100vh;
-  background-color: #000CA4;
+  background-color: #000ca4;
 }
 
 .login-form {
@@ -14,29 +14,29 @@
 
 .login-logo {
   max-width: 70%;
-  height: auto
+  height: auto;
 }
 
 .login-text {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   color: black;
   font-weight: bold;
 }
 
 .login-input-box {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   background-color: #eff6ff;
   width: 75%;
 }
 
-.login-alternate-signin{
+.login-alternate-signin {
   max-width: 20%;
-  height: auto
+  height: auto;
 }
 
 .login-button {
-  font-family: 'Poppins';
-  background-color: #000CA4;
+  font-family: "Poppins";
+  background-color: #000ca4;
   width: 75%;
   border-radius: 20px;
 }
@@ -47,7 +47,7 @@
 }
 
 .circular-icon-style {
-  background-color: #6C63FF;
+  background-color: #6c63ff;
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -61,29 +61,29 @@
 .avatar-style {
   width: 100px;
   height: 100px;
-  margin: 0 auto
+  margin: 0 auto;
 }
 
 .snapshot-style {
   padding: 20px;
   min-height: 390px;
-  background-color: #f0f0f0
+  background-color: #f0f0f0;
 }
 
 .recent-supports-style {
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #f9f9f9
+  background-color: #f9f9f9;
 }
 
 .support-card-style {
   background-color: orange;
-  height: 150px
+  height: 150px;
 }
 
 .search-recent-supports-style {
   padding: 20px;
-  background-color: #f9f9f9
+  background-color: #f9f9f9;
 }
 
 /* NAVBAR */
@@ -177,4 +177,43 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.large-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
 }
