@@ -13,23 +13,6 @@ import {
 import VisualSupportImage from './VisualSupportImage';
 
 function TaskAnalysesStep ({ image, setImage, index }) {
-  // const [image, setImage] = useState(null);
-
-  // // Handle Image Change in Visual Support Options box
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImage(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // const handleDivClick = () => {
-  //   document.getElementById('fileInput').click();
-  // };
 
   return (
     <>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 function VisualSupportImage({ image, setImage, uniqueID }) {
-  // const [image, setImage] = useState(null);
-
+  
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {

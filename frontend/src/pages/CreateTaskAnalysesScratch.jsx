@@ -24,22 +24,6 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
   const [image, setImage] = useState(null);
   const [stepImages, setStepImages] = useState(Array(5).fill(null)); // Array to store images for each step
 
-  // // Handle Image Change in Visual Support Options box
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImage(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // const handleDivClick = () => {
-  //   document.getElementById('fileInput').click();
-  // };
-
   // Function to update image for a specific step
   const handleStepImageChange = (index, newImage) => {
     setStepImages((prev) => {
@@ -151,12 +135,7 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
                     <b>Task Steps</b>
                   </h4>
                   <div style={{ height: '70vh', color: 'black', backgroundColor: 'transparent', overflowY: 'scroll', display: 'flex', flexWrap: 'wrap' }}>
-                    {/* <TaskAnalysesStep />
-                    <TaskAnalysesStep />
-                    <TaskAnalysesStep />
-                    <TaskAnalysesStep />
-                    <TaskAnalysesStep /> */}
-                    {[...Array(5)].map((_, index) => (
+                    {[...Array(7)].map((_, index) => (
                       <TaskAnalysesStep
                         key={index}
                         image={stepImages[index]}
