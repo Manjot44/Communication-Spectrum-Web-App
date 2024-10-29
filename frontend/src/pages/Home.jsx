@@ -8,6 +8,8 @@ import {
   Button,
   TextField,
   Avatar,
+  Modal,
+  Box,
 } from "@mui/material";
 import {
   Task,
@@ -20,6 +22,7 @@ import {
 } from "@mui/icons-material";
 import Navbar from "../components/Navbar";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
+import EnterUserDetails from "../pages/EnterUserDetails";
 import "../App.css";
 
 // Styles
@@ -30,10 +33,27 @@ const avatarStyle = {
   cursor: "pointer", // shows cursor hand for clickable objects
 };
 
+// Adjust modal style for improved sizing
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "80%",
+  maxWidth: "1600px",
+  height: "auto",
+  maxHeight: "80vh",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  overflowY: "auto",
+};
+
 function Home({ token, setTokenFunc }) {
   const { profileID } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditDetailsModal, setOpenEditDetailsModal] = useState(false);
   const [newProfilePic, setNewProfilePic] = useState(null);
 
   useEffect(() => {
@@ -88,6 +108,10 @@ function Home({ token, setTokenFunc }) {
     } finally {
       setOpenEditModal(false);
     }
+  };
+
+  const handleEditDetailsClick = () => {
+    setOpenEditDetailsModal(true);
   };
 
   if (!profileData) return <div>Loading...</div>;
@@ -180,6 +204,14 @@ function Home({ token, setTokenFunc }) {
                 Key Environments
               </Typography>
               <Typography variant="body1">{profileData.comm_env}</Typography>
+              {/* Edit Details Button */}
+              <Button
+                variant="contained"
+                style={{ marginTop: "20px", backgroundColor: "#000CA4" }}
+                onClick={handleEditDetailsClick}
+              >
+                Edit Details (TO FIX)
+              </Button>
             </Card>
           </Grid>
 
@@ -226,6 +258,20 @@ function Home({ token, setTokenFunc }) {
         handleUpload={handleUpload}
         setProfileData={setProfileData}
       />
+
+      {/* Edit Details Modal */}
+      <Modal
+        open={openEditDetailsModal}
+        onClose={() => setOpenEditDetailsModal(false)}
+      >
+        <Box sx={modalStyle}>
+          <EnterUserDetails
+            token={token}
+            profileData={profileData}
+            isEditMode={true}
+          />
+        </Box>
+      </Modal>
     </>
   );
 }

@@ -9,7 +9,7 @@ import SelectDOBComponent from "../components/SelectDOBComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
-function AddUser({ token, setTokenFunc }) {
+function EnterUserDetails({ token, setTokenFunc }) {
   const [name, setName] = React.useState("");
   const [dob, setDob] = React.useState(dayjs("2024-01-01"));
   const [postcode, setPostcode] = React.useState("");
@@ -232,4 +232,4 @@ function AddUser({ token, setTokenFunc }) {
   );
 }
 
-export default AddUser;
+export default EnterUserDetails;
