@@ -19,6 +19,7 @@ import {
   add_image,
   delete_user,
   delete_image,
+  updateProfilePicture,
 } from "./service";
 
 const app = express();
@@ -126,6 +127,18 @@ app.post(
       );
       await create_client(email, user_id);
       return res.json({});
+    })
+  )
+);
+
+app.post(
+  "/admin/update_user_profilepicture/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      const { profilePicture } = req.body;
+      await updateProfilePicture(profileID, profilePicture);
+      return res.json({ message: "Profile picture updated successfully" });
     })
   )
 );
