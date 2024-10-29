@@ -7,30 +7,70 @@ import {
   Typography,
   CardContent,
   Button,
-  TextField,
-  Avatar,
 } from "@mui/material";
-// import Grid from '@mui/material/Grid2';
 import '../App.css';
-import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import TaskAnalysesStep from '../components/TaskAnalysesStep';
 import VisualSupportImage from '../components/VisualSupportImage';
+import CategorySelectCheckboxes from '../components/CategorySelectCheckboxes';
+import dayjs from 'dayjs';
+import TaskAnalysesStepHorizontal from '../components/TaskAnalysesStepHorizontal';
 
 function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
   const { profileID } = useParams();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(""); // Name of the Visual Support
   const [isEditing, setIsEditing] = useState(false);
   const [image, setImage] = useState(null);
-  const [stepImages, setStepImages] = useState(Array(5).fill(null)); // Array to store images for each step
+  const [value, setValue] = React.useState(dayjs('2022-04-17')); // Date of the Visual Support
+  const [steps, setSteps] = useState([]); // Array to track steps with unique IDs
+  const [stepImages, setStepImages] = useState([]); // Array to store images for each step
+  const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
+  const [stepNames, setStepNames] = useState([]) // Array to keep track of the step names
+  const [stepTimes, setStepTimes] = useState([]) // Array to keep track of the step times
 
-  // Function to update image for a specific step
-  const handleStepImageChange = (index, newImage) => {
-    setStepImages((prev) => {
-      const updatedImages = [...prev];
-      updatedImages[index] = newImage;
-      return updatedImages;
-    });
+  const toggleComponentType = () => {
+    setIsHorizontal(prev => !prev); // Toggle between true and false
+  };
+
+  const addStep = () => {
+    const newStep = { id: Date.now() }; // Generate a unique ID for each step
+    setSteps([...steps, newStep]);
+    setStepImages([...stepImages, null]); // Initialize a placeholder for the new step's image
+    setStepNames([...stepNames, null]); // Initialize a placeholder for the new step's name
+    setStepTimes([...stepTimes, null]) // Initialize a placeholder for the new step's time
+  };
+
+  const removeStep = (index, id) => {
+    setSteps(steps.filter(step => step.id !== id)); // Remove the step with the given ID
+    setStepImages(stepImages.filter((_, imgIndex) => imgIndex !== index)); // Remove image at the specified index
+    setStepNames(stepNames.filter((_, imgIndex) => imgIndex !== index)); // Remove the step name at specified index
+    setStepTimes(stepTimes.filter((_, imgIndex) => imgIndex !== index))
+  };
+
+  const updateStepImage = (index, newImage) => {
+    const updatedImages = [...stepImages];
+    updatedImages[index] = newImage;
+    setStepImages(updatedImages);
+  };
+
+  const updateStepName = (index, newName) => {
+    const updatedNames = [...stepNames];
+    updatedNames[index] = newName;
+    setStepNames(updatedNames);
+  }
+
+  const updateStepTime = (index, newTime) => {
+    const updatedTimes = [...stepTimes];
+    updatedTimes[index] = newTime;
+    setStepTimes(updatedTimes);
+  }
+
+  const deleteStepImageChange = (index) => {
+    const updatedImages = [...stepImages];
+    updatedImages[index] = '';
+    setStepImages(updatedImages);
   };
 
   const handleTextChange = (event) => {
@@ -49,75 +89,26 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
       ></link>
       <Navbar profileID={profileID}/>
       <br />
-      <Typography variant="h4" align="center" gutterBottom>
-        {isEditing ? (
-          <input
-            type="text"
-            value={text}
-            onChange={handleTextChange}
-            onBlur={toggleEditing} // Stop editing when input loses focus
-            autoFocus
-          />
-        ) : (
-          <b onClick={toggleEditing} style={{ cursor: 'pointer' }}>
-            {text || <span style={{ color: 'grey' }}>Insert Task Name Here</span>}
-          </b>
-        )}
-      </Typography>
-      <br />
-      <div class='page-wrapper-style' style={{ padding: '0 50px' }}>
+      <div class='page-wrapper-style' style={{ padding: '0 1%' }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={2.5}>
-            <Card class='task-analyses-create-options' style={{ height: '80vh' }}>
+          <Grid item xs={12} md={3}>
+            <Card class='task-analyses-create-options' style={{ height: '87vh' }}>
               <CardContent>
-                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>Visual Support Options</b>
+                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
+                  <b>Select Task Date</b>
                 </Typography>
+                
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <div style={{ overflowY: 'scroll', height: '35vh', width: 'auto', backgroundColor: '#f0f0f0' }}>
+                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '37vh', width: 'auto', transform: 'scale(0.9)' }} />
+                  </div>
+                </LocalizationProvider>
                 <br />
-                <TextField
-                    label="Search Assets/Shapes"
-                    variant="filled"
-                    fullWidth
-                    style={{
-                      marginBottom: "20px",
-                      backgroundColor: "white",
-                    }}
-                />
-                <br/>
-
-                <VisualSupportImage image={image} setImage={setImage} uniqueID={-1}/>
-                {/* <VisualSupportImage /> */}
+                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
+                  <b>Select Task Categories</b>
+                </Typography>
+                <CategorySelectCheckboxes />
                 <br />
-                <Button 
-                  variant="contained"
-                  style={{ width: '100%', height: '10vh', backgroundColor: '#6b4bef', fontFamily: 'Poppins' }}
-                >
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={4}>
-                      <PhotoCameraBackIcon style={{ height: '7vh', width: '7vh' }}/>
-                    </Grid>
-                    <Grid item xs={12} md={8} class="d-flex align-items-center justify-content-center">
-                      <h5>Pick From Gallery</h5>
-                    </Grid>
-                  </Grid>
-                </Button>
-                <br />
-                <br />
-                <Button 
-                  variant="contained"
-                  style={{ width: '100%', height: '10vh', backgroundColor: '#6b4bef', fontFamily: 'Poppins' }}
-                >
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={4}>
-                      <FormatColorTextIcon style={{ height: '7vh', width: '7vh' }}/>
-                    </Grid>
-                    <Grid item xs={12} md={8} class="d-flex align-items-center justify-content-center">
-                      <h5>Insert Text</h5>
-                    </Grid>
-                  </Grid>
-                </Button>
-                <br/>
-                <br/>
                 <Button 
                   variant="contained"
                   style={{ width: '100%', backgroundColor: '#26c3ba', fontFamily: 'Poppins' }}
@@ -127,22 +118,69 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={9.5}>
-            <Card class='task-analyses-create-options' style={{ backgroundColor: '#f0f0f0', height: '80vh' }}>
+          <Grid item xs={12} md={9}>
+            <Card class='task-analyses-create-options' style={{ backgroundColor: '#f0f0f0', height: '87vh' }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <h4 style={{ fontFamily: 'Poppins', color: 'black' }}>
-                    <b>Task Steps</b>
-                  </h4>
-                  <div style={{ height: '70vh', color: 'black', backgroundColor: 'transparent', overflowY: 'scroll', display: 'flex', flexWrap: 'wrap' }}>
-                    {[...Array(7)].map((_, index) => (
-                      <TaskAnalysesStep
-                        key={index}
-                        image={stepImages[index]}
-                        setImage={(newImage) => handleStepImageChange(index, newImage)}
-                        index={index}
+                  <Typography variant="h6" gutterBottom style={{ margin: '10px', fontFamily: 'Poppins', color: 'black', display: 'flex', justifyContent: 'space-between' }}>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={text}
+                        onChange={handleTextChange}
+                        onBlur={toggleEditing} // Stop editing when input loses focus
+                        autoFocus
                       />
-                    ))}
+                    ) : (
+                      <b onClick={toggleEditing} style={{ cursor: 'pointer' }}>
+                        {text || <span style={{ color: 'grey', fontFamily: 'Poppins' }}>Insert Task Name Here</span>}
+                      </b>
+                    )}
+                    
+                    <Button onClick={toggleComponentType}>
+                      Toggle Visual Style
+                    </Button>
+                    <Button onClick={addStep}>
+                      + Add Step
+                    </Button>
+                  </Typography>
+                  <div style={{ height: '77vh', color: 'black', backgroundColor: 'transparent', overflowY: 'scroll', display: 'flex', flexWrap: 'wrap' }}>
+                    <Grid container spacing={2} style={{ padding: '2%' }}>
+                      <Grid item xs={12} md={12}>
+                        <VisualSupportImage image={image} setImage={setImage} uniqueID={-1} imgHeight={"55vh"} deleteImage={() => setImage(null)}/>
+                      </Grid>
+                      <Grid item xs={12} md={12} style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {steps.map((step, index) => (
+                          isHorizontal ? (
+                            <TaskAnalysesStepHorizontal
+                              key={step.id}
+                              index={index}
+                              image={stepImages[index]}
+                              removeStep={() => removeStep(index, step.id)}
+                              setImage={(newImage) => updateStepImage(index, newImage)}
+                              deleteImage={() => deleteStepImageChange(index)}
+                              setName={(newName) => updateStepName(index, newName)}
+                              stepName={stepNames[index]}
+                              setTime={(newTime) => updateStepTime(index, newTime)}
+                              stepTime={stepTimes[index]}
+                            />
+                          ) : (
+                            <TaskAnalysesStep
+                              key={step.id}
+                              index={index}
+                              image={stepImages[index]}
+                              removeStep={() => removeStep(index, step.id)}
+                              setImage={(newImage) => updateStepImage(index, newImage)}
+                              deleteImage={() => deleteStepImageChange(index)}
+                              setName={(newName) => updateStepName(index, newName)}
+                              stepName={stepNames[index]}
+                              setTime={(newTime) => updateStepTime(index, newTime)}
+                              stepTime={stepTimes[index]}
+                            />
+                          )
+                        ))}
+                      </Grid>
+                    </Grid>
                   </div>
                 </Typography>
               </CardContent>

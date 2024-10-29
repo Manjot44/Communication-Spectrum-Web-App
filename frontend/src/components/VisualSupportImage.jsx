@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-function VisualSupportImage({ image, setImage, uniqueID }) {
-  
+function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage }) {  
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -18,10 +18,11 @@ function VisualSupportImage({ image, setImage, uniqueID }) {
   };
 
   return (
+    <>
     <div
       style={{
         width: '100%',
-        height: '30vh',
+        height: `${imgHeight}`,
         border: '2px dashed #ccc',
         display: 'flex',
         justifyContent: 'center',
@@ -31,7 +32,7 @@ function VisualSupportImage({ image, setImage, uniqueID }) {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         color: '#666',
-				backgroundColor: 'white',
+        backgroundColor: 'white',
         fontSize: '18px',
         backgroundImage: image ? `url(${image})` : 'none'
       }}
@@ -43,9 +44,10 @@ function VisualSupportImage({ image, setImage, uniqueID }) {
         id={`fileInput-${uniqueID}`}
         accept="image/*"
         style={{ display: 'none' }}
-        onChange={handleImageChange}
-      />
+        onChange={handleImageChange} />
     </div>
+    <DeleteIcon onClick={deleteImage} />
+    </>
   );
 }
 
