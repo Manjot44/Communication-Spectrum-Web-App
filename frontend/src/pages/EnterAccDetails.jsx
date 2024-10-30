@@ -100,6 +100,7 @@ function EnterAccDetails ({ token, setTokenFunc }) {
           { value: 'United Kingdom', label: 'United Kingdom' },
           { value: 'Kazakhstan', label: 'Kazakhstan' },
           ]}
+          width='75%'
         />
         <br /><br />
         <TextFieldComponent
@@ -123,6 +124,7 @@ function EnterAccDetails ({ token, setTokenFunc }) {
           { value: 'Parent/Carer', label: 'Parent/Carer' },
           { value: 'Other', label: 'Other' },
           ]}
+          width='75%'
         />
         <br />
         <SubscribeComponent

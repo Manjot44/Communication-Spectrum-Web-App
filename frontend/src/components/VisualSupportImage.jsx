@@ -46,7 +46,7 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage 
         style={{ display: 'none' }}
         onChange={handleImageChange} />
     </div>
-    <DeleteIcon onClick={deleteImage} />
+    <DeleteIcon onClick={deleteImage} style={{ color: 'black' }} />
     </>
   );
 }

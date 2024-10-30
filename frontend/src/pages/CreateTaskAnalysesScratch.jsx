@@ -17,6 +17,7 @@ import VisualSupportImage from '../components/VisualSupportImage';
 import CategorySelectCheckboxes from '../components/CategorySelectCheckboxes';
 import dayjs from 'dayjs';
 import TaskAnalysesStepHorizontal from '../components/TaskAnalysesStepHorizontal';
+import DropdownComponent from '../components/DropdownComponent';
 
 function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
   const { profileID } = useParams();
@@ -29,6 +30,7 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
   const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
   const [stepNames, setStepNames] = useState([]) // Array to keep track of the step names
   const [stepTimes, setStepTimes] = useState([]) // Array to keep track of the step times
+  const [category, setCategory] = useState('') // Variable storing category type
 
   const toggleComponentType = () => {
     setIsHorizontal(prev => !prev); // Toggle between true and false
@@ -99,15 +101,40 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
                 </Typography>
                 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <div style={{ overflowY: 'scroll', height: '35vh', width: 'auto', backgroundColor: '#f0f0f0' }}>
-                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '37vh', width: 'auto', transform: 'scale(0.9)' }} />
+                  <div class='d-flex align-items-center' style={{ height: '55vh', width: 'auto', backgroundColor: '#f0f0f0' }}>
+                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '37vh', width: 'auto' }} />
                   </div>
                 </LocalizationProvider>
                 <br />
                 <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>Select Task Categories</b>
+                  <b>Select Task Category</b>
                 </Typography>
-                <CategorySelectCheckboxes />
+                {/* <CategorySelectCheckboxes /> */}
+
+                <div class='d-flex align-items-center' style={{ height: '75px', backgroundColor: 'white', padding: '5px', backgroundColor: '#f0f0f0' }}>
+                  <DropdownComponent
+                    id="country-form"
+                    label="Select Category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    options={[
+                      { value: 'Self-Care', label: 'Self-Care' },
+                      { value: 'Routines', label: 'Routines' },
+                      { value: 'School', label: 'School' },
+                      { value: 'Work', label: 'Work' },
+                      { value: 'Fun Activities', label: 'Fun Activities' },
+                      { value: 'Emotional Regulation', label: 'Emotional Regulation' },
+                      { value: 'Beliefs and Practices', label: 'Beliefs and Practices' },
+                      { value: 'Health and Wellbeing', label: 'Health and Wellbeing' },
+                      { value: 'Transport', label: 'Transport' },
+                      { value: 'Events', label: 'Events' },
+                      { value: 'Places', label: 'Places' },
+                      { value: 'Other', label: 'Other' },
+                    ]}
+                    width='100%'
+                  />
+                </div>
+
                 <br />
                 <Button 
                   variant="contained"
@@ -144,44 +171,42 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
                       + Add Step
                     </Button>
                   </Typography>
-                  <div style={{ height: '77vh', color: 'black', backgroundColor: 'transparent', overflowY: 'scroll', display: 'flex', flexWrap: 'wrap' }}>
-                    <Grid container spacing={2} style={{ padding: '2%' }}>
-                      <Grid item xs={12} md={12}>
-                        <VisualSupportImage image={image} setImage={setImage} uniqueID={-1} imgHeight={"55vh"} deleteImage={() => setImage(null)}/>
-                      </Grid>
-                      <Grid item xs={12} md={12} style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {steps.map((step, index) => (
-                          isHorizontal ? (
-                            <TaskAnalysesStepHorizontal
-                              key={step.id}
-                              index={index}
-                              image={stepImages[index]}
-                              removeStep={() => removeStep(index, step.id)}
-                              setImage={(newImage) => updateStepImage(index, newImage)}
-                              deleteImage={() => deleteStepImageChange(index)}
-                              setName={(newName) => updateStepName(index, newName)}
-                              stepName={stepNames[index]}
-                              setTime={(newTime) => updateStepTime(index, newTime)}
-                              stepTime={stepTimes[index]}
-                            />
-                          ) : (
-                            <TaskAnalysesStep
-                              key={step.id}
-                              index={index}
-                              image={stepImages[index]}
-                              removeStep={() => removeStep(index, step.id)}
-                              setImage={(newImage) => updateStepImage(index, newImage)}
-                              deleteImage={() => deleteStepImageChange(index)}
-                              setName={(newName) => updateStepName(index, newName)}
-                              stepName={stepNames[index]}
-                              setTime={(newTime) => updateStepTime(index, newTime)}
-                              stepTime={stepTimes[index]}
-                            />
-                          )
-                        ))}
-                      </Grid>
+                  <Grid container spacing={2} style={{ padding: '2%' }}>
+                    <Grid item xs={12} md={6}>
+                      <VisualSupportImage image={image} setImage={setImage} uniqueID={-1} imgHeight={"55vh"} deleteImage={() => setImage(null)}/>
                     </Grid>
-                  </div>
+                    <Grid item xs={12} md={6} style={{ display: 'flex', flexWrap: 'wrap', overflowY: 'scroll', height: '75vh' }}>
+                      {steps.map((step, index) => (
+                        isHorizontal ? (
+                          <TaskAnalysesStepHorizontal
+                            key={step.id}
+                            index={index}
+                            image={stepImages[index]}
+                            removeStep={() => removeStep(index, step.id)}
+                            setImage={(newImage) => updateStepImage(index, newImage)}
+                            deleteImage={() => deleteStepImageChange(index)}
+                            setName={(newName) => updateStepName(index, newName)}
+                            stepName={stepNames[index]}
+                            setTime={(newTime) => updateStepTime(index, newTime)}
+                            stepTime={stepTimes[index]}
+                          />
+                        ) : (
+                          <TaskAnalysesStep
+                            key={step.id}
+                            index={index}
+                            image={stepImages[index]}
+                            removeStep={() => removeStep(index, step.id)}
+                            setImage={(newImage) => updateStepImage(index, newImage)}
+                            deleteImage={() => deleteStepImageChange(index)}
+                            setName={(newName) => updateStepName(index, newName)}
+                            stepName={stepNames[index]}
+                            setTime={(newTime) => updateStepTime(index, newTime)}
+                            stepTime={stepTimes[index]}
+                          />
+                        )
+                      ))}
+                    </Grid>
+                  </Grid>
                 </Typography>
               </CardContent>
             </Card>
