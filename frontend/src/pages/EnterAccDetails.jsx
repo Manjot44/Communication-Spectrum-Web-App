@@ -106,6 +106,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
             label="Date of Birth"
             value={date}
             onChange={(newDate) => setDate(newDate)}
+            width="100%"
           />
           <br />
           <br />
@@ -123,6 +124,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
               { value: "United Kingdom", label: "United Kingdom" },
               { value: "Kazakhstan", label: "Kazakhstan" },
             ]}
+            width="75%"
           />
           <br />
           <br />
@@ -151,6 +153,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
               { value: "Parent/Carer", label: "Parent/Carer" },
               { value: "Other", label: "Other" },
             ]}
+            width="75%"
           />
           <br />
           <SubscribeComponent
