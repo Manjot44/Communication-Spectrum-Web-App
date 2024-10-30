@@ -130,6 +130,7 @@ function AddUser({ token, setTokenFunc }) {
                 { value: 'Digital Communications', label: 'Digital Communications' },
                 { value: 'Basic Sign Language', label: 'Basic Sign Language' }
               ]}
+          width='75%'
         />
         <br /><br />
 
