@@ -160,7 +160,6 @@ function EnterAccDetails({ token, setTokenFunc }) {
           />
           <br />
           <br />
-
           <Button
             onClick={handleCreateButton}
             variant="contained"

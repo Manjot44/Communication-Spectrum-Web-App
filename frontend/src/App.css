@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
 /* LOGIN SCREEN */
 .login-background {
   min-height: 100vh;
@@ -86,12 +88,32 @@
   background-color: #f9f9f9;
 }
 
+/* Create New Task Analyses Page */
+.task-analyses-type {
+  background-color: #ff7c33;
+  color: white;
+  border-radius: 15px;
+  font-family: 'Poppins';
+}
+
+.task-analyses-type:hover {
+  transform: scale(1.05);
+  background-color: #f49f72;
+}
+
+.task-analyses-create-options {
+  background-color: #000CA4;
+  color: white;
+  border-radius: 15px;
+  font-family: 'Poppins';
+}
+
 /* NAVBAR */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a1ab8;
+  background-color: #000CA4;
   padding: 10px 20px;
   color: white;
   font-family: "Helvetica Neue", sans-serif;
