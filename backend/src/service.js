@@ -171,14 +171,29 @@ export const create_user = async (
 export const delete_user = async (email, user_id) => {
   return userLock(async (resolve, reject) => {
     try {
-      // Check if authenticated user has permission to delete client
       const rows = await checkClientAuth(email, user_id);
       if (rows.length === 0) {
         return reject(new AccessError("You do not have access to this client"));
       }
 
-      // Deletion order matters - foreign key
       await pool.query('DELETE FROM "hasClient" WHERE user_id = $1', [user_id]);
+
+      const imageRows = await pool.query(
+        'SELECT img_id FROM "ProfUserImageAccess" WHERE user_id = $1',
+        [user_id]
+      );
+      const imageIds = imageRows.rows.map((row) => row.img_id);
+
+      if (imageIds.length > 0) {
+        await pool.query(
+          'DELETE FROM "ProfUserImageAccess" WHERE img_id = ANY($1::int[])',
+          [imageIds]
+        );
+        await pool.query('DELETE FROM "Images" WHERE img_id = ANY($1::int[])', [
+          imageIds,
+        ]);
+      }
+
       await pool.query('DELETE FROM "SupportUsers" WHERE user_id = $1', [
         user_id,
       ]);
@@ -300,6 +315,21 @@ export const add_image = async (email, profileID, image) => {
       } else {
         reject(new AccessError("You do not have access to this client"));
       }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const delete_image = async (email, img_id) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      await pool.query('DELETE FROM "ProfUserImageAccess" WHERE img_id = $1', [
+        img_id,
+      ]);
+      await pool.query('DELETE FROM "Images" WHERE img_id = $1', [img_id]);
+
+      resolve();
     } catch (error) {
       reject(error);
     }

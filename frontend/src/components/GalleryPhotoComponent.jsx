@@ -1,26 +1,79 @@
-import React from 'react';
-import Grid from '@mui/material/Grid2';
+import React from "react";
+import { Card, CardActions, IconButton, Box } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
 
-function GalleryPhotoComponent ({ image }) {
+function GalleryPhotoComponent({
+  image,
+  onDelete,
+  onRemoveBackground,
+  onClick,
+}) {
   return (
-    <>
-      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-      <Grid container direction="column" spacing={0}>
-        <Grid item xs={12}>
-          <img
-            src={image}
-            alt=""
-            className="profile-picture"
-            style={{ width: '250px', height: '250px', border:'1px solid black'}}
-          />
-        </Grid>
-        {/* <Grid item xs={12}>
-          <Box sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}>
-            {profileName}
-          </Box>
-        </Grid> */}
-      </Grid>
-    </>
+    <Card
+      sx={{
+        maxWidth: 345,
+        margin: "8px",
+        display: "inline-block",
+      }}
+    >
+      {/* Clickable Image Area */}
+      <Box
+        onClick={onClick}
+        sx={{
+          position: "relative",
+          cursor: "pointer",
+        }}
+      >
+        <img
+          src={image}
+          alt="Gallery"
+          style={{
+            width: "100%",
+            height: "auto",
+            borderRadius: "8px 8px 0 0",
+          }}
+        />
+
+        {/* Overlay Effect */}
+        <Box
+          className="overlay"
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#000",
+            opacity: 0,
+            transition: "opacity 0.3s",
+            "&:hover": { opacity: 0.2 },
+          }}
+        />
+      </Box>
+
+      {/* Non-clickable Action Buttons */}
+      <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+        <IconButton
+          aria-label="delete"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+        <IconButton
+          aria-label="zoom-in"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemoveBackground();
+          }}
+        >
+          <ZoomInIcon />
+        </IconButton>
+      </CardActions>
+    </Card>
   );
 }
 

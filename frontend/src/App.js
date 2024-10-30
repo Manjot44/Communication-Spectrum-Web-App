@@ -18,25 +18,30 @@ import FirstThen from './pages/FirstThen.jsx';
 import CreateTaskAnalysesScratch from './pages/CreateTaskAnalysesScratch.jsx';
 
 // ProtectedRoute component to handle route protection
-const ProtectedRoute = ({ element: Component, isAuth, token, setTokenFunc }) => {
+const ProtectedRoute = ({
+  element: Component,
+  isAuth,
+  token,
+  setTokenFunc,
+}) => {
   if (isAuth === null) return <div>Loading...</div>;
   if (!isAuth) return <Navigate to="/" />;
   return <Component token={token} setTokenFunc={setTokenFunc} />;
 };
 
 function App() {
-  const [token, setToken] = React.useState(localStorage.getItem('token'));
+  const [token, setToken] = React.useState(localStorage.getItem("token"));
   const [isAuth, setIsAuth] = React.useState(null);
 
   const updateToken = async (newToken) => {
     setToken(newToken);
-    localStorage.setItem('token', newToken);
-    const authStatus = await isAuthenticated(); 
+    localStorage.setItem("token", newToken);
+    const authStatus = await isAuthenticated();
     setIsAuth(authStatus);
   };
 
   const isAuthenticated = async () => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem("token");
     if (!storedToken) return false;
     try {
       const response = await axios.get("http://localhost:5005/authenticate", {
@@ -46,7 +51,7 @@ function App() {
       });
       return response.data.authenticated;
     } catch (error) {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       return false;
     }
   };
@@ -62,7 +67,6 @@ function App() {
 
   // Show a loading state while checking authentication
   if (isAuth === null) return <div>Loading...</div>;
-
 
   return (
     <BrowserRouter>
