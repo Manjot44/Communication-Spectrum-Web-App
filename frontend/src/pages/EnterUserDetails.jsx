@@ -145,13 +145,14 @@ function AddUser({ token, setTokenFunc }) {
             />
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
+          <div className="mx-auto" style={{ marginBottom: "20px", width: '100%' }}>
             <SelectDOBComponent
               label="Date of Birth"
               value={dob}
               onChange={handleDobChange}
               error={!!dobError}
               helperText={dobError}
+              width='100%'
             />
           </div>
 
@@ -185,34 +186,48 @@ function AddUser({ token, setTokenFunc }) {
                 },
                 { value: "Basic Sign Language", label: "Basic Sign Language" },
               ]}
-          width='75%'
-        />
-        <br /><br />
+              width='75%'
+            />
+          </div>
 
-        <TextFieldComponent
-          label="Interests"
-          value={interests}
-          onChange={(e) => setInterests(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <br /><br />
+          <div style={{ marginBottom: "20px" }}>
+            <TextFieldComponent
+              label="Interests"
+              value={interests}
+              onChange={(e) => setInterests(e.target.value)}
+            />
+          </div>
 
-        <TextFieldComponent
-          label="Key Environments (e.g., home, school, workplaces)"
-          value={environments}
-          onChange={(e) => setEnvironments(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <br />
-        <br />
-        <div className='form-group mx-auto' style={{ width: '75%' }}>
-          <label htmlFor="profilePicture">Profile Picture</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleProfilePictureUpload}
-            className="form-control"
-          />
+          <div style={{ marginBottom: "20px" }}>
+            <TextFieldComponent
+              label="Key Environments (e.g., home, school, workplaces)"
+              value={environments}
+              onChange={(e) => setEnvironments(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group mx-auto" style={{ marginBottom: "20px", width: '75%' }}>
+            <label htmlFor="profilePicture">Profile Picture</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePictureUpload}
+              className="form-control"
+            />
+          </div>
+
+          <Button
+            onClick={handleCreateButton}
+            variant="contained"
+            style={{
+              backgroundColor: "#000CA4",
+              width: "75%",
+              borderRadius: "20px",
+              fontFamily: "Poppins",
+            }}
+          >
+            Create New User
+          </Button>
         </div>
       </div>
     </>
