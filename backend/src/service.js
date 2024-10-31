@@ -167,6 +167,28 @@ export const create_user = async (
   });
 };
 
+export const updateProfilePicture = async (profileID, profilePicture) => {
+  const client = await pool.connect();
+  try {
+    // Modify user profile picture in db
+    const result = await client.query(
+      `UPDATE "SupportUsers"
+       SET profile_pic = $1
+       WHERE user_id = $2
+      `,
+      [profilePicture, profileID]
+    );
+
+    if (result.rowCount === 0) {
+      throw new InputError(
+        "Profile picture update failed: user not found or unauthorized."
+      );
+    }
+  } finally {
+    client.release();
+  }
+};
+
 // NOTE: deletion for privacy also need to take care of the other contents like image, etc
 export const delete_user = async (email, user_id) => {
   return userLock(async (resolve, reject) => {

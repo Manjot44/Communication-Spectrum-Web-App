@@ -4,16 +4,52 @@ import axios from "axios";
 import {
   Grid,
   Typography,
+  Button,
+  TextField,
+  Avatar,
+  Modal,
+  Box,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
-import '../App.css'
+import EditProfilePictureModal from "../components/EditProfilePictureModal";
+import EnterUserDetails from "../pages/EnterUserDetails";
 import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
 import SupportSnapshot from "../components/SupportSnapshot.jsx";
 import RecentSupports from "../components/RecentSupports.jsx";
+import "../App.css";
+
+// Styles
+const avatarStyle = {
+  width: "100px",
+  height: "100px",
+  margin: "0 auto",
+  cursor: "pointer", // shows cursor hand for clickable objects
+};
+
+// Adjust modal style for improved sizing
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "80%",
+  maxWidth: "1600px",
+  height: "auto",
+  maxHeight: "80vh",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  overflowY: "auto",
+};
+
+
 
 function Home({ token, setTokenFunc }) {
-  const { profileID } = useParams(); 
+  const { profileID } = useParams();
   const [profileData, setProfileData] = useState(null);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditDetailsModal, setOpenEditDetailsModal] = useState(false);
+  const [newProfilePic, setNewProfilePic] = useState(null);
   const [supportData, setSupportData] = useState(null);
 
   useEffect(() => {
@@ -36,12 +72,50 @@ function Home({ token, setTokenFunc }) {
         alert(err.response.data.error);
       }
     };
-  
+
     fetchClient();
-  }, [profileID, token, open]);
+  }, [profileID, token]);
+
+  const handleProfilePictureClick = () => {
+    setOpenEditModal(true);
+  };
+
+  const handleProfilePictureUpload = (base64Image) => {
+    setNewProfilePic(base64Image);
+  };
+
+  const handleUpload = async () => {
+    try {
+      await axios.put(
+        `http://localhost:5005/admin/update_user_profilepicture/${profileID}`,
+        {
+          profilePicture: newProfilePic,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setProfileData((prevData) => ({
+        ...prevData,
+        profile_pic: newProfilePic,
+      }));
+      alert("Profile picture updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+      alert("Failed to update profile picture.");
+    } finally {
+      setOpenEditModal(false);
+    }
+  };
+
+  const handleEditDetailsClick = () => {
+    setOpenEditDetailsModal(true);
+  };
 
   if (!profileData) return <div>Loading...</div>;
-  
+
   return (
     <>
       <Navbar profileID={profileID}/>
@@ -73,6 +147,31 @@ function Home({ token, setTokenFunc }) {
             </Grid>
         </Grid>
       </div>
+
+      {/* Edit Profile Picture Modal */}
+      <EditProfilePictureModal
+        open={openEditModal}
+        handleClose={() => setOpenEditModal(false)}
+        profileID={profileID}
+        token={token}
+        handleProfilePictureUpload={handleProfilePictureUpload}
+        handleUpload={handleUpload}
+        setProfileData={setProfileData}
+      />
+
+      {/* Edit Details Modal */}
+      <Modal
+        open={openEditDetailsModal}
+        onClose={() => setOpenEditDetailsModal(false)}
+      >
+        <Box sx={modalStyle}>
+          <EnterUserDetails
+            token={token}
+            profileData={profileData}
+            isEditMode={true}
+          />
+        </Box>
+      </Modal>
     </>
   );
 }
