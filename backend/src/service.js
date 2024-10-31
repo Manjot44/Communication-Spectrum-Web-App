@@ -335,3 +335,71 @@ export const delete_image = async (email, img_id) => {
     }
   });
 };
+
+/***************************************************************
+                      Supports Functions
+***************************************************************/
+
+export const new_support = async (
+  email,
+  profileID,
+  text,
+  image,
+  value,
+  stepImages,
+  stepNames,
+  stepTimes,
+  category,
+  isHorizontal
+) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const rows = await checkClientAuth(email, profileID);
+      if (rows.length > 0) {
+        const supportQuery = `
+          INSERT INTO "Supports" (title, title_img, date, step_img, step_names, step_times, category, layout, prof_id)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          RETURNING support_id;
+        `;
+        const supportResult = await pool.query(supportQuery, [text, image, value, stepImages, stepNames, stepTimes, category, isHorizontal, email]);
+        const support_id = supportResult.rows[0].support_id;
+
+        const insertAccessQuery = `
+          INSERT INTO "hasSupport" (support_id, user_id)
+          VALUES ($1, $2);
+        `;
+        await pool.query(insertAccessQuery, [support_id, profileID]);
+
+        resolve();
+      } else {
+        reject(new AccessError("You do not have access to this client"));
+      }
+    } catch (error) {
+      reject(error);
+    }
+  })
+};
+
+export const get_client_support = async (email, profileID) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const rows = await checkClientAuth(email, profileID);
+      if (rows.length > 0) {
+        const queryText = `
+          SELECT S.*, u.name
+          FROM "Supports" S
+            JOIN "hasSupport" h on h.support_id = S.support_id
+            JOIN "SupportUsers" u on u.user_id = h.user_id
+          WHERE h.user_id = $1;
+        `;
+        const client = await pool.query(queryText, [profileID]);
+        resolve(client.rows);
+      } else {
+        reject(new AccessError("You do not have access to this client"));
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
