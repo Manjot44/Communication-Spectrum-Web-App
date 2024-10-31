@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -18,6 +19,7 @@ import RecentSupports from "../components/RecentSupports.jsx";
 function Home({ token, setTokenFunc }) {
   const { profileID } = useParams(); 
   const [profileData, setProfileData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClient = async () => {
