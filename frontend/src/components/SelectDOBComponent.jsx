@@ -2,7 +2,7 @@ import React from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-const SelectDOBComponent = ({ label, value, onChange, error, helperText }) => {
+const SelectDOBComponent = ({ label, value, onChange, error, helperText, width }) => {
   return (
     <DatePicker
       label={label}
@@ -12,6 +12,7 @@ const SelectDOBComponent = ({ label, value, onChange, error, helperText }) => {
       renderInput={(params) => (
         <TextField {...params} error={error} helperText={helperText} />
       )}
+      style={{ width: `${width}` }}
     />
   );
 };
