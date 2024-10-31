@@ -38,7 +38,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
           style={{ height: '60vh' }}
         >
           <Grid item xs={12} sm={4}>
-            <Card class='task-analyses-type' style={{ height: '60vh' }} onClick={async () => {navigate(`/createTaskAnalyses/${profileID}`)}}>
+            <Card class='task-analyses-type' style={{ height: '60vh' }} onClick={async () => {navigate(`/createTaskAnalysesScratch/${profileID}`)}}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
                   <b>From Scratch</b>

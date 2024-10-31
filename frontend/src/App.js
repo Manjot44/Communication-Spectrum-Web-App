@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -16,6 +18,7 @@ import EnvironmentalSupports from './pages/EnvironmentalSupports.jsx';
 import ChoiceBoards from './pages/ChoiceBoards.jsx';
 import FirstThen from './pages/FirstThen.jsx';
 import CreateTaskAnalysesScratch from './pages/CreateTaskAnalysesScratch.jsx';
+import CreateDailySchedulesScratch from './pages/CreateDailySchedulesScratch.jsx';
 
 // ProtectedRoute component to handle route protection
 const ProtectedRoute = ({
@@ -69,25 +72,27 @@ function App() {
   if (isAuth === null) return <div>Loading...</div>;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login setTokenFunc={updateToken} />} /> {/* First screen person will go to is login */}
-        <Route path="/register" element={<Register setTokenFunc={updateToken} />} />
-        <Route path="/home/:profileID" element={<ProtectedRoute element={Home} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/enterAccDetails" element={<ProtectedRoute element={EnterAccDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/UserManage" element={<ProtectedRoute element={UserManage} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/AddUser" element={<ProtectedRoute element={EnterUserDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/Gallery/:profileID" element={<ProtectedRoute element={Gallery} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/taskanalyses/:profileID" element={<ProtectedRoute element={TaskAnalyses} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/dailyschedules/:profileID" element={<ProtectedRoute element={DailySchedules} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/weeklycalendars/:profileID" element={<ProtectedRoute element={WeeklyCalendars} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/socialstories/:profileID" element={<ProtectedRoute element={SocialStories} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/envirsupports/:profileID" element={<ProtectedRoute element={EnvironmentalSupports} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/choiceboards/:profileID" element={<ProtectedRoute element={ChoiceBoards} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/firstthen/:profileID" element={<ProtectedRoute element={FirstThen} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-        <Route path="/createTaskAnalyses/:profileID" element={<ProtectedRoute element={CreateTaskAnalysesScratch} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-      </Routes>
-    </BrowserRouter>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login setTokenFunc={updateToken} />} /> {/* First screen person will go to is login */}
+          <Route path="/register" element={<Register setTokenFunc={updateToken} />} />
+          <Route path="/home/:profileID" element={<ProtectedRoute element={Home} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/enterAccDetails" element={<ProtectedRoute element={EnterAccDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/UserManage" element={<ProtectedRoute element={UserManage} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/AddUser" element={<ProtectedRoute element={EnterUserDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/Gallery/:profileID" element={<ProtectedRoute element={Gallery} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/taskanalyses/:profileID" element={<ProtectedRoute element={TaskAnalyses} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/dailyschedules/:profileID" element={<ProtectedRoute element={DailySchedules} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/weeklycalendars/:profileID" element={<ProtectedRoute element={WeeklyCalendars} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/socialstories/:profileID" element={<ProtectedRoute element={SocialStories} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/envirsupports/:profileID" element={<ProtectedRoute element={EnvironmentalSupports} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/choiceboards/:profileID" element={<ProtectedRoute element={ChoiceBoards} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/createTaskAnalysesScratch/:profileID" element={<ProtectedRoute element={CreateTaskAnalysesScratch} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/createDailySchedulesScratch/:profileID" element={<ProtectedRoute element={CreateDailySchedulesScratch} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+        </Routes>
+      </BrowserRouter>
+    </LocalizationProvider>
   );
 }
 
