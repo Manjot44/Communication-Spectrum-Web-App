@@ -42,8 +42,6 @@ const modalStyle = {
   overflowY: "auto",
 };
 
-
-
 function Home({ token, setTokenFunc }) {
   const { profileID } = useParams();
   const [profileData, setProfileData] = useState(null);
@@ -55,18 +53,24 @@ function Home({ token, setTokenFunc }) {
   useEffect(() => {
     const fetchClient = async () => {
       try {
-        const profileResponse = await axios.get(`http://localhost:5005/get_client/${profileID}`, {
-          headers: {
-            Authorization: token,
+        const profileResponse = await axios.get(
+          `http://localhost:5005/get_client/${profileID}`,
+          {
+            headers: {
+              Authorization: token,
+            },
           }
-        });
+        );
         setProfileData(profileResponse.data.client);
 
-        const supportResponse = await axios.get(`http://localhost:5005/get_client_support/${profileID}`, {
-          headers: {
-            Authorization: token,
+        const supportResponse = await axios.get(
+          `http://localhost:5005/get_client_support/${profileID}`,
+          {
+            headers: {
+              Authorization: token,
+            },
           }
-        });
+        );
         setSupportData(supportResponse.data.client);
       } catch (err) {
         alert(err.response.data.error);
@@ -118,33 +122,53 @@ function Home({ token, setTokenFunc }) {
 
   return (
     <>
-      <Navbar profileID={profileID}/>
+      <Navbar profileID={profileID} />
       <br />
-      <div class='page-wrapper-style'>
+      <div class="page-wrapper-style">
         <Typography variant="h3" align="center" gutterBottom>
           Client Portal
         </Typography>
         <VisualSupportTypes profileID={profileID} />
         <Grid
-            container
-            spacing={2}
-            style={{ marginTop: "20px" }}
-            justifyContent="center"
+          container
+          spacing={2}
+          style={{ marginTop: "20px" }}
+          justifyContent="center"
         >
-            <SupportSnapshot profileData={profileData}/>
-            
-            <Grid item xs={12} md={9} style={{ display: 'flex', flexDirection: 'column', overflowX: 'scroll', height: '75vh' }}>
-              <Typography variant="h6" style={{ marginBottom: '10px' }}>
-                {profileData.name}'s Recent Supports
-              </Typography>
-              <Grid container spacing={2} style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {supportData && supportData.map((support) => (
+          <SupportSnapshot
+            profileData={profileData}
+            openEditModal={openEditModal}
+            setOpenEditModal={setOpenEditModal}
+            handleProfilePictureClick={handleProfilePictureClick}
+            handleProfilePictureUpload={handleProfilePictureUpload}
+          />
+          <Grid
+            item
+            xs={12}
+            md={9}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              overflowX: "scroll",
+              height: "75vh",
+            }}
+          >
+            <Typography variant="h6" style={{ marginBottom: "10px" }}>
+              {profileData.name}'s Recent Supports
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              style={{ display: "flex", flexWrap: "wrap" }}
+            >
+              {supportData &&
+                supportData.map((support) => (
                   <Grid item key={support.support_id} xs={12} sm={6} md={4}>
                     <RecentSupports profileData={support} />
                   </Grid>
                 ))}
-              </Grid>
             </Grid>
+          </Grid>
         </Grid>
       </div>
 
