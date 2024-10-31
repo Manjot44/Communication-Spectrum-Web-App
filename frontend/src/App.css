@@ -108,6 +108,43 @@
   font-family: 'Poppins';
 }
 
+/* Create New Task Analyses Page */
+.task-analyses-type {
+  background-color: #ff7c33;
+  color: white;
+  border-radius: 15px;
+  font-family: 'Poppins';
+}
+
+.task-analyses-type:hover {
+  transform: scale(1.05);
+  background-color: #f49f72;
+}
+
+.task-analyses-create-options {
+  background-color: #000CA4;
+  color: white;
+  border-radius: 15px;
+  font-family: 'Poppins';
+}
+
+.choiceboard-create-opt {
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  font-family: 'Poppins';
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.choiceboard-create-opt-option {
+  color: #000;
+}
+
+
 /* NAVBAR */
 .navbar {
   display: flex;
