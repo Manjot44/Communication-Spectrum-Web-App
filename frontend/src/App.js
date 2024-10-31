@@ -91,7 +91,7 @@ function App() {
           <Route path="/choiceboards/:profileID" element={<ProtectedRoute element={ChoiceBoards} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
           <Route path="/createChoiceBoard/:profileID" element={<ProtectedRoute element={CreateChoiceBoard} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
           <Route path="/firstthen/:profileID" element={<ProtectedRoute element={FirstThen} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/createTaskAnalyses/:profileID" element={<ProtectedRoute element={CreateTaskAnalysesScratch} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/createTaskAnalysesScratch/:profileID" element={<ProtectedRoute element={CreateTaskAnalysesScratch} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
           <Route path="/createDailySchedulesScratch/:profileID" element={<ProtectedRoute element={CreateDailySchedulesScratch} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
         </Routes>
       </BrowserRouter>
