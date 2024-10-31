@@ -1,52 +1,41 @@
-import React, { useState } from 'react';
-import { Grid, Button, Typography, MenuItem, Select, FormControl, InputLabel, Box, Card, CardContent } from '@mui/material';
-import Navbar from '../components/Navbar';
+import React, { useState, useEffect } from 'react';
+import Navbar from "../components/Navbar";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import {
+  Grid,
+  Card,
+  Typography,
+  CardContent,
+  Button,
+} from "@mui/material";
+import '../App.css';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import TaskAnalysesStep from '../components/TaskAnalysesStep';
+import VisualSupportImage from '../components/VisualSupportImage';
+import axios from 'axios';
+import dayjs from 'dayjs';
 import TaskAnalysesStepHorizontal from '../components/TaskAnalysesStepHorizontal';
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-function WeeklyCalendars({ token, setTokenFunc }) {
-  const [layout, setLayout] = useState('vertical'); // Default to vertical layout
-  const [steps, setSteps] = useState({
-    Mon: [],
-    Tue: [],
-    Wed: [],
-    Thu: [],
-    Fri: [],
-    Sat: [],
-    Sun: [],
-  });
-  const [stepImages, setStepImages] = useState({
-    Mon: [],
-    Tue: [],
-    Wed: [],
-    Thu: [],
-    Fri: [],
-    Sat: [],
-    Sun: [],
-  });
-  const [stepNames, setStepNames] = useState({
-    Mon: [],
-    Tue: [],
-    Wed: [],
-    Thu: [],
-    Fri: [],
-    Sat: [],
-    Sun: [],
-  });
-  const [stepTimes, setStepTimes] = useState({
-    Mon: [],
-    Tue: [],
-    Wed: [],
-    Thu: [],
-    Fri: [],
-    Sat: [],
-    Sun: [],
-  });
+function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
+  const navigate = useNavigate();
+  const { profileID } = useParams();
+  const [text, setText] = useState(""); // Name of the Visual Support
+  const [isEditing, setIsEditing] = useState(false);
+  const [image, setImage] = useState(null);
+  const [value, setValue] = React.useState(dayjs('2022-04-17')); // Date of the Visual Support
+  const [steps, setSteps] = useState([]); // Array to track steps with unique IDs
+  const [stepImages, setStepImages] = useState([]); // Array to store images for each step
+  const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
+  const [stepNames, setStepNames] = useState([]) // Array to keep track of the step names
+  const [stepTimes, setStepTimes] = useState([]) // Array to keep track of the step times
+  const [category, setCategory] = useState('') // Variable storing category type
 
-  const handleLayoutChange = (event) => {
-    setLayout(event.target.value);
+  const toggleComponentType = () => {
+    setIsHorizontal(prev => !prev); // Toggle between true and false
   };
 
   const addStep = (day) => {
@@ -91,75 +80,139 @@ function WeeklyCalendars({ token, setTokenFunc }) {
     });
   };
 
-  const updateStepTime = (day, index, newTime) => {
-    setStepTimes((prevTimes) => {
-      const updatedTimes = [...prevTimes[day]];
-      updatedTimes[index] = newTime;
-      return {
-        ...prevTimes,
-        [day]: updatedTimes,
-      };
-    });
+  const updateStepTime = (index, newTime) => {
+    const updatedTimes = [...stepTimes];
+    updatedTimes[index] = newTime;
+    setStepTimes(updatedTimes);
+  }
+
+  const deleteStepImageChange = (index) => {
+    const updatedImages = [...stepImages];
+    updatedImages[index] = '';
+    setStepImages(updatedImages);
   };
 
-  const removeStep = (day, index, id) => {
-    setSteps((prevSteps) => ({
-      ...prevSteps,
-      [day]: prevSteps[day].filter(step => step.id !== id),
-    }));
-    setStepImages((prevImages) => ({
-      ...prevImages,
-      [day]: prevImages[day].filter((_, imgIndex) => imgIndex !== index),
-    }));
-    setStepNames((prevNames) => ({
-      ...prevNames,
-      [day]: prevNames[day].filter((_, nameIndex) => nameIndex !== index),
-    }));
-    setStepTimes((prevTimes) => ({
-      ...prevTimes,
-      [day]: prevTimes[day].filter((_, timeIndex) => timeIndex !== index),
-    }));
+  const handleTextChange = (event) => {
+    setText(event.target.value);
   };
 
-  const deleteStepImageChange = (day, index) => {
-    setStepImages((prevImages) => {
-      const updatedImages = [...prevImages[day]];
-      updatedImages[index] = '';
-      return {
-        ...prevImages,
-        [day]: updatedImages,
-      };
-    });
+  const toggleEditing = () => {
+    setIsEditing(!isEditing);
   };
+
+  const handleCreate = async() => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5005/new_support/${profileID}`,
+        {
+          text,
+          image,
+          value,
+          stepImages,
+          stepNames,
+          stepTimes,
+          category,
+          isHorizontal,
+        }, {  headers: {
+            Authorization: token,
+          },
+        }
+      );
+      navigate(`/home/${profileID}`);
+    } catch (err) {
+      alert(err.response.data.error);
+    }
+  };
+
 
   return (
     <>
-      <Navbar />
-      <Box sx={{ padding: '20px' }}>
-        <Typography variant="h3" align="center" gutterBottom>
-          Weekly Calendars
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-          <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-            <InputLabel id="layout-select-label">Layout</InputLabel>
-            <Select
-              labelId="layout-select-label"
-              value={layout}
-              onChange={handleLayoutChange}
-              label="Layout"
-            >
-              <MenuItem value="vertical">Vertical</MenuItem>
-              <MenuItem value="horizontal">Horizontal</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Grid container spacing={2} justifyContent="space-evenly">
-          {daysOfWeek.map((day) => (
-            <Grid item key={day} xs={12} sm={layout === 'vertical' ? 12 : 1}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" align="center">
-                    {day}
+      <link
+        href="https://fonts.googleapis.com/css?family=Poppins"
+        rel="stylesheet"
+      ></link>
+      <Navbar profileID={profileID}/>
+      <br />
+      <div class='page-wrapper-style' style={{ padding: '0 1%' }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={3}>
+            <Card class='task-analyses-create-options' style={{ height: '87vh' }}>
+              <CardContent>
+                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
+                  <b>Select Task Date</b>
+                </Typography>
+                
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <div class='d-flex align-items-center' style={{ height: '55vh', width: 'auto', backgroundColor: '#f0f0f0' }}>
+                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '37vh', width: 'auto' }} />
+                  </div>
+                </LocalizationProvider>
+                <br />
+                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
+                  <b>Select Task Category</b>
+                </Typography>
+                {/* <CategorySelectCheckboxes /> */}
+
+                <div class='d-flex align-items-center' style={{ height: '75px', backgroundColor: 'white', padding: '5px', backgroundColor: '#f0f0f0' }}>
+                  <DropdownComponent
+                    id="country-form"
+                    label="Select Category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    options={[
+                      { value: 'Self-Care', label: 'Self-Care' },
+                      { value: 'Routines', label: 'Routines' },
+                      { value: 'School', label: 'School' },
+                      { value: 'Work', label: 'Work' },
+                      { value: 'Fun Activities', label: 'Fun Activities' },
+                      { value: 'Emotional Regulation', label: 'Emotional Regulation' },
+                      { value: 'Beliefs and Practices', label: 'Beliefs and Practices' },
+                      { value: 'Health and Wellbeing', label: 'Health and Wellbeing' },
+                      { value: 'Transport', label: 'Transport' },
+                      { value: 'Events', label: 'Events' },
+                      { value: 'Places', label: 'Places' },
+                      { value: 'Other', label: 'Other' },
+                    ]}
+                    width='100%'
+                  />
+                </div>
+
+                <br />
+                <Button 
+                  variant="contained"
+                  style={{ width: '100%', backgroundColor: '#26c3ba', fontFamily: 'Poppins' }}
+                  onClick={handleCreate}
+                >
+                  Create Visual Support
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <Card class='task-analyses-create-options' style={{ backgroundColor: '#f0f0f0', height: '87vh' }}>
+              <CardContent>
+                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
+                  <Typography variant="h6" gutterBottom style={{ margin: '10px', fontFamily: 'Poppins', color: 'black', display: 'flex', justifyContent: 'space-between' }}>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={text}
+                        onChange={handleTextChange}
+                        onBlur={toggleEditing} // Stop editing when input loses focus
+                        autoFocus
+                      />
+                    ) : (
+                      <b onClick={toggleEditing} style={{ cursor: 'pointer' }}>
+                        {text || <span style={{ color: 'grey', fontFamily: 'Poppins' }}>Insert Task Name Here</span>}
+                      </b>
+                    )}
+                    
+                    <Button onClick={toggleComponentType}>
+                      Toggle Visual Style
+                    </Button>
+                    <Button onClick={addStep}>
+                      + Add Step
+                    </Button>
                   </Typography>
                   <Button onClick={() => addStep(day)}>+ Add Step</Button>
                   <Grid container spacing={2} direction={layout === 'vertical' ? 'row' : 'column'} style={layout === 'horizontal' ? { overflowX: 'auto', whiteSpace: 'nowrap' } : {}}>

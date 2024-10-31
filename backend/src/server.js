@@ -19,6 +19,9 @@ import {
   add_image,
   delete_user,
   delete_image,
+  updateProfilePicture,
+  new_support,
+  get_client_support,
 } from "./service";
 
 const app = express();
@@ -130,6 +133,18 @@ app.post(
   )
 );
 
+app.post(
+  "/admin/update_user_profilepicture/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      const { profilePicture } = req.body;
+      await updateProfilePicture(profileID, profilePicture);
+      return res.json({ message: "Profile picture updated successfully" });
+    })
+  )
+);
+
 app.get(
   "/get_clients",
   catchErrors(
@@ -193,6 +208,51 @@ app.delete(
       const { img_id } = req.params;
       await delete_image(email, img_id); // Call to service layer
       return res.json({ message: "Image deleted successfully" });
+    })
+  )
+);
+
+/***************************************************************
+                      Supports Functions
+***************************************************************/
+app.post(
+  "/new_support/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      const {
+        text,
+        image,
+        value,
+        stepImages,
+        stepNames,
+        stepTimes,
+        category,
+        isHorizontal
+      } = req.body;
+      await new_support(
+        email, 
+        profileID,
+        text,
+        image,
+        value,
+        stepImages,
+        stepNames,
+        stepTimes,
+        category,
+        isHorizontal
+      );
+      return res.json({});
+    })
+  )
+);
+
+app.get(
+  "/get_client_support/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      return res.json({ client: await get_client_support(email, profileID) });
     })
   )
 );

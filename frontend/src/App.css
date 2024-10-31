@@ -20,13 +20,13 @@
 }
 
 .login-text {
-  font-family: "Poppins";
+  font-family: "Helvetica Neue";
   color: black;
   font-weight: bold;
 }
 
 .login-input-box {
-  font-family: "Poppins";
+  font-family: "Helvetica Neue";
   background-color: #eff6ff;
   width: 75%;
 }
@@ -37,7 +37,7 @@
 }
 
 .login-button {
-  font-family: "Poppins";
+  font-family: "Helvetica Neue";
   background-color: #000ca4;
   width: 75%;
   border-radius: 20px;
@@ -75,7 +75,7 @@
 .recent-supports-style {
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
 }
 
 .support-card-style {
@@ -85,7 +85,7 @@
 
 .search-recent-supports-style {
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
 }
 
 /* Create New Task Analyses Page */
@@ -107,6 +107,43 @@
   border-radius: 15px;
   font-family: 'Poppins';
 }
+
+/* Create New Task Analyses Page */
+.task-analyses-type {
+  background-color: #ff7c33;
+  color: white;
+  border-radius: 15px;
+  font-family: 'Poppins';
+}
+
+.task-analyses-type:hover {
+  transform: scale(1.05);
+  background-color: #f49f72;
+}
+
+.task-analyses-create-options {
+  background-color: #000CA4;
+  color: white;
+  border-radius: 15px;
+  font-family: 'Poppins';
+}
+
+.choiceboard-create-opt {
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  font-family: 'Poppins';
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.choiceboard-create-opt-option {
+  color: #000;
+}
+
 
 /* NAVBAR */
 .navbar {

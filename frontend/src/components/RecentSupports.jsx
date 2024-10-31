@@ -6,26 +6,21 @@ import {
 import '../App.css'
 
 function RecentSupports ({ profileData }) {
-	return (
-		<>
-			<Grid item xs={12} md={9}>
-				<Card class='recent-supports-style' style={{ height: '700px' }}>
-					<Typography variant="h6">{profileData.name}'s Recent Supports</Typography>
-					<Grid container spacing={2}>
-						<Grid item xs={12} sm={4}>
-							<Card class='support-card-style' />
-						</Grid>
-						<Grid item xs={12} sm={4}>
-							<Card class='support-card-style' />
-						</Grid>
-						<Grid item xs={12} sm={4}>
-							<Card class='support-card-style' />
-						</Grid>
-					</Grid>
-				</Card>
-			</Grid>
-		</>
-	);
+  return (
+    <Card className="recent-supports-style" style={{ width: '400px', height: '300px', padding: '10px', textAlign: 'center' }}>
+      {profileData.title_img && (
+        <img
+          src={profileData.title_img}
+          alt={`${profileData.title}`}
+          style={{ width: '90%', borderRadius: '10px' }}
+        />
+      )}
+
+      <Typography variant="body1" style={{ marginTop: '10px', fontSize: '1.2rem'}}>
+        {profileData.title}
+      </Typography>
+    </Card>
+  );
 }
 
 export default RecentSupports;
