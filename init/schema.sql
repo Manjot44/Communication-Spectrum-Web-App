@@ -35,8 +35,14 @@ create table "SupportUsers" (
 
 create table "Supports" (
     support_id  serial not null unique,
-    name        text,
-    category    integer,
+    title       text,
+    title_img   text,
+    date        date,
+    step_img    text[],
+    step_names  text[],
+    step_times  text[],
+    category    text,
+    layout      bool,
     prof_id     text not null references "Professionals"(email),
     primary key (support_id)
 );

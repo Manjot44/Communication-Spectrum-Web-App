@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -14,12 +14,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import TaskAnalysesStep from '../components/TaskAnalysesStep';
 import VisualSupportImage from '../components/VisualSupportImage';
-import CategorySelectCheckboxes from '../components/CategorySelectCheckboxes';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import TaskAnalysesStepHorizontal from '../components/TaskAnalysesStepHorizontal';
 import DropdownComponent from '../components/DropdownComponent';
 
 function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
+  const navigate = useNavigate();
   const { profileID } = useParams();
   const [text, setText] = useState(""); // Name of the Visual Support
   const [isEditing, setIsEditing] = useState(false);
@@ -83,6 +84,31 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
     setIsEditing(!isEditing);
   };
 
+  const handleCreate = async() => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5005/new_support/${profileID}`,
+        {
+          text,
+          image,
+          value,
+          stepImages,
+          stepNames,
+          stepTimes,
+          category,
+          isHorizontal,
+        }, {  headers: {
+            Authorization: token,
+          },
+        }
+      );
+      navigate(`/home/${profileID}`);
+    } catch (err) {
+      alert(err.response.data.error);
+    }
+  };
+
+
   return (
     <>
       <link
@@ -139,6 +165,7 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
                 <Button 
                   variant="contained"
                   style={{ width: '100%', backgroundColor: '#26c3ba', fontFamily: 'Poppins' }}
+                  onClick={handleCreate}
                 >
                   Create Visual Support
                 </Button>
