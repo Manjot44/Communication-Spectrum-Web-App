@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -31,6 +32,7 @@ const avatarStyle = {
 function Home({ token, setTokenFunc }) {
   const { profileID } = useParams(); 
   const [profileData, setProfileData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -97,7 +99,7 @@ function Home({ token, setTokenFunc }) {
             <Typography align="center">Environmental Supports</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
+            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/choiceboards/${profileID}`)}}>
               <CheckBox fontSize="large" />
             </Button>
             <Typography align="center">Choice Boards</Typography>

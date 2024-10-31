@@ -10,6 +10,7 @@ import EnterAccDetails from "./pages/EnterAccDetails";
 import UserManage from "./pages/UserManage";
 import EnterUserDetails from "./pages/EnterUserDetails";
 import Gallery from "./pages/Gallery";
+import ChoiceBoards from "./pages/ChoiceBoards";
 
 // ProtectedRoute component to handle route protection
 const ProtectedRoute = ({
@@ -121,6 +122,17 @@ function App() {
             element={
               <ProtectedRoute
                 element={Gallery}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="ChoiceBoards/:profileID"
+            element={
+              <ProtectedRoute
+                element={ChoiceBoards}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}
