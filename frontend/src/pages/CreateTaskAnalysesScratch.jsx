@@ -17,8 +17,7 @@ import VisualSupportImage from '../components/VisualSupportImage';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import TaskAnalysesStepHorizontal from '../components/TaskAnalysesStepHorizontal';
-
-const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+import DropdownComponent from '../components/DropdownComponent';
 
 function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
   const navigate = useNavigate();
@@ -38,47 +37,32 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
     setIsHorizontal(prev => !prev); // Toggle between true and false
   };
 
-  const addStep = (day) => {
-    const newStep = { id: `${day}-${Date.now()}` }; // Generate a unique ID for each step
-    setSteps((prevSteps) => ({
-      ...prevSteps,
-      [day]: [...prevSteps[day], newStep],
-    }));
-    setStepImages((prevImages) => ({
-      ...prevImages,
-      [day]: [...prevImages[day], null],
-    }));
-    setStepNames((prevNames) => ({
-      ...prevNames,
-      [day]: [...prevNames[day], ""],
-    }));
-    setStepTimes((prevTimes) => ({
-      ...prevTimes,
-      [day]: [...prevTimes[day], ""],
-    }));
+  const addStep = () => {
+    const newStep = { id: Date.now() }; // Generate a unique ID for each step
+    setSteps([...steps, newStep]);
+    setStepImages([...stepImages, null]); // Initialize a placeholder for the new step's image
+    setStepNames([...stepNames, null]); // Initialize a placeholder for the new step's name
+    setStepTimes([...stepTimes, null]) // Initialize a placeholder for the new step's time
   };
 
-  const updateStepImage = (day, index, newImage) => {
-    setStepImages((prevImages) => {
-      const updatedImages = [...prevImages[day]];
-      updatedImages[index] = newImage;
-      return {
-        ...prevImages,
-        [day]: updatedImages,
-      };
-    });
+  const removeStep = (index, id) => {
+    setSteps(steps.filter(step => step.id !== id)); // Remove the step with the given ID
+    setStepImages(stepImages.filter((_, imgIndex) => imgIndex !== index)); // Remove image at the specified index
+    setStepNames(stepNames.filter((_, imgIndex) => imgIndex !== index)); // Remove the step name at specified index
+    setStepTimes(stepTimes.filter((_, imgIndex) => imgIndex !== index))
   };
 
-  const updateStepName = (day, index, newName) => {
-    setStepNames((prevNames) => {
-      const updatedNames = [...prevNames[day]];
-      updatedNames[index] = newName;
-      return {
-        ...prevNames,
-        [day]: updatedNames,
-      };
-    });
+  const updateStepImage = (index, newImage) => {
+    const updatedImages = [...stepImages];
+    updatedImages[index] = newImage;
+    setStepImages(updatedImages);
   };
+
+  const updateStepName = (index, newName) => {
+    const updatedNames = [...stepNames];
+    updatedNames[index] = newName;
+    setStepNames(updatedNames);
+  }
 
   const updateStepTime = (index, newTime) => {
     const updatedTimes = [...stepTimes];
@@ -214,49 +198,50 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
                       + Add Step
                     </Button>
                   </Typography>
-                  <Button onClick={() => addStep(day)}>+ Add Step</Button>
-                  <Grid container spacing={2} direction={layout === 'vertical' ? 'row' : 'column'} style={layout === 'horizontal' ? { overflowX: 'auto', whiteSpace: 'nowrap' } : {}}>
-                    {steps[day].map((step, index) => (
-                      layout === 'horizontal' ? (
-                        <Box key={step.id} display="inline-block" style={{ width: '300px', marginRight: '16px' }}>
+                  <Grid container spacing={2} style={{ padding: '2%' }}>
+                    <Grid item xs={12} md={6}>
+                      <VisualSupportImage image={image} setImage={setImage} uniqueID={-1} imgHeight={"55vh"} deleteImage={() => setImage(null)}/>
+                    </Grid>
+                    <Grid item xs={12} md={6} style={{ display: 'flex', flexWrap: 'wrap', overflowY: 'scroll', height: '75vh' }}>
+                      {steps.map((step, index) => (
+                        isHorizontal ? (
                           <TaskAnalysesStepHorizontal
+                            key={step.id}
                             index={index}
-                            image={stepImages[day][index]}
-                            removeStep={() => removeStep(day, index, step.id)}
-                            setImage={(newImage) => updateStepImage(day, index, newImage)}
-                            deleteImage={() => deleteStepImageChange(day, index)}
-                            setName={(newName) => updateStepName(day, index, newName)}
-                            stepName={stepNames[day][index]}
-                            setTime={(newTime) => updateStepTime(day, index, newTime)}
-                            stepTime={stepTimes[day][index]}
+                            image={stepImages[index]}
+                            removeStep={() => removeStep(index, step.id)}
+                            setImage={(newImage) => updateStepImage(index, newImage)}
+                            deleteImage={() => deleteStepImageChange(index)}
+                            setName={(newName) => updateStepName(index, newName)}
+                            stepName={stepNames[index]}
+                            setTime={(newTime) => updateStepTime(index, newTime)}
+                            stepTime={stepTimes[index]}
                           />
-                        </Box>
-                      ) : (
-                        <Grid item key={step.id} xs={12} sm={6} md={4} lg={3}>
+                        ) : (
                           <TaskAnalysesStep
                             key={step.id}
                             index={index}
-                            image={stepImages[day][index]}
-                            removeStep={() => removeStep(day, index, step.id)}
-                            setImage={(newImage) => updateStepImage(day, index, newImage)}
-                            deleteImage={() => deleteStepImageChange(day, index)}
-                            setName={(newName) => updateStepName(day, index, newName)}
-                            stepName={stepNames[day][index]}
-                            setTime={(newTime) => updateStepTime(day, index, newTime)}
-                            stepTime={stepTimes[day][index]}
+                            image={stepImages[index]}
+                            removeStep={() => removeStep(index, step.id)}
+                            setImage={(newImage) => updateStepImage(index, newImage)}
+                            deleteImage={() => deleteStepImageChange(index)}
+                            setName={(newName) => updateStepName(index, newName)}
+                            stepName={stepNames[index]}
+                            setTime={(newTime) => updateStepTime(index, newTime)}
+                            stepTime={stepTimes[index]}
                           />
-                        </Grid>
-                      )
-                    ))}
+                        )
+                      ))}
+                    </Grid>
                   </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-      </Box>
+      </div>
     </>
   );
 }
 
-export default WeeklyCalendars;
+export default CreateTaskAnalysesScratch;
