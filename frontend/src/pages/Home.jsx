@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,24 +10,11 @@ import {
   TextField,
   Avatar,
 } from "@mui/material";
-import {
-  Task,
-  CalendarViewDay,
-  CalendarViewWeek,
-  Group,
-  Warning,
-  Checklist,
-  CheckBox,
-} from "@mui/icons-material";
 import Navbar from "../components/Navbar";
 import '../App.css'
-
-// Styles
-const avatarStyle = {
-  width: "100px",
-  height: "100px",
-  margin: "0 auto",
-};
+import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
+import SupportSnapshot from "../components/SupportSnapshot.jsx";
+import RecentSupports from "../components/RecentSupports.jsx";
 
 function Home({ token, setTokenFunc }) {
   const { profileID } = useParams(); 
@@ -55,133 +42,21 @@ function Home({ token, setTokenFunc }) {
   
   return (
     <>
-      <div style={{ paddingBottom: "20px" }}>
-        <Navbar profileID={profileID}/>
-      </div>
-
-      {/* Wrapper for padding on sides */}
+      <Navbar profileID={profileID}/>
+      <br />
       <div class='page-wrapper-style'>
-        {/* Title */}
         <Typography variant="h3" align="center" gutterBottom>
           Client Portal
         </Typography>
-
-        {/* 7 types of supports */}
-        <Grid container spacing={2} justifyContent="space-around">
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
-              <Task fontSize="large" />
-            </Button>
-            <Typography align="center">Task Analyses</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
-              <CalendarViewDay fontSize="large" />
-            </Button>
-            <Typography align="center">Daily Schedules</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
-              <CalendarViewWeek fontSize="large" />
-            </Button>
-            <Typography align="center">Weekly Calendars</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
-              <Group fontSize="large" />
-            </Button>
-            <Typography align="center">Social Stories</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
-              <Warning fontSize="large" />
-            </Button>
-            <Typography align="center">Environmental Supports</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/choiceboards/${profileID}`)}}>
-              <CheckBox fontSize="large" />
-            </Button>
-            <Typography align="center">Choice Boards</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style'>
-              <Checklist fontSize="large" />
-            </Button>
-            <Typography align="center">First-Then</Typography>
-          </Grid>
-        </Grid>
-
-        {/* Support snapshot and Recent supports */}
+        <VisualSupportTypes profileID={profileID} />
         <Grid
-          container
-          spacing={2}
-          style={{ marginTop: "20px" }}
-          justifyContent="center"
+            container
+            spacing={2}
+            style={{ marginTop: "20px" }}
+            justifyContent="center"
         >
-          <Grid item xs={12} md={3}>
-            <Card class='snapshot-style'>
-              {/* Add avatar and name */}
-              <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                <Avatar
-                  alt={profileData.name}
-                  src={profileData.profile_pic}
-                  style={avatarStyle}
-                />
-                <Typography variant="h6" style={{ marginTop: "10px" }}>
-                  {profileData.name}
-                </Typography>
-              </div>
-
-              <Typography variant="h6">Support Snapshot</Typography>
-              <Typography variant="body1">
-                {profileData.snapshot}
-              </Typography>
-              <Typography variant="h6" style={{ marginTop: "25px" }}>
-                Interests
-              </Typography>
-              <Typography variant="body1">
-                {profileData.interests}
-              </Typography>
-              <Typography variant="h6" style={{ marginTop: "25px" }}>
-                Key Environments
-              </Typography>
-              <Typography variant="body1">
-                {profileData.comm_env}
-              </Typography>
-            </Card>
-          </Grid>
-
-          {/* Recent supports and Search recent supports */}
-          <Grid item xs={12} md={9}>
-            <Card class='recent-supports-style'>
-              <Typography variant="h6">{profileData.name}'s Recent Supports</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={4}>
-                  <Card class='support-card-style' />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card class='support-card-style' />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Card class='support-card-style' />
-                </Grid>
-              </Grid>
-            </Card>
-
-            {/* Search Recent Supports */}
-            <Card class='search-recent-supports-style'>
-              <Typography variant="h6">Search recent supports</Typography>
-              <TextField
-                label="Search"
-                variant="outlined"
-                fullWidth
-                style={{
-                  marginBottom: "20px",
-                }}
-              />
-            </Card>
-          </Grid>
+            <SupportSnapshot profileData={profileData}/>
+            <RecentSupports profileData={profileData}/>
         </Grid>
       </div>
     </>

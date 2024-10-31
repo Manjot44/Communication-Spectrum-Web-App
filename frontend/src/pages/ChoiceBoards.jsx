@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import CreateOptionsModal from "../components/CreateOptionsModal";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -24,6 +24,7 @@ function ChoiceBoards({ token, setTokenFunc }) {
   const [image, setImage] = useState(null);
   const [stepImages, setStepImages] = useState(Array(5).fill(null)); // Array to store images for each step
   const [createOptVis, setCreateOptVis] = useState(true); // Array to store images for each step
+  const navigate = useNavigate();
 
   // Toggle VS create option
   const toggleCreateOption = (boolView) => {
@@ -126,7 +127,7 @@ function ChoiceBoards({ token, setTokenFunc }) {
                 <Button 
                   variant="contained"
                   style={{ width: '100%', backgroundColor: '#26c3ba', fontFamily: 'Poppins' }}
-                  onClick={() => toggleCreateOption(true)}
+                  onClick={() => {navigate(`/createChoiceBoard/${profileID}`)}}
                 >
                   Create Visual Support
                 </Button>

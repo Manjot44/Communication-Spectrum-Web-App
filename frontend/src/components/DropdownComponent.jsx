@@ -4,10 +4,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import '../App.css'
 
-const DropdownComponent = ({ id, label, value, onChange, options }) => {
+const DropdownComponent = ({ id, label, value, onChange, options, width }) => {
   return (
     <>
-      <FormControl style={{ width: '75%' }}>
+      <FormControl style={{ width: `${width}` }}>
         <InputLabel id={id}>{label}</InputLabel>
         <Select
           labelId={id}

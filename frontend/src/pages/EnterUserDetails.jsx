@@ -145,13 +145,14 @@ function AddUser({ token, setTokenFunc }) {
             />
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
+          <div className="mx-auto" style={{ marginBottom: "20px", width: '100%' }}>
             <SelectDOBComponent
               label="Date of Birth"
               value={dob}
               onChange={handleDobChange}
               error={!!dobError}
               helperText={dobError}
+              width='100%'
             />
           </div>
 
@@ -185,6 +186,7 @@ function AddUser({ token, setTokenFunc }) {
                 },
                 { value: "Basic Sign Language", label: "Basic Sign Language" },
               ]}
+              width='75%'
             />
           </div>
 
@@ -204,7 +206,7 @@ function AddUser({ token, setTokenFunc }) {
             />
           </div>
 
-          <div className="form-group" style={{ marginBottom: "20px" }}>
+          <div className="form-group mx-auto" style={{ marginBottom: "20px", width: '75%' }}>
             <label htmlFor="profilePicture">Profile Picture</label>
             <input
               type="file"
