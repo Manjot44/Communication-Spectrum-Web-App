@@ -106,7 +106,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
             label="Date of Birth"
             value={date}
             onChange={(newDate) => setDate(newDate)}
-            width="100%"
+            width="75%"
           />
           <br />
           <br />

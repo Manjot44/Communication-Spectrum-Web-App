@@ -1,6 +1,7 @@
 import React from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const SelectDOBComponent = ({ label, value, onChange, error, helperText, width }) => {
   return (
@@ -12,7 +13,7 @@ const SelectDOBComponent = ({ label, value, onChange, error, helperText, width }
       renderInput={(params) => (
         <TextField {...params} error={error} helperText={helperText} />
       )}
-      style={{ width: `${width}` }}
+      sx={{ width: `${width}` }}
     />
   );
 };
