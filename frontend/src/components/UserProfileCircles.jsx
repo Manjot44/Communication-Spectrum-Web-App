@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
+import "../App.css"
 
 function UserProfileCircles ({ profileName, profilePicture, profileID }) {
   const navigate = useNavigate();
@@ -20,11 +21,15 @@ function UserProfileCircles ({ profileName, profilePicture, profileID }) {
             src={profilePicture}
             alt=""
             className="profile-picture"
-            style={{ width: '200px', height: '200px', borderRadius: '50%', border:'1px solid black'}}
+            class="user-profile-image"
+            // style={{ width: '200px', height: '200px', borderRadius: '50%', border:'1px solid black'}}
           />
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}>
+          <Box 
+            // sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}
+            class="user-profile-name"
+          >
             {profileName}
           </Box>
         </Grid>
