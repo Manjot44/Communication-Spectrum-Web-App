@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography, Button, IconButton } from "@mui/material";
+import { Grid, Typography, Button, IconButton, Box } from "@mui/material";
 import Navbar from "../components/Navbar";
 import GalleryPhotoComponent from "../components/GalleryPhotoComponent";
 import axios from "axios";
 import AddPhotoModal from "../components/AddPhotoModal";
 import CloseIcon from "@mui/icons-material/Close";
+import "../App.css";
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -91,86 +92,88 @@ function Gallery({ token }) {
   return (
     <>
       <Navbar profileID={profileID} />
-      <br />
-      <Typography variant="h3" align="center" gutterBottom>
-        Gallery
-      </Typography>
+      <div class="page-wrapper-style">
+        <br />
+        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <Typography 
+            variant="h3" 
+            sx={{ fontFamily: "Poppins", color: "#000CA4", position: 'absolute', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}
+          >
+            <b>Gallery</b>
+          </Typography>
+          <Button sx={{ ml: 'auto', backgroundColor:"#ff7c33" }} onClick={handleOpen} variant="contained">
+            + Add Photo
+          </Button>
+        </Box>
 
-      <AddPhotoModal
-        open={open}
-        handleClose={handleClose}
-        handleProfilePictureUpload={(pic) => setImage(pic)}
-        handleUpload={addImage}
-      />
+        <br />
+        <br />
 
-      <div
-        className="d-flex justify-content-center"
-        style={{ display: "flex" }}
-      >
-        <div style={{ width: "85%" }}>
-          <Grid container spacing={2}>
-            {images &&
-              images.map((image) => (
-                <GalleryPhotoComponent
-                  key={image.img_id}
-                  image={image.url}
-                  onDelete={() => deleteImage(image.img_id)}
-                  onClick={() => setSelectedImage(image.url)} // Set the selected image on click
-                />
-              ))}
+        <AddPhotoModal
+          open={open}
+          handleClose={handleClose}
+          handleProfilePictureUpload={(pic) => setImage(pic)}
+          handleUpload={addImage}
+        />
 
-            <Button
-              onClick={handleOpen}
-              style={{
-                width: "250px",
-                height: "250px",
-                border: "1px solid #5A89F7",
-              }}
-            >
-              +
-            </Button>
-          </Grid>
-        </div>
-      </div>
-
-      {/* Enlarged Image Overlay */}
-      {selectedImage && (
         <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-          onClick={closeModal} // Close on overlay click
+          className="d-flex justify-content-center"
+          style={{ display: "flex" }}
         >
-          <div style={{ position: "relative" }}>
-            <img
-              src={selectedImage}
-              alt="Enlarged View"
-              style={{ maxHeight: "90vh", maxWidth: "90vw" }}
-            />
-            <IconButton
-              onClick={closeModal}
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                color: "white",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
+          <div style={{ width: "85%" }}>
+            <Grid container spacing={2}>
+              {images &&
+                images.map((image) => (
+                  <GalleryPhotoComponent
+                    key={image.img_id}
+                    image={image.url}
+                    onDelete={() => deleteImage(image.img_id)}
+                    onClick={() => setSelectedImage(image.url)} // Set the selected image on click
+                  />
+                ))}
+            </Grid>
           </div>
         </div>
-      )}
+
+        {/* Enlarged Image Overlay */}
+        {selectedImage && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 1000,
+            }}
+            onClick={closeModal} // Close on overlay click
+          >
+            <div style={{ position: "relative" }}>
+              <img
+                src={selectedImage}
+                alt="Enlarged View"
+                style={{ maxHeight: "90vh", maxWidth: "90vw" }}
+              />
+              <IconButton
+                onClick={closeModal}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  color: "white",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

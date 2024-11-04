@@ -4,6 +4,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Navbar from '../components/Navbar';
 import WeeklyCalendarComponent from '../components/WeeklyCalendarComponent'; // Import the new component
+import { useParams, Link, useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -26,7 +27,7 @@ function WeeklyCalendars({ token, setTokenFunc }) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Navbar />
+      <Navbar profileID={profileID}/>
       <Box sx={{ padding: '20px' }}>
         <Typography variant="h3" align="center" gutterBottom>
           Weekly Calendars

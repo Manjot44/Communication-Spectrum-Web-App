@@ -3,6 +3,7 @@
 import React from "react";
 import { Grid, Card, Typography, TextField, Avatar } from "@mui/material";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
+import "../App.css"
 
 const avatarStyle = {
   width: "100px",
@@ -20,53 +21,45 @@ function SupportSnapshot({
 }) {
   return (
     <>
-      <Grid item xs={12} md={3}>
-        <Card className="snapshot-style" style={{ height: "700px" }}>
-          {/* Add avatar and name */}
-          <div style={{ textAlign: "center", marginBottom: "20px" }}>
-            <Avatar
-              alt={profileData.name}
-              src={profileData.profile_pic}
-              style={avatarStyle}
-              onClick={handleProfilePictureClick} // Open modal on click
-            />
-            <Typography variant="h6" style={{ marginTop: "10px" }}>
-              {profileData.name}
-            </Typography>
-          </div>
+      <Card className="snapshot-style" style={{ height: "700px", fontFamily: "Poppins", borderRadius: '15px', color: '#000CA4' }}>
+        {/* Add avatar and name */}
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <Avatar
+            alt={profileData.name}
+            src={profileData.profile_pic}
+            style={avatarStyle}
+            onClick={handleProfilePictureClick} // Open modal on click
+          />
+          <h5 style={{ marginTop: "10px" }}>
+            <b>{profileData.name}</b>
+          </h5>
+        </div>
 
-          <Typography variant="h6">Support Snapshot</Typography>
+        <h5><b>Support Snapshot</b></h5>
+        <h6>{profileData.snapshot}</h6>
 
-          <Typography variant="body1">{profileData.snapshot}</Typography>
+        <h5><b>Interests</b></h5>
+        <h6>{profileData.interests}</h6>
 
-          <Typography variant="h6" style={{ marginTop: "25px" }}>
-            Interests
-          </Typography>
+        <h5><b>Key Environments</b></h5>
+        <h6>{profileData.comm_env}</h6>
 
-          <Typography variant="body1">{profileData.interests}</Typography>
+        <br />
 
-          <Typography variant="h6" style={{ marginTop: "25px" }}>
-            Key Environments
-          </Typography>
-
-          <Typography variant="body1">{profileData.comm_env}</Typography>
-
-          <br />
-
-          {/* Search Recent Supports */}
-          <Card className="search-recent-supports-style">
-            <Typography variant="h6">Search recent supports</Typography>
-            <TextField
-              label="Search"
-              variant="outlined"
-              fullWidth
-              style={{
-                marginBottom: "20px",
-              }}
-            />
-          </Card>
+        {/* Search Recent Supports */}
+        <Card className="search-recent-supports-style">
+          <Typography variant="h6">Search recent supports</Typography>
+          <TextField
+            label="Search"
+            variant="outlined"
+            fullWidth
+            style={{
+              marginBottom: "20px",
+            }}
+          />
         </Card>
-      </Grid>
+      </Card>
+
 
       {/* Edit Profile Picture Modal */}
       <EditProfilePictureModal

@@ -20,17 +20,13 @@ function TaskAnalyses({ token, setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
       <Navbar profileID={profileID}/>
-      <br />
-      <Typography variant="h3" align="center" gutterBottom>
-          Create New Task Analyses
-      </Typography>
-      <br />
-      <div>
+      <div class="page-wrapper-style">
+        <br />
+        <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: "Poppins", color: "#000CA4" }}>
+          <b>Create New Task Analyses</b>
+        </Typography>
+        <br />
         <Grid 
           container
           spacing={5} 
@@ -41,10 +37,10 @@ function TaskAnalyses({ token, setTokenFunc }) {
             <Card class='task-analyses-type' style={{ height: '60vh' }} onClick={async () => {navigate(`/createTaskAnalysesScratch/${profileID}`)}}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>From Scratch</b>
+                  <b>Create From Template</b>
                 </Typography>
                 <Typography variant="body2">
-                  Create a visual support using your own images.
+                  Create a visual support using your own images and text with a structured template.
                 </Typography>
                 <br />
                 <div class="d-flex justify-content-center">
@@ -57,7 +53,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
             <Card class='task-analyses-type' style={{ height: '60vh' }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>From Existing Template</b>
+                  <b>Create From Existing Template</b>
                 </Typography>
                 <Typography variant="body2">
                   Use one of our pre-made templates to help create your visual support.

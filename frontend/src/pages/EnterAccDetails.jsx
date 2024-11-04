@@ -84,7 +84,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
       >
         <div id="outside-box" className="mx-auto login-form">
           <br />
-          <h4 className="login-text">Please Enter Account Details</h4>
+          <h4 className="login-text"><b>Please Enter Account Details</b></h4>
 
           <TextFieldComponent
             label="Full Name"
@@ -106,7 +106,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
             label="Date of Birth"
             value={date}
             onChange={(newDate) => setDate(newDate)}
-            width="100%"
+            width="75%"
           />
           <br />
           <br />

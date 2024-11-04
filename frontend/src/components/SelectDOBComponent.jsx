@@ -12,7 +12,7 @@ const SelectDOBComponent = ({ label, value, onChange, error, helperText, width }
       renderInput={(params) => (
         <TextField {...params} error={error} helperText={helperText} />
       )}
-      style={{ width: `${width}` }}
+      sx={{ width: `${width}` }}
     />
   );
 };

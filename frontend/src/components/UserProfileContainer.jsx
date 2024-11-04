@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserProfileCircles from "../components/UserProfileCircles";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../App.css"
 
 function UserProfileContainer({ token }) {
   const navigate = useNavigate();
@@ -90,18 +91,7 @@ function UserProfileContainer({ token }) {
               ))}
             <Button
               onClick={handleAddUser}
-              style={{
-                width: "200px",
-                height: "200px",
-                border: "1px solid #26C3BA",
-                fontSize: "2rem",
-                backgroundColor: "#26C3BA",
-                color: "white",
-                borderRadius: "50%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              class="add-user-button"
             >
               +
             </Button>

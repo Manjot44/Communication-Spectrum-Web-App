@@ -111,10 +111,10 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
 
   return (
     <>
-      <link
+      {/* <link
         href="https://fonts.googleapis.com/css?family=Poppins"
         rel="stylesheet"
-      ></link>
+      ></link> */}
       <Navbar profileID={profileID}/>
       <br />
       <div class='page-wrapper-style' style={{ padding: '0 1%' }}>
@@ -122,22 +122,21 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
           <Grid item xs={12} md={3}>
             <Card class='task-analyses-create-options' style={{ height: '87vh' }}>
               <CardContent>
-                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
+                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
                   <b>Select Task Date</b>
                 </Typography>
                 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <div class='d-flex align-items-center' style={{ height: '55vh', width: 'auto', backgroundColor: '#f0f0f0' }}>
-                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '37vh', width: 'auto' }} />
+                  <div class='d-flex align-items-center' style={{ height: '55vh', width: 'auto' }}>
+                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '50vh', width: 'auto' }} />
                   </div>
                 </LocalizationProvider>
                 <br />
-                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
+                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
                   <b>Select Task Category</b>
                 </Typography>
-                {/* <CategorySelectCheckboxes /> */}
 
-                <div class='d-flex align-items-center' style={{ height: '75px', backgroundColor: 'white', padding: '5px', backgroundColor: '#f0f0f0' }}>
+                <div class='d-flex align-items-center' style={{ height: '75px', backgroundColor: 'white', padding: '5px' }}>
                   <DropdownComponent
                     id="country-form"
                     label="Select Category"
@@ -173,7 +172,7 @@ function CreateTaskAnalysesScratch({ token, setTokenFunc }) {
             </Card>
           </Grid>
           <Grid item xs={12} md={9}>
-            <Card class='task-analyses-create-options' style={{ backgroundColor: '#f0f0f0', height: '87vh' }}>
+            <Card class='task-analyses-create-options' style={{ height: '87vh' }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
                   <Typography variant="h6" gutterBottom style={{ margin: '10px', fontFamily: 'Poppins', color: 'black', display: 'flex', justifyContent: 'space-between' }}>

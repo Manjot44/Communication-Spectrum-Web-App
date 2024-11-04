@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import TextFieldComponent from "../components/TextFieldComponent";
 import DropdownComponent from "../components/DropdownComponent";
 import SelectDOBComponent from "../components/SelectDOBComponent";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
@@ -133,7 +134,7 @@ function EnterUserDetails({ token, setTokenFunc }) {
       >
         <div id="outside-box" className="mx-auto login-form">
           <br />
-          <h4>Add New User</h4>
+          <h4><b>Add New User</b></h4>
 
           <div style={{ marginBottom: "20px" }}>
             <TextFieldComponent
@@ -145,14 +146,14 @@ function EnterUserDetails({ token, setTokenFunc }) {
             />
           </div>
 
-          <div className="mx-auto" style={{ marginBottom: "20px", width: '100%' }}>
+          <div className="mx-auto" style={{ marginBottom: "20px" }}>
             <SelectDOBComponent
               label="Date of Birth"
               value={dob}
               onChange={handleDobChange}
               error={!!dobError}
               helperText={dobError}
-              width='100%'
+              width='75%'
             />
           </div>
 
@@ -228,6 +229,17 @@ function EnterUserDetails({ token, setTokenFunc }) {
           >
             Create New User
           </Button>
+          <br />
+          <br />
+          <p>
+              <a
+                class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                href="/UserManage"
+                style={{ fontFamily: "Poppins" }}
+              >
+              <b>Go Back</b>
+              </a>
+          </p>
         </div>
       </div>
     </>
