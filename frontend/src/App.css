@@ -47,7 +47,11 @@
   padding: 0 120px;
   font-family: "Poppins", sans-serif;
   background-color: rgb(247, 247, 247);
-  min-height: 100vh
+  min-height: 100vh;
+}
+
+.page-wrapper-style.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .circular-icon-style {
@@ -117,6 +121,7 @@
   color: white;
   border-radius: 15px;
   font-family: 'Poppins';
+  box-shadow: 0 4px 8px 0 rgba(153, 153, 153, 0.2), 0 6px 20px 0 rgba(153, 153, 153, 0.2);
 }
 
 /* Create New Task Analyses Page */
@@ -134,8 +139,8 @@
 }
 
 .task-analyses-create-options {
-  background-color: #000CA4;
-  color: white;
+  background-color: white;
+  color: #000CA4;
   border-radius: 15px;
   font-family: 'Poppins';
 }
@@ -156,6 +161,37 @@
   color: #000;
 }
 
+/* TaskAnalysesStep Component */
+.remove-step {
+  position: absolute;
+  right: 30;
+  top: 5;
+}
+
+.remove-step:hover {
+  color: rgb(240, 146, 146);
+}
+
+/* Visual Support Image Component */
+.visual-support-image {
+  width: 100%;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-Content: center;
+  align-Items: center;
+  cursor: pointer;
+  background-Size: cover;
+  background-Position: center;
+  background-Repeat: no-repeat;
+  color: #666;
+  background-Color: white;
+  font-Size: 18px;
+  transition: background-color 0.3s;
+}
+
+.visual-support-image:hover {
+  background-color: rgb(227, 227, 227);
+}
 
 /* NAVBAR */
 .navbar {
