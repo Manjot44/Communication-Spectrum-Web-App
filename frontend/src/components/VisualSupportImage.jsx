@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from "@mui/material/IconButton";
+import "../App.css"
 
 function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage }) {  
   const handleImageChange = (event) => {
@@ -20,20 +22,9 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage 
   return (
     <>
     <div
+      class="visual-support-image"
       style={{
-        width: '100%',
         height: `${imgHeight}`,
-        border: '2px dashed #ccc',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        cursor: 'pointer',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        color: '#666',
-        backgroundColor: 'white',
-        fontSize: '18px',
         backgroundImage: image ? `url(${image})` : 'none'
       }}
       onClick={handleDivClick}
@@ -46,7 +37,13 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage 
         style={{ display: 'none' }}
         onChange={handleImageChange} />
     </div>
-    <DeleteIcon onClick={deleteImage} style={{ color: 'black' }} />
+    <IconButton
+      aria-label="delete"
+      onClick={deleteImage}
+      style={{ color: "#5A89f7" }}
+    >
+      <DeleteIcon />
+    </IconButton>
     </>
   );
 }
