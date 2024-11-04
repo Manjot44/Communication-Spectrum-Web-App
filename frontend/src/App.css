@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 /* LOGIN SCREEN */
 .login-background {
@@ -20,13 +20,13 @@
 }
 
 .login-text {
-  font-family: "Helvetica Neue";
+  font-family: "Poppins";
   color: black;
   font-weight: bold;
 }
 
 .login-input-box {
-  font-family: "Helvetica Neue";
+  font-family: "Poppins";
   width: 75%;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .login-button {
-  font-family: "Helvetica Neue";
+  font-family: "Poppins";
   background-color: #000ca4;
   width: 75%;
   border-radius: 20px;
@@ -45,10 +45,14 @@
 /* HOME PAGE */
 .page-wrapper-style {
   padding: 0 120px;
+  font-family: "Poppins", sans-serif;
+  background-color: rgb(247, 247, 247);
+  min-height: 100vh
 }
 
 .circular-icon-style {
-  background-color: #6c63ff;
+  background-color: #6b4bef;
+  border: 1px solid #6b4bef;
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -57,6 +61,12 @@
   justify-content: center;
   color: #fff;
   margin: 0 auto;
+  transition: background-color 0.3s;
+}
+
+.circular-icon-style:hover {
+  background-color: #4f49c5;
+  border: 1px solid #000CA4;
 }
 
 .avatar-style {
@@ -67,8 +77,10 @@
 
 .snapshot-style {
   padding: 20px;
-  min-height: 390px;
+  /* background-color: #d3c3ff; */
   background-color: #f0f0f0;
+  border-radius: 15px;
+  color: #000CA4;
 }
 
 .recent-supports-style {
@@ -113,6 +125,7 @@
   color: white;
   border-radius: 15px;
   font-family: 'Poppins';
+  transition: transform 0.3s;
 }
 
 .task-analyses-type:hover {
@@ -152,7 +165,7 @@
   background-color: #000CA4;
   padding: 10px 20px;
   color: white;
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .logo {
@@ -195,6 +208,49 @@
 
 .profile-btn:hover {
   background-color: #00b08f;
+}
+
+/* User Manage Page */
+.add-user-button {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #26C3BA;
+  font-size: 2rem;
+  background-color: #26C3BA;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.add-user-button:hover {
+  border: 1px solid #26c3bbc2;
+  background-color: #26c3bbc2;
+}
+
+.user-profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid black;
+  transition: opacity 0.3s;
+}
+
+.user-profile-name {
+  height: 40px;
+  width: 200px;
+  color: black;
+  display: flex;
+  font-family: "Poppins";
+  font-weight: bold;
+  justify-content: center
+}
+
+.user-profile-image:hover {
+  opacity: 0.6;
+  border: 1px solid #000CA4
 }
 
 /* REACT SET UP STUFF */

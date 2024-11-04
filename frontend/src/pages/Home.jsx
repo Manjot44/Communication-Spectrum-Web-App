@@ -9,6 +9,7 @@ import {
   Avatar,
   Modal,
   Box,
+  Card
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
@@ -123,53 +124,59 @@ function Home({ token, setTokenFunc }) {
   return (
     <>
       <Navbar profileID={profileID} />
-      <br />
       <div class="page-wrapper-style">
-        <Typography variant="h3" align="center" gutterBottom>
-          Client Portal
+        <br />
+        <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: "Poppins", color: "#000CA4" }}>
+          <b>Client Portal</b>
         </Typography>
         <VisualSupportTypes profileID={profileID} />
         <Grid
           container
           spacing={2}
-          style={{ marginTop: "20px" }}
+          style={{ marginTop: "10px" }}
           justifyContent="center"
         >
-          <SupportSnapshot
-            profileData={profileData}
-            openEditModal={openEditModal}
-            setOpenEditModal={setOpenEditModal}
-            handleProfilePictureClick={handleProfilePictureClick}
-            handleProfilePictureUpload={handleProfilePictureUpload}
-          />
+          <Grid item xs={12} md={3}>
+            <SupportSnapshot
+              profileData={profileData}
+              openEditModal={openEditModal}
+              setOpenEditModal={setOpenEditModal}
+              handleProfilePictureClick={handleProfilePictureClick}
+              handleProfilePictureUpload={handleProfilePictureUpload}
+            />
+          </Grid>
           <Grid
             item
             xs={12}
             md={9}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              overflowX: "scroll",
-              height: "75vh",
-            }}
           >
-            <Typography variant="h6" style={{ marginBottom: "10px" }}>
-              {profileData.name}'s Recent Supports
-            </Typography>
-            <Grid
-              container
-              spacing={2}
-              style={{ display: "flex", flexWrap: "wrap" }}
-            >
-              {supportData &&
-                supportData.map((support) => (
-                  <Grid item key={support.support_id} xs={12} sm={6} md={4}>
-                    <RecentSupports profileData={support} />
-                  </Grid>
-                ))}
-            </Grid>
+            <Card className="snapshot-style" style={{ height: "700px", fontFamily: "Poppins", borderRadius: '15px', color: '#000CA4' }}>
+              <Typography variant="h6" style={{ marginBottom: "10px", fontFamily: 'Poppins' }}>
+                <b>{profileData.name}'s Recent Supports</b>
+              </Typography>
+              <div
+                  style={{
+                    overflowY: "scroll",
+                    height: "600px"
+                  }}
+              >
+                <Grid
+                  container
+                  spacing={2}
+                  style={{ display: "flex", flexWrap: "wrap" }}
+                >
+                    {supportData &&
+                    supportData.map((support) => (
+                      <Grid item key={support.support_id} xs={12} sm={6} md={4}>
+                        <RecentSupports profileData={support} />
+                      </Grid>
+                    ))}
+                </Grid>
+              </div>
+            </Card>
           </Grid>
         </Grid>
+        <br />
       </div>
 
       {/* Edit Profile Picture Modal */}

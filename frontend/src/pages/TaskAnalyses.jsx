@@ -20,17 +20,13 @@ function TaskAnalyses({ token, setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
       <Navbar profileID={profileID}/>
-      <br />
-      <Typography variant="h3" align="center" gutterBottom>
-          Create New Task Analyses
-      </Typography>
-      <br />
-      <div>
+      <div class="page-wrapper-style">
+        <br />
+        <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: "Poppins", color: "#000CA4" }}>
+          <b>Create New Task Analyses</b>
+        </Typography>
+        <br />
         <Grid 
           container
           spacing={5} 

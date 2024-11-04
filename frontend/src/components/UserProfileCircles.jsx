@@ -22,12 +22,10 @@ function UserProfileCircles ({ profileName, profilePicture, profileID }) {
             alt=""
             className="profile-picture"
             class="user-profile-image"
-            // style={{ width: '200px', height: '200px', borderRadius: '50%', border:'1px solid black'}}
           />
         </Grid>
         <Grid item xs={12}>
           <Box 
-            // sx={{ height: '40px', width: '200px', color: 'black', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center' }}
             class="user-profile-name"
           >
             {profileName}
