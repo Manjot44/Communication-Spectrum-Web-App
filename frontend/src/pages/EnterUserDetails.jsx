@@ -134,7 +134,7 @@ function EnterUserDetails({ token, setTokenFunc }) {
       >
         <div id="outside-box" className="mx-auto login-form">
           <br />
-          <h4>Add New User</h4>
+          <h4><b>Add New User</b></h4>
 
           <div style={{ marginBottom: "20px" }}>
             <TextFieldComponent
