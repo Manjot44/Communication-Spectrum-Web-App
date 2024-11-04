@@ -37,7 +37,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
             <Card class='task-analyses-type' style={{ height: '60vh' }} onClick={async () => {navigate(`/createTaskAnalysesScratch/${profileID}`)}}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>From Template</b>
+                  <b>Create From Template</b>
                 </Typography>
                 <Typography variant="body2">
                   Create a visual support using your own images and text with a structured template.
@@ -53,7 +53,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
             <Card class='task-analyses-type' style={{ height: '60vh' }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>From Existing Template</b>
+                  <b>Create From Existing Template</b>
                 </Typography>
                 <Typography variant="body2">
                   Use one of our pre-made templates to help create your visual support.
