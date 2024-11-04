@@ -37,10 +37,10 @@ function TaskAnalyses({ token, setTokenFunc }) {
             <Card class='task-analyses-type' style={{ height: '60vh' }} onClick={async () => {navigate(`/createTaskAnalysesScratch/${profileID}`)}}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>From Scratch</b>
+                  <b>From Template</b>
                 </Typography>
                 <Typography variant="body2">
-                  Create a visual support using your own images.
+                  Create a visual support using your own images and text with a structured template.
                 </Typography>
                 <br />
                 <div class="d-flex justify-content-center">
