@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 function VisualSupportTypes({ profileID }) {
 	const navigate = useNavigate();
   const taskAnalyses = { title: "Create New Task Analyses", scratch: `/taskanalyses/${profileID}`, temp: `/taskanalyses/${profileID}`, exist: `/taskanalyses/${profileID}` };
+  const dailySchedule = { title: "Create New Daily Schedule", scratch: `/dailyschedules/${profileID}`, temp: `/dailyschedules/${profileID}`, exist: `/dailyschedules/${profileID}` };
+  const weeklyCalendars = { title: "Create New Weekly Calendar", scratch: `/weeklycalendars/${profileID}`, temp: `/weeklycalendars/${profileID}`, exist: `/weeklycalendars/${profileID}` };
   const socialStory = { title: "Create New Social Story", scratch: `/socialstories/${profileID}`, temp: `/socialstories/${profileID}`, exist: `/socialstories/${profileID}` };
   const envirSupport = { title: "Create New Environment Support", scratch: `/envirsupports/${profileID}`, temp: `/envirsupports/${profileID}`, exist: `/envirsupports/${profileID}` };
   const choiceBoard = { title: "Create New Choice Board", scratch: `/choiceboards/${profileID}`, temp: `/choiceboards/${profileID}`, exist: `/choiceboards/${profileID}` };
@@ -36,13 +38,13 @@ function VisualSupportTypes({ profileID }) {
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Task Analyses</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/dailyschedules/${profileID}`)}}>
+            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: dailySchedule })}}>
               <CalendarViewDay fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Daily Schedules</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/weeklycalendars/${profileID}`)}}>
+            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: weeklyCalendars })}}>
               <CalendarViewWeek fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Weekly Calendars</Typography>
