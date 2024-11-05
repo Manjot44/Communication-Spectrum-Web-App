@@ -17,9 +17,7 @@ import SocialStories from './pages/SocialStories.jsx';
 import EnvironmentalSupports from './pages/EnvironmentalSupports.jsx';
 import ChoiceBoards from './pages/ChoiceBoards.jsx';
 import FirstThen from './pages/FirstThen.jsx';
-import CreateTaskAnalysesScratch from './pages/CreateTaskAnalysesScratch.jsx';
 import CreateChoiceBoard from './pages/CreateChoiceBoard.jsx';
-import CreateDailySchedulesScratch from './pages/CreateDailySchedulesScratch.jsx';
 import TemplateChoice from './pages/TemplateChoice.jsx';
 
 // ProtectedRoute component to handle route protection
