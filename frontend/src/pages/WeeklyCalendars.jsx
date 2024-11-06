@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function WeeklyCalendars({ token, setTokenFunc }) {
+  const { profileID } = useParams();
   const [layout, setLayout] = useState('vertical'); // Default to vertical layout
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
