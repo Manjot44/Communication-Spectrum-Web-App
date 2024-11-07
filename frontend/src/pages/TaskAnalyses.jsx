@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
 import "../App.css";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
@@ -8,83 +8,107 @@ import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import TaskAnalysesStep from "../components/TaskAnalysesStep";
 import VisualSupportImage from "../components/VisualSupportImage";
+import ImageCropperModal from "../components/ImageCropperModal";
+import DropdownComponent from "../components/DropdownComponent";
 import axios from "axios";
 import dayjs from "dayjs";
 import TaskAnalysesStepHorizontal from "../components/TaskAnalysesStepHorizontal";
-import DropdownComponent from "../components/DropdownComponent";
 
-function TaskAnalyses({ token, setTokenFunc }) {
+function TaskAnalyses({ token }) {
   const navigate = useNavigate();
   const { profileID } = useParams();
   const [text, setText] = useState(""); // Name of the Visual Support
   const [isEditing, setIsEditing] = useState(false);
   const [image, setImage] = useState(null);
-  const [value, setValue] = React.useState(dayjs()); // Date of the Visual Support
+  const [value, setValue] = useState(dayjs()); // Date of the Visual Support
   const [steps, setSteps] = useState([]); // Array to track steps with unique IDs
   const [stepImages, setStepImages] = useState([]); // Array to store images for each step
   const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
   const [stepNames, setStepNames] = useState([]); // Array to keep track of the step names
   const [stepTimes, setStepTimes] = useState([]); // Array to keep track of the step times
   const [category, setCategory] = useState(""); // Variable storing category type
+  const [isCropperOpen, setIsCropperOpen] = useState(false); // Cropper modal open state
 
+  // Toggle between horizontal and vertical step display
   const toggleComponentType = () => {
-    setIsHorizontal((prev) => !prev); // Toggle between true and false
+    setIsHorizontal((prev) => !prev);
   };
 
+  // Add a new step to the task analysis
   const addStep = () => {
-    const newStep = { id: Date.now() }; // Generate a unique ID for each step
+    const newStep = { id: Date.now() };
     setSteps([...steps, newStep]);
     setStepImages([...stepImages, null]); // Initialize a placeholder for the new step's image
     setStepNames([...stepNames, null]); // Initialize a placeholder for the new step's name
     setStepTimes([...stepTimes, null]); // Initialize a placeholder for the new step's time
   };
 
+  // Remove a step by index
   const removeStep = (index, id) => {
-    setSteps(steps.filter((step) => step.id !== id)); // Remove the step with the given ID
-    setStepImages(stepImages.filter((_, imgIndex) => imgIndex !== index)); // Remove image at the specified index
-    setStepNames(stepNames.filter((_, imgIndex) => imgIndex !== index)); // Remove the step name at specified index
+    setSteps(steps.filter((step) => step.id !== id));
+    setStepImages(stepImages.filter((_, imgIndex) => imgIndex !== index));
+    setStepNames(stepNames.filter((_, imgIndex) => imgIndex !== index));
     setStepTimes(stepTimes.filter((_, imgIndex) => imgIndex !== index));
   };
 
+  // Update image for a specific step
   const updateStepImage = (index, newImage) => {
     const updatedImages = [...stepImages];
     updatedImages[index] = newImage;
     setStepImages(updatedImages);
   };
 
+  // Update name for a specific step
   const updateStepName = (index, newName) => {
     const updatedNames = [...stepNames];
     updatedNames[index] = newName;
     setStepNames(updatedNames);
   };
 
+  // Update time for a specific step
   const updateStepTime = (index, newTime) => {
     const updatedTimes = [...stepTimes];
     updatedTimes[index] = newTime;
     setStepTimes(updatedTimes);
   };
 
+  // Delete an image change for a specific step
   const deleteStepImageChange = (index) => {
     const updatedImages = [...stepImages];
     updatedImages[index] = "";
     setStepImages(updatedImages);
   };
 
+  // Handle text change for the task analysis name
   const handleTextChange = (event) => {
     setText(event.target.value);
   };
 
+  // Toggle editing state for task name
   const toggleEditing = () => {
     setIsEditing(!isEditing);
   };
 
+  // Open cropper modal
+  const handleOpenCropper = () => setIsCropperOpen(true);
+
+  // Close cropper modal
+  const handleCloseCropper = () => setIsCropperOpen(false);
+
+  // Handle crop completion with base64 image
+  const handleCropComplete = (croppedBase64) => {
+    setImage(croppedBase64); // Save the cropped image as a base64 string
+    setIsCropperOpen(false);
+  };
+
+  // Create a new visual support
   const handleCreate = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
           text,
-          image,
+          image, // This is now a base64 image string
           value,
           stepImages,
           stepNames,
@@ -108,11 +132,11 @@ function TaskAnalyses({ token, setTokenFunc }) {
     <>
       <Navbar profileID={profileID} />
       <br />
-      <div class="page-wrapper-style" style={{ padding: "0 1%" }}>
+      <div className="page-wrapper-style" style={{ padding: "0 1%" }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <Card
-              class="task-analyses-create-options"
+              className="task-analyses-create-options"
               style={{ height: "87vh" }}
             >
               <CardContent>
@@ -126,13 +150,12 @@ function TaskAnalyses({ token, setTokenFunc }) {
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <div
-                    class="d-flex align-items-center"
+                    className="d-flex align-items-center"
                     style={{ height: "55vh", width: "auto" }}
                   >
                     <DateCalendar
                       value={value}
                       onChange={(newValue) => setValue(newValue)}
-                      style={{ color: "black", height: "50vh", width: "auto" }}
                     />
                   </div>
                 </LocalizationProvider>
@@ -146,7 +169,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
                 </Typography>
 
                 <div
-                  class="d-flex align-items-center"
+                  className="d-flex align-items-center"
                   style={{
                     height: "75px",
                     backgroundColor: "white",
@@ -202,7 +225,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
           </Grid>
           <Grid item xs={12} md={9}>
             <Card
-              class="task-analyses-create-options"
+              className="task-analyses-create-options"
               style={{ height: "87vh" }}
             >
               <CardContent>
@@ -227,7 +250,7 @@ function TaskAnalyses({ token, setTokenFunc }) {
                         type="text"
                         value={text}
                         onChange={handleTextChange}
-                        onBlur={toggleEditing} // Stop editing when input loses focus
+                        onBlur={toggleEditing}
                         autoFocus
                       />
                     ) : (
@@ -255,6 +278,19 @@ function TaskAnalyses({ token, setTokenFunc }) {
                         uniqueID={-1}
                         imgHeight={"55vh"}
                         deleteImage={() => setImage(null)}
+                      />
+                      <Button
+                        onClick={handleOpenCropper}
+                        variant="outlined"
+                        sx={{ mt: 2 }}
+                      >
+                        Crop Image
+                      </Button>
+                      <ImageCropperModal
+                        open={isCropperOpen}
+                        onClose={handleCloseCropper}
+                        image={image}
+                        onCropComplete={handleCropComplete}
                       />
                     </Grid>
                     <Grid
