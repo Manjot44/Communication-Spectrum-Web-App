@@ -20,6 +20,7 @@ import RecentSupports from "../components/RecentSupports.jsx";
 import RecentSupportsBox from "../components/RecentSupportsBox.jsx";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
+import NotificationPopup from "../components/NotificationPopup.jsx";
 
 // Styles
 const avatarStyle = {
@@ -52,6 +53,8 @@ function Home({ token, setTokenFunc }) {
   const [openEditDetailsModal, setOpenEditDetailsModal] = useState(false);
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [supportData, setSupportData] = useState(null);
+  const [showNotification, setShowNotification] = useState(false); // State to show/hide the notification
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -108,7 +111,9 @@ function Home({ token, setTokenFunc }) {
         ...prevData,
         profile_pic: newProfilePic,
       }));
-      alert("Profile picture updated successfully!");
+      // alert("Profile picture updated successfully!");
+      setNotificationMessage("Profile picture updated successfully!");
+      setShowNotification(true);
     } catch (error) {
       console.error("Error updating profile picture:", error);
       alert("Failed to update profile picture.");
@@ -126,6 +131,13 @@ function Home({ token, setTokenFunc }) {
   return (
     <>
       <Navbar profileID={profileID} />
+      {showNotification && (
+        <NotificationPopup
+          message={notificationMessage}
+          duration={5000}
+          onClose={() => setShowNotification(false)} // Hide notification after timeout
+        />
+      )}
       <div class="page-wrapper-style">
         <br />
         <Typography

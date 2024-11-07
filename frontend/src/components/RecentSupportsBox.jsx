@@ -5,12 +5,10 @@ import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 
 function RecentSupportsBox({ profileData, supportData }) {
-  // Determine loading message
   const loadingMessage = profileData
     ? `Loading ${profileData.name}'s recent supports...`
     : "Loading recent supports...";
 
-  // Show loading if either profileData or supportData is not yet loaded
   if (!profileData || !supportData) {
     return <LoadingSpinner message={loadingMessage} />;
   }
@@ -20,11 +18,10 @@ function RecentSupportsBox({ profileData, supportData }) {
       <Card
         className="snapshot-style"
         style={{
-          height: "700px",
           fontFamily: "Poppins",
           borderRadius: "15px",
           color: "#000CA4",
-          padding: "20px", // Add padding to prevent card content from touching the edges
+          padding: "20px",
         }}
       >
         <Typography
@@ -35,30 +32,15 @@ function RecentSupportsBox({ profileData, supportData }) {
         </Typography>
         <div
           style={{
-            overflowY: "auto", // Change to "auto" to show scrollbar only when needed
+            overflowY: "auto",
             height: "600px",
           }}
         >
-          <Grid
-            container
-            spacing={2}
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "stretch", // Ensures cards take up the full height of each grid cell
-            }}
-          >
+          <Grid container spacing={2} alignItems="stretch">
             {supportData &&
               supportData.map((support) => (
-                <Grid
-                  item
-                  key={support.support_id}
-                  xs={12}
-                  sm={6}
-                  md={4} // Adjusts based on screen size
-                  style={{ display: "flex" }} // Ensures cards grow within the grid cell
-                >
-                  <RecentSupports profileData={support} style={{ flex: 1 }} />
+                <Grid item key={support.support_id} xs={12} sm={6} md={4}>
+                  <RecentSupports profileData={support} />
                 </Grid>
               ))}
           </Grid>

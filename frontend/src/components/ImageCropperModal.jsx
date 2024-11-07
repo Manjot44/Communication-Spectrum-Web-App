@@ -74,10 +74,11 @@ const ImageCropperModal = ({
             crop={crop}
             zoom={zoom}
             aspect={aspect}
+            cropShape={circleCrop && aspect === 1 ? "round" : "rect"} // Use "round" for circle crop
+            showGrid={false} // Optional: removes grid lines when cropping
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropAreaChange}
-            style={circleCrop && aspect === 1 ? cropperStyle : null} // Apply circular style if circleCrop is true and aspect is 1
           />
         </div>
 
@@ -137,13 +138,6 @@ const modalStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-};
-
-// Circular cropper style when aspect is 1:1
-const cropperStyle = {
-  cropAreaStyle: {
-    borderRadius: "50%",
-  },
 };
 
 export default ImageCropperModal;
