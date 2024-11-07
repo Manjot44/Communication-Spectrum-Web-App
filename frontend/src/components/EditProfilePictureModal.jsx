@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box, Button, Typography } from "@mui/material";
 import axios from "axios";
+import ImageCropperModal from "../components/ImageCropperModal"; // Import the ImageCropperModal component
 
 const style = {
   position: "absolute",
@@ -23,19 +24,28 @@ function EditProfilePictureModal({
 }) {
   const [profilePicture, setProfilePicture] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  // Convert image to base64
+  // Convert image to base64 and open cropper
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setProfilePicture(reader.result);
+      setSelectedImage(reader.result); // Set the selected image as base64
+      setIsCropperOpen(true); // Open the cropper modal
     };
 
     if (file) {
       reader.readAsDataURL(file);
     }
+  };
+
+  // Handle the cropped image
+  const handleCropComplete = (croppedImage) => {
+    setProfilePicture(croppedImage); // Set the cropped image as the profile picture
+    setIsCropperOpen(false); // Close the cropper modal
   };
 
   const handleUpload = async () => {
@@ -47,9 +57,9 @@ function EditProfilePictureModal({
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:5005/admin/update_user_profilepicture/${profileID}`,
-        { profilePicture }, // is base64
+        { profilePicture }, // base64 cropped image
         {
           headers: {
             Authorization: token,
@@ -100,6 +110,16 @@ function EditProfilePictureModal({
           </Typography>
         </Box>
       </Modal>
+
+      {/* Image Cropper Modal */}
+      <ImageCropperModal
+        open={isCropperOpen}
+        onClose={() => setIsCropperOpen(false)}
+        image={selectedImage}
+        onCropComplete={handleCropComplete}
+        defaultAspect={1} // 1:1 aspect ratio for square crop
+        circleCrop={true} // Show circular overlay for profile picture
+      />
     </>
   );
 }

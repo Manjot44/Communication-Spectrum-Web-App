@@ -3,17 +3,24 @@ import { Modal, Box, Slider, Button, Typography } from "@mui/material";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../utils/cropImage";
 
-const ImageCropperModal = ({ open, onClose, image, onCropComplete }) => {
+const ImageCropperModal = ({
+  open,
+  onClose,
+  image,
+  onCropComplete,
+  defaultAspect = 4 / 3,
+  circleCrop = false,
+}) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [aspect, setAspect] = useState(4 / 3); // Default aspect ratio set to 4:3
+  const [aspect, setAspect] = useState(defaultAspect);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [originalImage, setOriginalImage] = useState(null); // Store the initial unmodified image
-  const [lastCropArea, setLastCropArea] = useState(null); // Store the last crop area
+  const [originalImage, setOriginalImage] = useState(null);
+  const [lastCropArea, setLastCropArea] = useState(null);
 
   // Set the original image only once when the component mounts or when a new image is provided
   useEffect(() => {
-    if (image && !originalImage) {
+    if (image && originalImage !== image) {
       setOriginalImage(image);
     }
   }, [image, originalImage]);
@@ -23,9 +30,9 @@ const ImageCropperModal = ({ open, onClose, image, onCropComplete }) => {
     if (open) {
       setCrop(lastCropArea?.crop || { x: 0, y: 0 });
       setZoom(lastCropArea?.zoom || 1);
-      setAspect(4 / 3);
+      setAspect(defaultAspect);
     }
-  }, [open, lastCropArea]);
+  }, [open, lastCropArea, defaultAspect]);
 
   // Capture the cropped area when user stops dragging
   const onCropAreaChange = useCallback((_, croppedArea) => {
@@ -38,21 +45,21 @@ const ImageCropperModal = ({ open, onClose, image, onCropComplete }) => {
       const croppedImage = await getCroppedImg(
         originalImage,
         croppedAreaPixels
-      ); // Always crop from original image
-      onCropComplete(croppedImage); // Send cropped image to parent
-      setLastCropArea({ crop, zoom }); // Store the current crop and zoom for reapplying on reopen
-      onClose(); // Close the modal after completion
+      );
+      onCropComplete(croppedImage);
+      setLastCropArea({ crop, zoom });
+      onClose();
     }
   };
 
   // Revert to the original image and reset cropping coordinates
   const handleRevertCrop = () => {
-    onCropComplete(originalImage); // Send the initial original image back to parent
+    onCropComplete(originalImage);
     setCrop({ x: 0, y: 0 });
     setZoom(1);
-    setAspect(4 / 3);
-    setLastCropArea(null); // Clear the last crop area
-    onClose(); // Close the modal
+    setAspect(defaultAspect);
+    setLastCropArea(null);
+    onClose();
   };
 
   return (
@@ -63,13 +70,14 @@ const ImageCropperModal = ({ open, onClose, image, onCropComplete }) => {
         </Typography>
         <div style={{ width: "100%", height: "70vh", position: "relative" }}>
           <Cropper
-            image={originalImage} // Always use the original image in the cropper
+            image={originalImage}
             crop={crop}
             zoom={zoom}
             aspect={aspect}
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropAreaChange}
+            style={circleCrop && aspect === 1 ? cropperStyle : null} // Apply circular style if circleCrop is true and aspect is 1
           />
         </div>
 
@@ -85,14 +93,18 @@ const ImageCropperModal = ({ open, onClose, image, onCropComplete }) => {
           sx={{ width: "80%" }}
         />
 
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          Aspect Ratio
-        </Typography>
-        <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
-          <Button onClick={() => setAspect(1)}>1:1</Button>
-          <Button onClick={() => setAspect(4 / 3)}>4:3</Button>
-          <Button onClick={() => setAspect(16 / 9)}>16:9</Button>
-        </Box>
+        {!circleCrop && (
+          <>
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              Aspect Ratio
+            </Typography>
+            <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+              <Button onClick={() => setAspect(1)}>1:1</Button>
+              <Button onClick={() => setAspect(4 / 3)}>4:3</Button>
+              <Button onClick={() => setAspect(16 / 9)}>16:9</Button>
+            </Box>
+          </>
+        )}
 
         <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
           <Button variant="contained" onClick={finalizeCrop}>
@@ -125,6 +137,13 @@ const modalStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+};
+
+// Circular cropper style when aspect is 1:1
+const cropperStyle = {
+  cropAreaStyle: {
+    borderRadius: "50%",
+  },
 };
 
 export default ImageCropperModal;
