@@ -7,6 +7,7 @@ import axios from "axios";
 import AddPhotoModal from "../components/AddPhotoModal";
 import CloseIcon from "@mui/icons-material/Close";
 import "../App.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -87,21 +88,40 @@ function Gallery({ token }) {
 
   const closeModal = () => setSelectedImage(null);
 
-  if (!images) return <div>Loading...</div>;
+  if (!images) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <>
       <Navbar profileID={profileID} />
       <div class="page-wrapper-style">
         <br />
-        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <Typography 
-            variant="h3" 
-            sx={{ fontFamily: "Poppins", color: "#000CA4", position: 'absolute', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}
+        <Box
+          sx={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "Poppins",
+              color: "#000CA4",
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              textAlign: "center",
+            }}
           >
             <b>Gallery</b>
           </Typography>
-          <Button sx={{ ml: 'auto', backgroundColor:"#ff7c33" }} onClick={handleOpen} variant="contained">
+          <Button
+            sx={{ ml: "auto", backgroundColor: "#ff7c33" }}
+            onClick={handleOpen}
+            variant="contained"
+          >
             + Add Photo
           </Button>
         </Box>

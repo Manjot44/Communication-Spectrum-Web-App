@@ -9,7 +9,7 @@ import {
   Avatar,
   Modal,
   Box,
-  Card
+  Card,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
@@ -19,6 +19,7 @@ import SupportSnapshot from "../components/SupportSnapshot.jsx";
 import RecentSupports from "../components/RecentSupports.jsx";
 import RecentSupportsBox from "../components/RecentSupportsBox.jsx";
 import "../App.css";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 // Styles
 const avatarStyle = {
@@ -120,14 +121,19 @@ function Home({ token, setTokenFunc }) {
     setOpenEditDetailsModal(true);
   };
 
-  if (!profileData) return <div>Loading...</div>;
+  if (!profileData) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <>
       <Navbar profileID={profileID} />
       <div class="page-wrapper-style">
         <br />
-        <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: "Poppins", color: "#000CA4" }}>
+        <Typography
+          variant="h3"
+          align="center"
+          gutterBottom
+          style={{ fontFamily: "Poppins", color: "#000CA4" }}
+        >
           <b>Client Portal</b>
         </Typography>
         <VisualSupportTypes profileID={profileID} />
