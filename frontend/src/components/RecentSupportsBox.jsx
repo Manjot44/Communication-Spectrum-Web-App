@@ -2,8 +2,19 @@ import React from "react";
 import { Grid, Typography, Card } from "@mui/material";
 import RecentSupports from "../components/RecentSupports.jsx";
 import "../App.css";
+import LoadingSpinner from "./LoadingSpinner.jsx";
 
 function RecentSupportsBox({ profileData, supportData }) {
+  // Determine loading message
+  const loadingMessage = profileData
+    ? `Loading ${profileData.name}'s recent supports...`
+    : "Loading recent supports...";
+
+  // Show loading if either profileData or supportData is not yet loaded
+  if (!profileData || !supportData) {
+    return <LoadingSpinner message={loadingMessage} />;
+  }
+
   return (
     <>
       <Card
