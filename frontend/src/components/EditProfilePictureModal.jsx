@@ -130,7 +130,7 @@ function EditProfilePictureModal({
       {showNotification && (
         <NotificationPopup
           message={notificationMessage}
-          duration={3000}
+          duration={5000}
           onClose={() => setShowNotification(false)} // Hide notification after timeout
         />
       )}

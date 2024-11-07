@@ -6,7 +6,8 @@ import Button from "@mui/material/Button";
 import TextFieldComponent from "../components/TextFieldComponent";
 import DropdownComponent from "../components/DropdownComponent";
 import SelectDOBComponent from "../components/SelectDOBComponent";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import NotificationPopup from "../components/NotificationPopup";
+import { useNotification } from "../services/notificationService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
@@ -21,6 +22,7 @@ function EnterUserDetails({ token, setTokenFunc }) {
   const [interests, setInterests] = React.useState("");
   const [environments, setEnvironments] = React.useState("");
   const [profilePicture, setProfilePicture] = React.useState("");
+  const { notify, showNotification, notificationMessage } = useNotification();
   const navigate = useNavigate();
 
   const handleNameChange = (event) => {
@@ -35,10 +37,9 @@ function EnterUserDetails({ token, setTokenFunc }) {
   };
 
   const handleDobChange = (newDate) => {
-    // Prevent setting a date in the future
     if (newDate.isAfter(dayjs())) {
       setDobError("Date of birth cannot be in the future.");
-      setDob(dayjs()); // Reset to today's date or a default date
+      setDob(dayjs());
     } else {
       setDob(newDate);
       setDobError("");
@@ -47,13 +48,12 @@ function EnterUserDetails({ token, setTokenFunc }) {
 
   const handlePostcodeChange = (event) => {
     const { value } = event.target;
-
     if (/^\d{0,4}$/.test(value)) {
       setPostcode(value);
     }
 
     const postcodePattern =
-      /^(0[289][0-9]{2})|([1-9][0-9]{3})|(2[0-5][0-9]{2})|(26[01][0-9])|(26[2-9][0-9])|(29[0-2][0-9])|(29[1-9][0-9])|(3000|[3-4][0-9]{3})|(8[0-9]{3})|(90[0-9]{2})|(50[0-7][0-9])|(58[0-9]{2})|(60[0-7][0-9])|(68[0-9]{2})|(70[0-7][0-9])|(78[0-9]{2})|(08[0-9]{2})|(09[0-9]{2})$/;
+      /^(0[289][0-9]{2})|([1-9][0-9]{3})|(2[0-5][0-9]{2})$/;
 
     if (value.length === 4 && !postcodePattern.test(value)) {
       setPostcodeError(
@@ -75,9 +75,9 @@ function EnterUserDetails({ token, setTokenFunc }) {
       interests === "" ||
       environments === ""
     ) {
-      alert("Please fill in all required fields");
+      notify("Please fill in all required fields");
     } else if (nameError || dobError || postcodeError) {
-      alert("Please resolve validation errors before submitting.");
+      notify("Please resolve validation errors before submitting.");
     } else {
       createUserProfile();
     }
@@ -114,11 +114,11 @@ function EnterUserDetails({ token, setTokenFunc }) {
           },
         }
       );
-      alert("User profile created successfully");
+      notify("User profile created successfully");
       navigate("/UserManage");
     } catch (error) {
       console.error("Error creating user:", error);
-      alert("An error occurred while creating the user.");
+      notify("An error occurred while creating the user.");
     }
   };
 
@@ -134,7 +134,9 @@ function EnterUserDetails({ token, setTokenFunc }) {
       >
         <div id="outside-box" className="mx-auto login-form">
           <br />
-          <h4><b>Add New User</b></h4>
+          <h4>
+            <b>Add New User</b>
+          </h4>
 
           <div style={{ marginBottom: "20px" }}>
             <TextFieldComponent
@@ -153,7 +155,7 @@ function EnterUserDetails({ token, setTokenFunc }) {
               onChange={handleDobChange}
               error={!!dobError}
               helperText={dobError}
-              width='75%'
+              width="75%"
             />
           </div>
 
@@ -187,7 +189,7 @@ function EnterUserDetails({ token, setTokenFunc }) {
                 },
                 { value: "Basic Sign Language", label: "Basic Sign Language" },
               ]}
-              width='75%'
+              width="75%"
             />
           </div>
 
@@ -207,7 +209,10 @@ function EnterUserDetails({ token, setTokenFunc }) {
             />
           </div>
 
-          <div className="form-group mx-auto" style={{ marginBottom: "20px", width: '75%' }}>
+          <div
+            className="form-group mx-auto"
+            style={{ marginBottom: "20px", width: "75%" }}
+          >
             <label htmlFor="profilePicture">Profile Picture</label>
             <input
               type="file"
@@ -232,16 +237,25 @@ function EnterUserDetails({ token, setTokenFunc }) {
           <br />
           <br />
           <p>
-              <a
-                class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
-                href="/UserManage"
-                style={{ fontFamily: "Poppins" }}
-              >
+            <a
+              className="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+              href="/UserManage"
+              style={{ fontFamily: "Poppins" }}
+            >
               <b>Go Back</b>
-              </a>
+            </a>
           </p>
         </div>
       </div>
+
+      {/* Notification Popup */}
+      {showNotification && (
+        <NotificationPopup
+          message={notificationMessage}
+          duration={5000}
+          onClose={() => notify("")}
+        />
+      )}
     </>
   );
 }

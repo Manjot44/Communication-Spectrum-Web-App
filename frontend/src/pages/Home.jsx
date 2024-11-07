@@ -135,7 +135,7 @@ function Home({ token, setTokenFunc }) {
         <NotificationPopup
           message={notificationMessage}
           duration={5000}
-          onClose={() => setShowNotification(false)} // Hide notification after timeout
+          onClose={() => notify("")}
         />
       )}
       <div class="page-wrapper-style">

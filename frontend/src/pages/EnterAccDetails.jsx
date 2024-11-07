@@ -9,6 +9,8 @@ import TextFieldComponent from "../components/TextFieldComponent";
 import SelectDOBComponent from "../components/SelectDOBComponent";
 import DropdownComponent from "../components/DropdownComponent";
 import SubscribeComponent from "../components/SubscribeComponent";
+import NotificationPopup from "../components/NotificationPopup";
+import { useNotification } from "../services/notificationService";
 
 function EnterAccDetails({ token, setTokenFunc }) {
   const [name, setName] = React.useState("");
@@ -18,6 +20,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
   const [postcode, setPostcode] = React.useState("");
   const [date, setDate] = React.useState(dayjs("2024-01-01"));
   const [isSubscribed, setSubscribe] = React.useState(false);
+  const { notify, showNotification, notificationMessage } = useNotification();
   const navigate = useNavigate();
 
   // Submits the register form when the enter key is pressed in any of the fields
@@ -33,16 +36,16 @@ function EnterAccDetails({ token, setTokenFunc }) {
     const postcodePattern = /^[0-9]{4,6}$/;
 
     if (!name.trim()) {
-      alert("Please enter your name.");
+      notify("Please enter your name.");
     } else if (!postcodePattern.test(postcode)) {
-      alert("Please enter a valid postcode (4-6 digits).");
+      notify("Please enter a valid postcode (4-6 digits).");
     } else if (
       email === "" ||
       profession === "" ||
       country === "" ||
       date === ""
     ) {
-      alert("Please fill in all fields");
+      notify("Please fill in all fields");
     } else {
       createAccProfile();
     }
@@ -66,10 +69,11 @@ function EnterAccDetails({ token, setTokenFunc }) {
           },
         }
       );
+      notify("Account profile created successfully!");
+      navigate("/UserManage");
     } catch (err) {
-      alert(err.response.data.error);
+      notify(err.response.data.error);
     }
-    navigate("/UserManage");
   };
 
   return (
@@ -84,7 +88,9 @@ function EnterAccDetails({ token, setTokenFunc }) {
       >
         <div id="outside-box" className="mx-auto login-form">
           <br />
-          <h4 className="login-text"><b>Please Enter Account Details</b></h4>
+          <h4 className="login-text">
+            <b>Please Enter Account Details</b>
+          </h4>
 
           <TextFieldComponent
             label="Full Name"
@@ -177,6 +183,15 @@ function EnterAccDetails({ token, setTokenFunc }) {
           </Button>
         </div>
       </div>
+
+      {/* Notification Popup */}
+      {showNotification && (
+        <NotificationPopup
+          message={notificationMessage}
+          duration={5000}
+          onClose={() => notify("")}
+        />
+      )}
     </>
   );
 }

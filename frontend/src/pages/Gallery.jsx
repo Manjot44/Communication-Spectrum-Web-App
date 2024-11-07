@@ -8,6 +8,8 @@ import AddPhotoModal from "../components/AddPhotoModal";
 import CloseIcon from "@mui/icons-material/Close";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
+import NotificationPopup from "../components/NotificationPopup";
+import { useNotification } from "../services/notificationService"; // Import the hook
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -17,6 +19,9 @@ function Gallery({ token }) {
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  // Use notification service
+  const { notify, showNotification, notificationMessage } = useNotification();
 
   // Fetch images
   useEffect(() => {
@@ -32,16 +37,16 @@ function Gallery({ token }) {
         );
         setImages(response.data.images);
       } catch (err) {
-        alert(err.response.data.error);
+        notify("Failed to fetch images.");
       }
     };
     fetchImages();
-  }, [profileID, token, open]);
+  }, [profileID, token, open, notify]);
 
   // Add new image
   const addImage = async () => {
     if (image === "") {
-      alert("Please Upload a File");
+      notify("Please upload a file.");
     } else {
       try {
         await axios.post(
@@ -53,15 +58,15 @@ function Gallery({ token }) {
             },
           }
         );
-        alert("Image added successfully");
-        setOpen(false);
         setImages((prevImages) => [
           ...prevImages,
           { img_id: Date.now(), url: image },
         ]);
+        notify("Image added successfully!");
+        setOpen(false);
       } catch (error) {
         console.error("Error adding image:", error);
-        alert("An error occurred while adding the image.");
+        notify("An error occurred while adding the image.");
       }
     }
   };
@@ -79,21 +84,22 @@ function Gallery({ token }) {
           },
         });
         setImages(images.filter((img) => img.img_id !== img_id));
+        notify("Image deleted successfully!");
       } catch (error) {
         console.error("Error deleting image:", error);
-        alert("An error occurred while deleting the image.");
+        notify("An error occurred while deleting the image.");
       }
     }
   };
 
   const closeModal = () => setSelectedImage(null);
 
-  if (!images) return <LoadingSpinner></LoadingSpinner>;
+  if (!images) return <LoadingSpinner />;
 
   return (
     <>
       <Navbar profileID={profileID} />
-      <div class="page-wrapper-style">
+      <div className="page-wrapper-style">
         <br />
         <Box
           sx={{
@@ -148,7 +154,7 @@ function Gallery({ token }) {
                     key={image.img_id}
                     image={image.url}
                     onDelete={() => deleteImage(image.img_id)}
-                    onClick={() => setSelectedImage(image.url)} // Set the selected image on click
+                    onClick={() => setSelectedImage(image.url)}
                   />
                 ))}
             </Grid>
@@ -170,7 +176,7 @@ function Gallery({ token }) {
               justifyContent: "center",
               zIndex: 1000,
             }}
-            onClick={closeModal} // Close on overlay click
+            onClick={closeModal}
           >
             <div style={{ position: "relative" }}>
               <img
@@ -192,6 +198,15 @@ function Gallery({ token }) {
               </IconButton>
             </div>
           </div>
+        )}
+
+        {/* Notification Popup */}
+        {showNotification && (
+          <NotificationPopup
+            message={notificationMessage}
+            duration={5000}
+            onClose={() => notify("")}
+          />
         )}
       </div>
     </>
