@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
@@ -27,6 +27,8 @@ function TaskAnalyses({ token }) {
   const [stepNames, setStepNames] = useState([]); // Array to keep track of the step names
   const [stepTimes, setStepTimes] = useState([]); // Array to keep track of the step times
   const [category, setCategory] = useState(""); // Variable storing category type
+  // const [isCropperOpen, setIsCropperOpen] = useState(false); // Cropper modal open state
+  const [nameError, setNameError] = useState(false); // State for task name error
 
   // Toggle between horizontal and vertical step display
   const toggleComponentType = () => {
@@ -81,6 +83,7 @@ function TaskAnalyses({ token }) {
   // Handle text change for the task analysis name
   const handleTextChange = (event) => {
     setText(event.target.value);
+    setNameError(false); // Reset error state when user types
   };
 
   // Toggle editing state for task name
@@ -90,6 +93,10 @@ function TaskAnalyses({ token }) {
 
   // Create a new visual support
   const handleCreate = async () => {
+    if (text.trim() === "") {
+      setNameError(true); // Set error state if no name is entered
+      return;
+    }
     try {
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
@@ -239,24 +246,35 @@ function TaskAnalyses({ token }) {
                         onChange={handleTextChange}
                         onBlur={toggleEditing}
                         autoFocus
+                        style={{ borderColor: nameError ? "red" : "inherit" }}
                       />
                     ) : (
                       <b onClick={toggleEditing} style={{ cursor: "pointer" }}>
                         {text || (
                           <span
-                            style={{ color: "grey", fontFamily: "Poppins" }}
+                            style={{
+                              color: nameError ? "red" : "grey",
+                              fontFamily: "Poppins",
+                            }}
                           >
                             Insert Task Name Here
                           </span>
                         )}
                       </b>
                     )}
-
                     <Button onClick={toggleComponentType}>
                       Toggle Visual Style
                     </Button>
                     <Button onClick={addStep}>+ Add Step</Button>
                   </Typography>
+                  {nameError && (
+                    <Typography
+                      variant="body2"
+                      style={{ color: "red", marginLeft: "10px" }}
+                    >
+                      Please enter a task name
+                    </Typography>
+                  )}
                   <Grid container spacing={2} style={{ padding: "2%" }}>
                     <Grid item xs={12} md={6}>
                       <VisualSupportImage

@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
   TextField,
-  Avatar,
   Modal,
   Box,
   Card,
@@ -23,14 +22,7 @@ import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import NotificationPopup from "../components/NotificationPopup.jsx";
 
 // Styles
-const avatarStyle = {
-  width: "100px",
-  height: "100px",
-  margin: "0 auto",
-  cursor: "pointer", // shows cursor hand for clickable objects
-};
 
-// Adjust modal style for improved sizing
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -53,7 +45,7 @@ function Home({ token, setTokenFunc }) {
   const [openEditDetailsModal, setOpenEditDetailsModal] = useState(false);
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [supportData, setSupportData] = useState(null);
-  const [showNotification, setShowNotification] = useState(false); // State to show/hide the notification
+  const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
@@ -111,7 +103,6 @@ function Home({ token, setTokenFunc }) {
         ...prevData,
         profile_pic: newProfilePic,
       }));
-      // alert("Profile picture updated successfully!");
       setNotificationMessage("Profile picture updated successfully!");
       setShowNotification(true);
     } catch (error) {
@@ -126,7 +117,31 @@ function Home({ token, setTokenFunc }) {
     setOpenEditDetailsModal(true);
   };
 
-  if (!profileData) return <LoadingSpinner></LoadingSpinner>;
+  // New function to handle saving profile changes
+  const handleSaveProfile = async (updatedData) => {
+    try {
+      await axios.put(
+        `http://localhost:5005/update_user_profile/${profileID}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setProfileData((prevData) => ({
+        ...prevData,
+        ...updatedData,
+      }));
+      setNotificationMessage("Profile updated successfully!");
+      setShowNotification(true);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile.");
+    }
+  };
+
+  if (!profileData) return <LoadingSpinner />;
 
   return (
     <>
@@ -135,10 +150,10 @@ function Home({ token, setTokenFunc }) {
         <NotificationPopup
           message={notificationMessage}
           duration={5000}
-          onClose={() => notify("")}
+          onClose={() => setShowNotification(false)}
         />
       )}
-      <div class="page-wrapper-style">
+      <div className="page-wrapper-style">
         <br />
         <Typography
           variant="h3"
@@ -162,12 +177,15 @@ function Home({ token, setTokenFunc }) {
               setOpenEditModal={setOpenEditModal}
               handleProfilePictureClick={handleProfilePictureClick}
               handleProfilePictureUpload={handleProfilePictureUpload}
+              handleSaveProfile={handleSaveProfile} // Pass handleSaveProfile to SupportSnapshot
             />
           </Grid>
           <Grid item xs={12} md={9}>
             <RecentSupportsBox
               profileData={profileData}
               supportData={supportData}
+              token={token}
+              setSupportData={setSupportData}
             />
           </Grid>
         </Grid>
