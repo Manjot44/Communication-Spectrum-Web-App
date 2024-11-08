@@ -14,6 +14,7 @@ import {
   complete_reg,
   create_user,
   create_client,
+  delete_support,
   get_clients,
   get_client,
   get_images,
@@ -54,6 +55,7 @@ const catchErrors = (fn) => async (req, res) => {
 ***************************************************************/
 
 const authed = (fn) => async (req, res) => {
+  // console.log("Authorization header:", req.header("Authorization"));
   const email = await getEmailFromAuthorization(req.header("Authorization"));
   await fn(req, res, email);
 };
@@ -275,6 +277,38 @@ app.get(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       return res.json({ client: await get_client_support(email, profileID) });
+    })
+  )
+);
+
+app.delete(
+  "/delete_support/:supportID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      // console.log(
+      //   `Delete request received for supportID: ${req.params.supportID} by user: ${email}`
+      // );
+
+      const { supportID } = req.params;
+      if (!supportID) {
+        console.log("No support ID provided in request.");
+        return res.status(400).json({ error: "Support ID is required" });
+      }
+
+      try {
+        await delete_support(email, supportID);
+        console
+          .log
+          // `Support ${supportID} deleted successfully by user ${email}`
+          ();
+        return res.json({ message: "Support deleted successfully" });
+      } catch (error) {
+        console.log(
+          `Failed to delete support ${supportID} for user ${email}:`,
+          error.message
+        );
+        throw error;
+      }
     })
   )
 );

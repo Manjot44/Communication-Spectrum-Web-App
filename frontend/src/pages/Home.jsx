@@ -184,6 +184,8 @@ function Home({ token, setTokenFunc }) {
             <RecentSupportsBox
               profileData={profileData}
               supportData={supportData}
+              token={token}
+              setSupportData={setSupportData}
             />
           </Grid>
         </Grid>

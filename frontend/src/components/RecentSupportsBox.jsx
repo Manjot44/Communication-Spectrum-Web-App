@@ -4,6 +4,7 @@ import RecentSupports from "../components/RecentSupports.jsx";
 import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import axios from "axios";
+import NotificationPopup from "../components/NotificationPopup"; // Import your notification component
 
 function RecentSupportsBox({
   profileData,
@@ -11,6 +12,9 @@ function RecentSupportsBox({
   token,
   setSupportData,
 }) {
+  const [showNotification, setShowNotification] = useState(false); // State to control notification visibility
+  const [notificationMessage, setNotificationMessage] = useState(""); // State for the notification message
+
   const loadingMessage = profileData
     ? `Loading ${profileData.name}'s recent supports...`
     : "Loading recent supports...";
@@ -20,13 +24,18 @@ function RecentSupportsBox({
     try {
       await axios.delete(`http://localhost:5005/delete_support/${supportId}`, {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       });
+
       // Update the supportData state by removing the deleted item
       setSupportData((prevData) =>
         prevData.filter((support) => support.support_id !== supportId)
       );
+
+      // Show success notification
+      setNotificationMessage("Support has been deleted successfully.");
+      setShowNotification(true);
     } catch (error) {
       console.error("Error deleting support:", error);
     }
@@ -73,6 +82,15 @@ function RecentSupportsBox({
           </Grid>
         </div>
       </Card>
+
+      {/* Notification Popup */}
+      {showNotification && (
+        <NotificationPopup
+          message={notificationMessage}
+          duration={5000} // Show for 5 seconds
+          onClose={() => setShowNotification(false)} // Close the notification after it expires
+        />
+      )}
     </>
   );
 }
