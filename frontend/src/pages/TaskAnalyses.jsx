@@ -27,7 +27,6 @@ function TaskAnalyses({ token }) {
   const [stepNames, setStepNames] = useState([]); // Array to keep track of the step names
   const [stepTimes, setStepTimes] = useState([]); // Array to keep track of the step times
   const [category, setCategory] = useState(""); // Variable storing category type
-  // const [isCropperOpen, setIsCropperOpen] = useState(false); // Cropper modal open state
   const [nameError, setNameError] = useState(false); // State for task name error
 
   // Toggle between horizontal and vertical step display
