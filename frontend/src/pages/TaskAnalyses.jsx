@@ -27,7 +27,6 @@ function TaskAnalyses({ token }) {
   const [stepNames, setStepNames] = useState([]); // Array to keep track of the step names
   const [stepTimes, setStepTimes] = useState([]); // Array to keep track of the step times
   const [category, setCategory] = useState(""); // Variable storing category type
-  const [isCropperOpen, setIsCropperOpen] = useState(false); // Cropper modal open state
 
   // Toggle between horizontal and vertical step display
   const toggleComponentType = () => {
@@ -87,18 +86,6 @@ function TaskAnalyses({ token }) {
   // Toggle editing state for task name
   const toggleEditing = () => {
     setIsEditing(!isEditing);
-  };
-
-  // Open cropper modal
-  const handleOpenCropper = () => setIsCropperOpen(true);
-
-  // Close cropper modal
-  const handleCloseCropper = () => setIsCropperOpen(false);
-
-  // Handle crop completion with base64 image
-  const handleCropComplete = (croppedBase64) => {
-    setImage(croppedBase64); // Save the cropped image as a base64 string
-    setIsCropperOpen(false);
   };
 
   // Create a new visual support
@@ -278,19 +265,6 @@ function TaskAnalyses({ token }) {
                         uniqueID={-1}
                         imgHeight={"55vh"}
                         deleteImage={() => setImage(null)}
-                      />
-                      <Button
-                        onClick={handleOpenCropper}
-                        variant="outlined"
-                        sx={{ mt: 2 }}
-                      >
-                        Crop Image
-                      </Button>
-                      <ImageCropperModal
-                        open={isCropperOpen}
-                        onClose={handleCloseCropper}
-                        image={image}
-                        onCropComplete={handleCropComplete}
                       />
                     </Grid>
                     <Grid

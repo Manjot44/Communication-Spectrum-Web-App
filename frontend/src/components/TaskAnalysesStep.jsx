@@ -38,7 +38,7 @@ function TaskAnalysesStep ({ image, setImage, index, deleteImage, removeStep, se
         </Grid>
         <Grid item xs={12} >
           <Box style={{ backgroundColor: 'white', width: '350px', height: '350px', padding: '15px', borderTop: '1px solid #000CA4', borderLeft: '1px solid #000CA4', borderRight: '1px solid #000CA4' }}>
-            <VisualSupportImage uniqueID={index} imgHeight="35vh" image={image} setImage={setImage} deleteImage={deleteImage}/>
+            <VisualSupportImage uniqueID={index} imgHeight="95%" image={image} setImage={setImage} deleteImage={deleteImage}/>
           </Box>
         </Grid>
         <Grid item xs={12}>
