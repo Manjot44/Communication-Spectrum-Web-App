@@ -68,9 +68,17 @@ function RecentSupportsBox({
             height: "600px",
           }}
         >
-          <Grid container spacing={2} alignItems="stretch">
-            {supportData &&
-              supportData.map((support) => (
+          {supportData.length === 0 ? ( // Check if there are no supports
+            <Typography
+              variant="body1"
+              align="center"
+              style={{ marginTop: "20px", color: "#666" }}
+            >
+              {profileData.name} has no recent supports. Create some!
+            </Typography>
+          ) : (
+            <Grid container spacing={2} alignItems="stretch">
+              {supportData.map((support) => (
                 <Grid item key={support.support_id} xs={12} sm={6} md={4}>
                   <RecentSupports
                     profileData={support}
@@ -79,7 +87,8 @@ function RecentSupportsBox({
                   />
                 </Grid>
               ))}
-          </Grid>
+            </Grid>
+          )}
         </div>
       </Card>
 
