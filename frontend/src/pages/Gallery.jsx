@@ -9,7 +9,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import NotificationPopup from "../components/NotificationPopup";
-import { useNotification } from "../services/notificationService"; // Import the hook
+import { useNotification } from "../services/notificationService";
+import ConfirmationModal from "../components/ConfirmationModal"; // Import the ConfirmationModal
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -19,8 +20,9 @@ function Gallery({ token }) {
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageToDelete, setImageToDelete] = useState(null); // State to store the image to delete
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to control confirm modal
 
-  // Use notification service
   const { notify, showNotification, notificationMessage } = useNotification();
 
   // Fetch images
@@ -71,24 +73,31 @@ function Gallery({ token }) {
     }
   };
 
-  // Delete image
-  const deleteImage = async (img_id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this image?"
-    );
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:5005/delete_image/${img_id}`, {
+  // Open confirmation modal before deleting
+  const confirmDeleteImage = (img_id) => {
+    setImageToDelete(img_id);
+    setIsConfirmModalOpen(true);
+  };
+
+  // Confirm deletion of the image
+  const deleteImage = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:5005/delete_image/${imageToDelete}`,
+        {
           headers: {
             Authorization: token,
           },
-        });
-        setImages(images.filter((img) => img.img_id !== img_id));
-        notify("Image deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting image:", error);
-        notify("An error occurred while deleting the image.");
-      }
+        }
+      );
+      setImages(images.filter((img) => img.img_id !== imageToDelete));
+      notify("Image deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      notify("An error occurred while deleting the image.");
+    } finally {
+      setIsConfirmModalOpen(false);
+      setImageToDelete(null);
     }
   };
 
@@ -153,7 +162,7 @@ function Gallery({ token }) {
                   <GalleryPhotoComponent
                     key={image.img_id}
                     image={image.url}
-                    onDelete={() => deleteImage(image.img_id)}
+                    onDelete={() => confirmDeleteImage(image.img_id)} // Use confirmDeleteImage instead of deleteImage
                     onClick={() => setSelectedImage(image.url)}
                   />
                 ))}
@@ -199,6 +208,15 @@ function Gallery({ token }) {
             </div>
           </div>
         )}
+
+        {/* Confirmation Modal for Deletion */}
+        <ConfirmationModal
+          open={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={deleteImage}
+          message="Are you sure you want to delete this image?"
+          description={"This action cannot be undone."}
+        />
 
         {/* Notification Popup */}
         {showNotification && (

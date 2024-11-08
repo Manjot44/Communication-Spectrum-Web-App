@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
   TextField,
-  Avatar,
   Modal,
   Box,
   Card,
@@ -23,12 +22,6 @@ import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import NotificationPopup from "../components/NotificationPopup.jsx";
 
 // Styles
-const avatarStyle = {
-  width: "100px",
-  height: "100px",
-  margin: "0 auto",
-  cursor: "pointer",
-};
 
 const modalStyle = {
   position: "absolute",

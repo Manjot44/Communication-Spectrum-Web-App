@@ -8,6 +8,7 @@ const avatarStyle = {
   height: "100px",
   margin: "0 auto",
   cursor: "pointer",
+  border: "0.2px solid lightgray",
 };
 
 function SupportSnapshot({
