@@ -7,6 +7,10 @@ import axios from "axios";
 import AddPhotoModal from "../components/AddPhotoModal";
 import CloseIcon from "@mui/icons-material/Close";
 import "../App.css";
+import LoadingSpinner from "../components/LoadingSpinner";
+import NotificationPopup from "../components/NotificationPopup";
+import { useNotification } from "../services/notificationService";
+import ConfirmationModal from "../components/ConfirmationModal"; // Import the ConfirmationModal
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -16,6 +20,10 @@ function Gallery({ token }) {
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageToDelete, setImageToDelete] = useState(null); // State to store the image to delete
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to control confirm modal
+
+  const { notify, showNotification, notificationMessage } = useNotification();
 
   // Fetch images
   useEffect(() => {
@@ -31,16 +39,16 @@ function Gallery({ token }) {
         );
         setImages(response.data.images);
       } catch (err) {
-        alert(err.response.data.error);
+        notify("Failed to fetch images.");
       }
     };
     fetchImages();
-  }, [profileID, token, open]);
+  }, [profileID, token, open, notify]);
 
   // Add new image
   const addImage = async () => {
     if (image === "") {
-      alert("Please Upload a File");
+      notify("Please upload a file.");
     } else {
       try {
         await axios.post(
@@ -52,56 +60,83 @@ function Gallery({ token }) {
             },
           }
         );
-        alert("Image added successfully");
-        setOpen(false);
         setImages((prevImages) => [
           ...prevImages,
           { img_id: Date.now(), url: image },
         ]);
+        notify("Image added successfully!");
+        setOpen(false);
       } catch (error) {
         console.error("Error adding image:", error);
-        alert("An error occurred while adding the image.");
+        notify("An error occurred while adding the image.");
       }
     }
   };
 
-  // Delete image
-  const deleteImage = async (img_id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this image?"
-    );
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:5005/delete_image/${img_id}`, {
+  // Open confirmation modal before deleting
+  const confirmDeleteImage = (img_id) => {
+    setImageToDelete(img_id);
+    setIsConfirmModalOpen(true);
+  };
+
+  // Confirm deletion of the image
+  const deleteImage = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:5005/delete_image/${imageToDelete}`,
+        {
           headers: {
             Authorization: token,
           },
-        });
-        setImages(images.filter((img) => img.img_id !== img_id));
-      } catch (error) {
-        console.error("Error deleting image:", error);
-        alert("An error occurred while deleting the image.");
-      }
+        }
+      );
+      setImages(images.filter((img) => img.img_id !== imageToDelete));
+      notify("Image deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      notify("An error occurred while deleting the image.");
+    } finally {
+      setIsConfirmModalOpen(false);
+      setImageToDelete(null);
     }
   };
 
   const closeModal = () => setSelectedImage(null);
 
-  if (!images) return <div>Loading...</div>;
+  if (!images) return <LoadingSpinner />;
 
   return (
     <>
       <Navbar profileID={profileID} />
-      <div class="page-wrapper-style">
+      <div className="page-wrapper-style">
         <br />
-        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <Typography 
-            variant="h3" 
-            sx={{ fontFamily: "Poppins", color: "#000CA4", position: 'absolute', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}
+        <Box
+          sx={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: "Poppins",
+              color: "#000CA4",
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              textAlign: "center",
+            }}
           >
             <b>Gallery</b>
           </Typography>
-          <Button sx={{ ml: 'auto', backgroundColor:"#ff7c33" }} onClick={handleOpen} variant="contained">
+          <Button
+            sx={{ ml: "auto", backgroundColor: "#ff7c33" }}
+            onClick={handleOpen}
+            variant="contained"
+          >
             + Add Photo
           </Button>
         </Box>
@@ -127,8 +162,8 @@ function Gallery({ token }) {
                   <GalleryPhotoComponent
                     key={image.img_id}
                     image={image.url}
-                    onDelete={() => deleteImage(image.img_id)}
-                    onClick={() => setSelectedImage(image.url)} // Set the selected image on click
+                    onDelete={() => confirmDeleteImage(image.img_id)} // Use confirmDeleteImage instead of deleteImage
+                    onClick={() => setSelectedImage(image.url)}
                   />
                 ))}
             </Grid>
@@ -150,7 +185,7 @@ function Gallery({ token }) {
               justifyContent: "center",
               zIndex: 1000,
             }}
-            onClick={closeModal} // Close on overlay click
+            onClick={closeModal}
           >
             <div style={{ position: "relative" }}>
               <img
@@ -172,6 +207,24 @@ function Gallery({ token }) {
               </IconButton>
             </div>
           </div>
+        )}
+
+        {/* Confirmation Modal for Deletion */}
+        <ConfirmationModal
+          open={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={deleteImage}
+          message="Are you sure you want to delete this image?"
+          description={"This action cannot be undone."}
+        />
+
+        {/* Notification Popup */}
+        {showNotification && (
+          <NotificationPopup
+            message={notificationMessage}
+            duration={5000}
+            onClose={() => notify("")}
+          />
         )}
       </div>
     </>

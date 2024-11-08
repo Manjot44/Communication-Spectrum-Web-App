@@ -1,24 +1,25 @@
-import React from 'react';
-import axios from 'axios';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import EnterAccDetails from './pages/EnterAccDetails';
-import UserManage from './pages/UserManage';
-import EnterUserDetails from './pages/EnterUserDetails';
-import Gallery from './pages/Gallery';
-import TaskAnalyses from './pages/TaskAnalyses.jsx';
-import DailySchedules from './pages/DailySchedules.jsx';
-import WeeklyCalendars from './pages/WeeklyCalendars.jsx';
-import SocialStories from './pages/SocialStories.jsx';
-import EnvironmentalSupports from './pages/EnvironmentalSupports.jsx';
-import ChoiceBoards from './pages/ChoiceBoards.jsx';
-import FirstThen from './pages/FirstThen.jsx';
-import CreateChoiceBoard from './pages/CreateChoiceBoard.jsx';
-import TemplateChoice from './pages/TemplateChoice.jsx';
+import React from "react";
+import axios from "axios";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import EnterAccDetails from "./pages/EnterAccDetails";
+import UserManage from "./pages/UserManage";
+import EnterUserDetails from "./pages/EnterUserDetails";
+import Gallery from "./pages/Gallery";
+import TaskAnalyses from "./pages/TaskAnalyses.jsx";
+import DailySchedules from "./pages/DailySchedules.jsx";
+import WeeklyCalendars from "./pages/WeeklyCalendars.jsx";
+import SocialStories from "./pages/SocialStories.jsx";
+import EnvironmentalSupports from "./pages/EnvironmentalSupports.jsx";
+import ChoiceBoards from "./pages/ChoiceBoards.jsx";
+import FirstThen from "./pages/FirstThen.jsx";
+import CreateChoiceBoard from "./pages/CreateChoiceBoard.jsx";
+import TemplateChoice from "./pages/TemplateChoice.jsx";
+import LoadingSpinner from "./components/LoadingSpinner.jsx";
 
 // ProtectedRoute component to handle route protection
 const ProtectedRoute = ({
@@ -27,7 +28,7 @@ const ProtectedRoute = ({
   token,
   setTokenFunc,
 }) => {
-  if (isAuth === null) return <div>Loading...</div>;
+  if (isAuth === null) return <LoadingSpinner></LoadingSpinner>;
   if (!isAuth) return <Navigate to="/" />;
   return <Component token={token} setTokenFunc={setTokenFunc} />;
 };
@@ -69,28 +70,172 @@ function App() {
   }, []);
 
   // Show a loading state while checking authentication
-  if (isAuth === null) return <div>Loading...</div>;
+  if (isAuth === null) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login setTokenFunc={updateToken} />} /> {/* First screen person will go to is login */}
-          <Route path="/register" element={<Register setTokenFunc={updateToken} />} />
-          <Route path="/home/:profileID" element={<ProtectedRoute element={Home} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/enterAccDetails" element={<ProtectedRoute element={EnterAccDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/UserManage" element={<ProtectedRoute element={UserManage} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/AddUser" element={<ProtectedRoute element={EnterUserDetails} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/Gallery/:profileID" element={<ProtectedRoute element={Gallery} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/taskanalyses/:profileID" element={<ProtectedRoute element={TaskAnalyses} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/dailyschedules/:profileID" element={<ProtectedRoute element={DailySchedules} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/weeklycalendars/:profileID" element={<ProtectedRoute element={WeeklyCalendars} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/socialstories/:profileID" element={<ProtectedRoute element={SocialStories} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/envirsupports/:profileID" element={<ProtectedRoute element={EnvironmentalSupports} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/choiceboards/:profileID" element={<ProtectedRoute element={ChoiceBoards} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/createChoiceBoard/:profileID" element={<ProtectedRoute element={CreateChoiceBoard} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/firstthen/:profileID" element={<ProtectedRoute element={FirstThen} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
-          <Route path="/chooseTemplate/:profileID" element={<ProtectedRoute element={TemplateChoice} isAuth={isAuth} token={token} setTokenFunc={updateToken} />} />
+          <Route path="/" element={<Login setTokenFunc={updateToken} />} />{" "}
+          {/* First screen person will go to is login */}
+          <Route
+            path="/register"
+            element={<Register setTokenFunc={updateToken} />}
+          />
+          <Route
+            path="/home/:profileID"
+            element={
+              <ProtectedRoute
+                element={Home}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/enterAccDetails"
+            element={
+              <ProtectedRoute
+                element={EnterAccDetails}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/UserManage"
+            element={
+              <ProtectedRoute
+                element={UserManage}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/AddUser"
+            element={
+              <ProtectedRoute
+                element={EnterUserDetails}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/Gallery/:profileID"
+            element={
+              <ProtectedRoute
+                element={Gallery}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/taskanalyses/:profileID"
+            element={
+              <ProtectedRoute
+                element={TaskAnalyses}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/dailyschedules/:profileID"
+            element={
+              <ProtectedRoute
+                element={DailySchedules}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/weeklycalendars/:profileID"
+            element={
+              <ProtectedRoute
+                element={WeeklyCalendars}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/socialstories/:profileID"
+            element={
+              <ProtectedRoute
+                element={SocialStories}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/envirsupports/:profileID"
+            element={
+              <ProtectedRoute
+                element={EnvironmentalSupports}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/choiceboards/:profileID"
+            element={
+              <ProtectedRoute
+                element={ChoiceBoards}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/createChoiceBoard/:profileID"
+            element={
+              <ProtectedRoute
+                element={CreateChoiceBoard}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/firstthen/:profileID"
+            element={
+              <ProtectedRoute
+                element={FirstThen}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/chooseTemplate/:profileID"
+            element={
+              <ProtectedRoute
+                element={TemplateChoice}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </LocalizationProvider>

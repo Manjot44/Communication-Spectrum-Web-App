@@ -6,10 +6,9 @@ import {
   Typography,
   Button,
   TextField,
-  Avatar,
   Modal,
   Box,
-  Card
+  Card,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
@@ -19,16 +18,11 @@ import SupportSnapshot from "../components/SupportSnapshot.jsx";
 import RecentSupports from "../components/RecentSupports.jsx";
 import RecentSupportsBox from "../components/RecentSupportsBox.jsx";
 import "../App.css";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
+import NotificationPopup from "../components/NotificationPopup.jsx";
 
 // Styles
-const avatarStyle = {
-  width: "100px",
-  height: "100px",
-  margin: "0 auto",
-  cursor: "pointer", // shows cursor hand for clickable objects
-};
 
-// Adjust modal style for improved sizing
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -51,6 +45,8 @@ function Home({ token, setTokenFunc }) {
   const [openEditDetailsModal, setOpenEditDetailsModal] = useState(false);
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [supportData, setSupportData] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -107,7 +103,8 @@ function Home({ token, setTokenFunc }) {
         ...prevData,
         profile_pic: newProfilePic,
       }));
-      alert("Profile picture updated successfully!");
+      setNotificationMessage("Profile picture updated successfully!");
+      setShowNotification(true);
     } catch (error) {
       console.error("Error updating profile picture:", error);
       alert("Failed to update profile picture.");
@@ -120,14 +117,50 @@ function Home({ token, setTokenFunc }) {
     setOpenEditDetailsModal(true);
   };
 
-  if (!profileData) return <div>Loading...</div>;
+  // New function to handle saving profile changes
+  const handleSaveProfile = async (updatedData) => {
+    try {
+      await axios.put(
+        `http://localhost:5005/update_user_profile/${profileID}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setProfileData((prevData) => ({
+        ...prevData,
+        ...updatedData,
+      }));
+      setNotificationMessage("Profile updated successfully!");
+      setShowNotification(true);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile.");
+    }
+  };
+
+  if (!profileData) return <LoadingSpinner />;
 
   return (
     <>
       <Navbar profileID={profileID} />
-      <div class="page-wrapper-style">
+      {showNotification && (
+        <NotificationPopup
+          message={notificationMessage}
+          duration={5000}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
+      <div className="page-wrapper-style">
         <br />
-        <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: "Poppins", color: "#000CA4" }}>
+        <Typography
+          variant="h3"
+          align="center"
+          gutterBottom
+          style={{ fontFamily: "Poppins", color: "#000CA4" }}
+        >
           <b>Client Portal</b>
         </Typography>
         <VisualSupportTypes profileID={profileID} />
@@ -144,12 +177,15 @@ function Home({ token, setTokenFunc }) {
               setOpenEditModal={setOpenEditModal}
               handleProfilePictureClick={handleProfilePictureClick}
               handleProfilePictureUpload={handleProfilePictureUpload}
+              handleSaveProfile={handleSaveProfile} // Pass handleSaveProfile to SupportSnapshot
             />
           </Grid>
           <Grid item xs={12} md={9}>
             <RecentSupportsBox
               profileData={profileData}
               supportData={supportData}
+              token={token}
+              setSupportData={setSupportData}
             />
           </Grid>
         </Grid>

@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from "@mui/material/IconButton";
-import "../App.css"
+import "../App.css";
+import ImageCropperModal from "../components/ImageCropperModal";
+import CropIcon from '@mui/icons-material/Crop';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
-function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage }) {  
+function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage }) {
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -18,6 +23,18 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage 
   const handleDivClick = () => {
     document.getElementById(`fileInput-${uniqueID}`).click();
   };
+  
+  // Open cropper modal
+  const handleOpenCropper = () => setIsCropperOpen(true);
+
+  // Close cropper modal
+  const handleCloseCropper = () => setIsCropperOpen(false);
+
+  // Handle crop completion with base64 image
+  const handleCropComplete = (croppedBase64) => {
+    setImage(croppedBase64); // Save the cropped image as a base64 string
+    setIsCropperOpen(false);
+  };
 
   return (
     <>
@@ -29,7 +46,7 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage 
       }}
       onClick={handleDivClick}
     >
-      {!image && 'Click to select an image for Visual Support'}
+      {!image && <AddPhotoAlternateIcon style={{ fontSize: 100, color: '#ccc' }} />}
       <input
         type="file"
         id={`fileInput-${uniqueID}`}
@@ -44,6 +61,19 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage 
     >
       <DeleteIcon />
     </IconButton>
+    <IconButton
+      aria-label="delete"
+      onClick={handleOpenCropper}
+      style={{ color: "#5A89f7" }}
+    >
+      <CropIcon />
+    </IconButton>
+    <ImageCropperModal
+      open={isCropperOpen}
+      onClose={handleCloseCropper}
+      image={image}
+      onCropComplete={handleCropComplete}
+    />
     </>
   );
 }

@@ -37,17 +37,42 @@ export const checkClientAuth = async (email, profileID) => {
 
 export const getEmailFromAuthorization = async (authorization) => {
   try {
-    const token = authorization.replace("Bearer ", "");
+    if (!authorization) {
+      console.log("No Authorization header provided.");
+      throw new AccessError("Authorization header is required.");
+    }
+
+    let token = authorization;
+
+    // Check if the token starts with "Bearer " and remove it if necessary
+    if (authorization.startsWith("Bearer ")) {
+      token = authorization.replace("Bearer ", "");
+    }
+    // } else {
+    //   console.log(
+    //     "Warning: Authorization token does not start with 'Bearer '. Token:",
+    //     authorization
+    //   );
+    // }
+
+    // Decode the token and extract the email
     const { email } = jwt.verify(token, JWT_SECRET);
+    // console.log("Extracted email from token:", email);
+
+    // Validate email against the Professionals table
     const { rows } = await pool.query(
       'SELECT * FROM "Professionals" WHERE email = $1',
       [email]
     );
+
     if (rows.length !== 1) {
+      console.log("Invalid token: Email not found in database:", email);
       throw new AccessError("Invalid token");
     }
+
     return email;
-  } catch {
+  } catch (error) {
+    console.log("Token decoding or validation failed:", error.message);
     throw new AccessError("Invalid token");
   }
 };
@@ -161,6 +186,36 @@ export const create_user = async (
       const result = await pool.query(queryText, values);
       const user_id = result.rows[0].user_id;
       resolve(user_id);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const update_user_profile = async (
+  profileID,
+  name,
+  snapshot,
+  interests,
+  commEnv
+) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const queryText = `
+        UPDATE "SupportUsers"
+        SET name = $2,
+            snapshot = $3,
+            interests = $4,
+            comm_env = $5
+        WHERE user_id = $1;
+      `;
+      const values = [profileID, name, snapshot, interests, commEnv];
+      const result = await pool.query(queryText, values);
+
+      if (result.rowCount === 0) {
+        throw new InputError("Profile update failed: user not found.");
+      }
+      resolve();
     } catch (error) {
       reject(error);
     }
@@ -383,7 +438,17 @@ export const new_support = async (
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
           RETURNING support_id;
         `;
-        const supportResult = await pool.query(supportQuery, [text, image, value, stepImages, stepNames, stepTimes, category, isHorizontal, email]);
+        const supportResult = await pool.query(supportQuery, [
+          text,
+          image,
+          value,
+          stepImages,
+          stepNames,
+          stepTimes,
+          category,
+          isHorizontal,
+          email,
+        ]);
         const support_id = supportResult.rows[0].support_id;
 
         const insertAccessQuery = `
@@ -399,7 +464,7 @@ export const new_support = async (
     } catch (error) {
       reject(error);
     }
-  })
+  });
 };
 
 export const get_client_support = async (email, profileID) => {
@@ -425,3 +490,54 @@ export const get_client_support = async (email, profileID) => {
   });
 };
 
+export const delete_support = async (email, supportID) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      console.log(
+        `Checking authorization for user ${email} to delete support ${supportID}`
+      );
+
+      const authQuery = `
+        SELECT h.user_id
+        FROM "hasSupport" h
+        JOIN "SupportUsers" s ON h.user_id = s.user_id
+        JOIN "Professionals" p ON p.email = $1
+        WHERE h.support_id = $2;
+      `;
+      const authResult = await pool.query(authQuery, [email, supportID]);
+
+      if (authResult.rows.length === 0) {
+        console.log(
+          `Authorization failed: User ${email} does not have permission to delete support ${supportID}`
+        );
+        return reject(
+          new AccessError("You do not have permission to delete this support")
+        );
+      }
+
+      console.log(
+        `Authorization passed for user ${email} to delete support ${supportID}`
+      );
+
+      // Delete from hasSupport table
+      await pool.query('DELETE FROM "hasSupport" WHERE support_id = $1', [
+        supportID,
+      ]);
+      console.log(`Deleted from hasSupport table for support ${supportID}`);
+
+      // Delete from Supports table
+      await pool.query('DELETE FROM "Supports" WHERE support_id = $1', [
+        supportID,
+      ]);
+      console.log(`Deleted from Supports table for support ${supportID}`);
+
+      resolve();
+    } catch (error) {
+      console.log(
+        `Error in delete_support for support ${supportID}:`,
+        error.message
+      );
+      reject(error);
+    }
+  });
+};

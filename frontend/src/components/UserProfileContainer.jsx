@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid2";
-import IconButton from "@mui/material/IconButton";
+import { Button, IconButton, Grid } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserProfileCircles from "../components/UserProfileCircles";
+import ConfirmationModal from "../components/ConfirmationModal"; // Import the ConfirmationModal
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../App.css"
+import "../App.css";
 
 function UserProfileContainer({ token }) {
   const navigate = useNavigate();
-  const [profiles, setProfileData] = React.useState([]);
+  const [profiles, setProfileData] = useState([]);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to control confirm modal
+  const [userIdToDelete, setUserIdToDelete] = useState(null); // State to store the user ID for deletion
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Fetch the profiles when the component mounts
     axios
       .get("http://localhost:5005/get_clients", {
@@ -32,30 +33,33 @@ function UserProfileContainer({ token }) {
       });
   }, [token]);
 
-  // Function to handle deletion of a profile
+  // Function to open the confirmation modal for deleting a profile
   const handleDelete = (userId) => {
-    // Confirm before deletion
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this profile?"
-    );
-    if (confirmDelete) {
-      // Send DELETE request to the backend
-      axios
-        .delete(`http://localhost:5005/admin/delete_user/${userId}`, {
+    setUserIdToDelete(userId); // Set the user ID to be deleted
+    setIsConfirmModalOpen(true); // Open the confirmation modal
+  };
+
+  // Function to confirm and delete the profile
+  const confirmDeleteProfile = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:5005/admin/delete_user/${userIdToDelete}`,
+        {
           headers: {
             Authorization: token,
           },
-        })
-        .then((response) => {
-          console.log(`Profile with ID: ${userId} deleted successfully`);
-          // Remove the deleted profile from the UI
-          setProfileData(
-            profiles.filter((profile) => profile.user_id !== userId)
-          );
-        })
-        .catch((error) => {
-          console.error("Error deleting profile:", error);
-        });
+        }
+      );
+      console.log(`Profile with ID: ${userIdToDelete} deleted successfully`);
+      // Remove the deleted profile from the UI
+      setProfileData(
+        profiles.filter((profile) => profile.user_id !== userIdToDelete)
+      );
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+    } finally {
+      setIsConfirmModalOpen(false); // Close the modal
+      setUserIdToDelete(null); // Reset the user ID
     }
   };
 
@@ -66,7 +70,10 @@ function UserProfileContainer({ token }) {
 
   return (
     <>
-      <div class="d-flex justify-content-center" style={{ display: "flex" }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ display: "flex" }}
+      >
         <div style={{ width: "85%" }}>
           <Grid container spacing={2}>
             {profiles &&
@@ -82,22 +89,28 @@ function UserProfileContainer({ token }) {
                   />
                   <IconButton
                     aria-label="delete"
-                    onClick={() => handleDelete(profile.user_id)}
+                    onClick={() => handleDelete(profile.user_id)} // Trigger custom delete modal
                     style={{ marginLeft: "10px", color: "red" }}
                   >
                     <DeleteIcon />
                   </IconButton>
                 </div>
               ))}
-            <Button
-              onClick={handleAddUser}
-              class="add-user-button"
-            >
+            <Button onClick={handleAddUser} className="add-user-button">
               +
             </Button>
           </Grid>
         </div>
       </div>
+
+      {/* Confirmation Modal for Deletion */}
+      <ConfirmationModal
+        open={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)} // Close modal on cancel
+        onConfirm={confirmDeleteProfile} // Confirm delete action
+        message="Are you sure you want to delete this profile?"
+        description="This action cannot be undone. The profile will be permanently deleted."
+      />
     </>
   );
 }

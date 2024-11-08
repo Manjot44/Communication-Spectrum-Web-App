@@ -40,7 +40,7 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
           {/* Inside Grid */}
           <Grid container spacing={0}>
             <Grid item xs={12} md={9} style={{ backgroundColor: 'white' }}>
-              <Box sx={{ height: '215px', width: '350px' }} style={{ padding: '0 15px', alignItems: "center", justifyContent: "center", borderRadius: '0 0 0 15px', borderBottom: '1px solid #000CA4', borderLeft: '1px solid #000CA4' }}>
+              <Box sx={{ height: '230px', width: '350px' }} style={{ padding: '0 15px', alignItems: "center", justifyContent: "center", borderRadius: '0 0 0 15px', borderBottom: '1px solid #000CA4', borderLeft: '1px solid #000CA4' }}>
                   <br/>
                   <TextField
                     label="Step Name"
@@ -70,7 +70,7 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
               </Box>
             </Grid>
             <Grid item xs={12} md={3} style={{ backgroundColor: 'white' }}>
-              <Box sx={{ height: '215px', width: '200px' }} style={{ padding: '0 5px', borderRadius: '0 0 15px 0', borderBottom: '1px solid #000CA4', borderRight: '1px solid #000CA4' }}>
+              <Box sx={{ height: '230px', width: '200px' }} style={{ padding: '0 5px', borderRadius: '0 0 15px 0', borderBottom: '1px solid #000CA4', borderRight: '1px solid #000CA4' }}>
                 <br />
                 <VisualSupportImage uniqueID={index} imgHeight="65%" image={image} setImage={setImage} deleteImage={deleteImage}/>
                 <br />

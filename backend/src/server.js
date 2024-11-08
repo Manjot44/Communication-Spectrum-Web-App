@@ -10,9 +10,11 @@ import {
   getEmailFromAuthorization,
   login,
   register,
+  checkClientAuth,
   complete_reg,
   create_user,
   create_client,
+  delete_support,
   get_clients,
   get_client,
   get_images,
@@ -20,6 +22,7 @@ import {
   delete_user,
   delete_image,
   updateProfilePicture,
+  update_user_profile,
   new_support,
   get_client_support,
 } from "./service";
@@ -52,6 +55,7 @@ const catchErrors = (fn) => async (req, res) => {
 ***************************************************************/
 
 const authed = (fn) => async (req, res) => {
+  // console.log("Authorization header:", req.header("Authorization"));
   const email = await getEmailFromAuthorization(req.header("Authorization"));
   await fn(req, res, email);
 };
@@ -129,6 +133,26 @@ app.post(
       );
       await create_client(email, user_id);
       return res.json({});
+    })
+  )
+);
+
+app.put(
+  "/update_user_profile/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      const { name, snapshot, interests, commEnv } = req.body;
+
+      // Ensure the user has access to modify this profile
+      const authRows = await checkClientAuth(email, profileID);
+      if (authRows.length === 0) {
+        throw new AccessError("You do not have access to this client.");
+      }
+
+      // Update the profile
+      await update_user_profile(profileID, name, snapshot, interests, commEnv);
+      return res.json({ message: "Profile updated successfully" });
     })
   )
 );
@@ -228,10 +252,10 @@ app.post(
         stepNames,
         stepTimes,
         category,
-        isHorizontal
+        isHorizontal,
       } = req.body;
       await new_support(
-        email, 
+        email,
         profileID,
         text,
         image,
@@ -253,6 +277,38 @@ app.get(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       return res.json({ client: await get_client_support(email, profileID) });
+    })
+  )
+);
+
+app.delete(
+  "/delete_support/:supportID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      // console.log(
+      //   `Delete request received for supportID: ${req.params.supportID} by user: ${email}`
+      // );
+
+      const { supportID } = req.params;
+      if (!supportID) {
+        console.log("No support ID provided in request.");
+        return res.status(400).json({ error: "Support ID is required" });
+      }
+
+      try {
+        await delete_support(email, supportID);
+        console
+          .log
+          // `Support ${supportID} deleted successfully by user ${email}`
+          ();
+        return res.json({ message: "Support deleted successfully" });
+      } catch (error) {
+        console.log(
+          `Failed to delete support ${supportID} for user ${email}:`,
+          error.message
+        );
+        throw error;
+      }
     })
   )
 );
