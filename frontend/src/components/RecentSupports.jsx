@@ -1,8 +1,23 @@
-import React from "react";
-import { Card, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Card, Typography, IconButton, Box } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ConfirmationModal from "./ConfirmationModal";
 import "../App.css";
 
-function RecentSupports({ profileData }) {
+function RecentSupports({ profileData, token, onDelete }) {
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  // Open confirmation modal
+  const handleDeleteClick = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  // Confirm deletion
+  const confirmDeleteSupport = () => {
+    onDelete(profileData.support_id); // Call the onDelete function passed from RecentSupportsBox
+    setIsConfirmModalOpen(false); // Close the modal
+  };
+
   return (
     <Card
       className="recent-supports-style"
@@ -39,12 +54,42 @@ function RecentSupports({ profileData }) {
         )}
       </div>
 
-      <Typography
-        variant="body1"
-        style={{ marginTop: "10px", fontSize: "1.2rem" }}
+      {/* Title and delete button container */}
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        style={{ marginTop: "10px", position: "relative" }}
       >
-        {profileData.title}
-      </Typography>
+        <Typography
+          variant="body1"
+          style={{ fontSize: "1.2rem", textAlign: "center" }}
+        >
+          {profileData.title}
+        </Typography>
+        <IconButton
+          aria-label="delete"
+          onClick={handleDeleteClick}
+          style={{
+            color: "grey",
+            position: "absolute",
+            right: 0,
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+
+      {/* Confirmation Modal for Deletion */}
+      <ConfirmationModal
+        open={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)} // Close modal on cancel
+        onConfirm={confirmDeleteSupport} // Confirm delete action
+        message="Are you sure you want to delete this support?"
+        description="This action cannot be undone. The support will be permanently deleted."
+      />
     </Card>
   );
 }
