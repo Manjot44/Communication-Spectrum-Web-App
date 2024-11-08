@@ -10,6 +10,7 @@ import {
   getEmailFromAuthorization,
   login,
   register,
+  checkClientAuth,
   complete_reg,
   create_user,
   create_client,
@@ -20,6 +21,7 @@ import {
   delete_user,
   delete_image,
   updateProfilePicture,
+  update_user_profile,
   new_support,
   get_client_support,
 } from "./service";
@@ -133,6 +135,26 @@ app.post(
   )
 );
 
+app.put(
+  "/update_user_profile/:profileID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID } = req.params;
+      const { name, snapshot, interests, commEnv } = req.body;
+
+      // Ensure the user has access to modify this profile
+      const authRows = await checkClientAuth(email, profileID);
+      if (authRows.length === 0) {
+        throw new AccessError("You do not have access to this client.");
+      }
+
+      // Update the profile
+      await update_user_profile(profileID, name, snapshot, interests, commEnv);
+      return res.json({ message: "Profile updated successfully" });
+    })
+  )
+);
+
 app.post(
   "/admin/update_user_profilepicture/:profileID",
   catchErrors(
@@ -228,10 +250,10 @@ app.post(
         stepNames,
         stepTimes,
         category,
-        isHorizontal
+        isHorizontal,
       } = req.body;
       await new_support(
-        email, 
+        email,
         profileID,
         text,
         image,

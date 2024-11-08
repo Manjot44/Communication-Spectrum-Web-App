@@ -167,6 +167,36 @@ export const create_user = async (
   });
 };
 
+export const update_user_profile = async (
+  profileID,
+  name,
+  snapshot,
+  interests,
+  commEnv
+) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const queryText = `
+        UPDATE "SupportUsers"
+        SET name = $2,
+            snapshot = $3,
+            interests = $4,
+            comm_env = $5
+        WHERE user_id = $1;
+      `;
+      const values = [profileID, name, snapshot, interests, commEnv];
+      const result = await pool.query(queryText, values);
+
+      if (result.rowCount === 0) {
+        throw new InputError("Profile update failed: user not found.");
+      }
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export const updateProfilePicture = async (profileID, profilePicture) => {
   const client = await pool.connect();
   try {
@@ -383,7 +413,17 @@ export const new_support = async (
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
           RETURNING support_id;
         `;
-        const supportResult = await pool.query(supportQuery, [text, image, value, stepImages, stepNames, stepTimes, category, isHorizontal, email]);
+        const supportResult = await pool.query(supportQuery, [
+          text,
+          image,
+          value,
+          stepImages,
+          stepNames,
+          stepTimes,
+          category,
+          isHorizontal,
+          email,
+        ]);
         const support_id = supportResult.rows[0].support_id;
 
         const insertAccessQuery = `
@@ -399,7 +439,7 @@ export const new_support = async (
     } catch (error) {
       reject(error);
     }
-  })
+  });
 };
 
 export const get_client_support = async (email, profileID) => {
@@ -424,4 +464,3 @@ export const get_client_support = async (email, profileID) => {
     }
   });
 };
-
