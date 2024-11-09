@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import "../App.css";
 
-function EditTitleComponent({ text, changeText, isEditing, setIsEditing, nameError, setNameError }) {
+function EditTitleComponent({ text, changeText, isEditing, setIsEditing, nameError, setNameError, defaultText, errorMsg }) {
 	// Handle text change for the task analysis name
   const handleTextChange = (event) => {
 		changeText(event.target.value);
@@ -37,7 +37,7 @@ function EditTitleComponent({ text, changeText, isEditing, setIsEditing, nameErr
 										fontFamily: "Poppins",
 									}}
 								>
-									Insert Task Name Here
+									{defaultText}
 								</span>
 							)}
 						</b>
@@ -49,7 +49,7 @@ function EditTitleComponent({ text, changeText, isEditing, setIsEditing, nameErr
 							variant="body2"
 							style={{ color: "red" }}
 						>
-							Please enter a task name
+							{errorMsg}
 						</Typography>
 					)}
 				</Grid>

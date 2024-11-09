@@ -150,11 +150,15 @@ function TaskAnalyses({ token }) {
                       setIsEditing={setIsEditing}
                       nameError={nameError}
                       setNameError={setNameError}
+                      defaultText="Insert Task Name"
+                      errorMsg="Please enter a task name"
                     />
                     <Button onClick={toggleComponentType}>
                       Toggle Visual Style
                     </Button>
-                    <Button onClick={addStep}>+ Add Step</Button>
+                    <Button onClick={addStep}>
+                      + Add Step
+                    </Button>
                   </Typography>
                   <Grid container spacing={2} style={{ padding: "2%" }}>
                     <Grid item xs={12} md={6}>
