@@ -3,16 +3,12 @@ import Navbar from "../components/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
 import "../App.css";
-import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import TaskAnalysesStep from "../components/TaskAnalysesStep";
 import VisualSupportImage from "../components/VisualSupportImage";
-import ImageCropperModal from "../components/ImageCropperModal";
-import DropdownComponent from "../components/DropdownComponent";
 import axios from "axios";
 import dayjs from "dayjs";
 import TaskAnalysesStepHorizontal from "../components/TaskAnalysesStepHorizontal";
+import SelectDateCategoryComponent from "../components/SelectDateCategoryComponent.jsx";
 
 function TaskAnalyses({ token }) {
   const navigate = useNavigate();
@@ -20,7 +16,7 @@ function TaskAnalyses({ token }) {
   const [text, setText] = useState(""); // Name of the Visual Support
   const [isEditing, setIsEditing] = useState(false);
   const [image, setImage] = useState(null);
-  const [value, setValue] = useState(dayjs()); // Date of the Visual Support
+  const [date, setDate] = useState(dayjs()); // Date of the Visual Support
   const [steps, setSteps] = useState([]); // Array to track steps with unique IDs
   const [stepImages, setStepImages] = useState([]); // Array to store images for each step
   const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
@@ -102,7 +98,7 @@ function TaskAnalyses({ token }) {
         {
           text,
           image, // This is now a base64 image string
-          value,
+          date,
           stepImages,
           stepNames,
           stepTimes,
@@ -128,93 +124,13 @@ function TaskAnalyses({ token }) {
       <div className="page-wrapper-style" style={{ padding: "0 1%" }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
-            <Card
-              className="task-analyses-create-options"
-              style={{ height: "87vh" }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  style={{ fontFamily: "Poppins" }}
-                >
-                  <b>Select Task Date</b>
-                </Typography>
-
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <div
-                    className="d-flex align-items-center"
-                    style={{ height: "55vh", width: "auto" }}
-                  >
-                    <DateCalendar
-                      value={value}
-                      onChange={(newValue) => setValue(newValue)}
-                    />
-                  </div>
-                </LocalizationProvider>
-                <br />
-                <Typography
-                  variant="h5"
-                  component="div"
-                  style={{ fontFamily: "Poppins" }}
-                >
-                  <b>Select Task Category</b>
-                </Typography>
-
-                <div
-                  className="d-flex align-items-center"
-                  style={{
-                    height: "75px",
-                    backgroundColor: "white",
-                    padding: "5px",
-                  }}
-                >
-                  <DropdownComponent
-                    id="country-form"
-                    label="Select Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    options={[
-                      { value: "Self-Care", label: "Self-Care" },
-                      { value: "Routines", label: "Routines" },
-                      { value: "School", label: "School" },
-                      { value: "Work", label: "Work" },
-                      { value: "Fun Activities", label: "Fun Activities" },
-                      {
-                        value: "Emotional Regulation",
-                        label: "Emotional Regulation",
-                      },
-                      {
-                        value: "Beliefs and Practices",
-                        label: "Beliefs and Practices",
-                      },
-                      {
-                        value: "Health and Wellbeing",
-                        label: "Health and Wellbeing",
-                      },
-                      { value: "Transport", label: "Transport" },
-                      { value: "Events", label: "Events" },
-                      { value: "Places", label: "Places" },
-                      { value: "Other", label: "Other" },
-                    ]}
-                    width="100%"
-                  />
-                </div>
-
-                <br />
-                <Button
-                  variant="contained"
-                  style={{
-                    width: "100%",
-                    backgroundColor: "#26c3ba",
-                    fontFamily: "Poppins",
-                  }}
-                  onClick={handleCreate}
-                >
-                  Create Visual Support
-                </Button>
-              </CardContent>
-            </Card>
+            <SelectDateCategoryComponent
+              date={date}
+              changeDate={(newDate) => setDate(newDate)}
+              category={category}
+              changeCategory={(e) => setCategory(e.target.value)}
+              handleCreate={handleCreate}
+            />
           </Grid>
           <Grid item xs={12} md={9}>
             <Card
