@@ -5,8 +5,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvid
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import DropdownComponent from "../components/DropdownComponent";
+import { DatePicker } from "@mui/x-date-pickers";
+import VisualSupportImage from "./VisualSupportImage";
 
-function SelectDateCategoryComponent({ date, changeDate, category, changeCategory, handleCreate }) {
+function SelectDateCategoryComponent({ date, changeDate, category, changeCategory, handleCreate, image, setImage }) {
 	return (
 		<>
 			<Card
@@ -19,29 +21,42 @@ function SelectDateCategoryComponent({ date, changeDate, category, changeCategor
 						component="div"
 						style={{ fontFamily: "Poppins" }}
 					>
-						<b>Select Task Date</b>
+						<b>Select Date</b>
 					</Typography>
-
+					<br/>
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<div
-							className="d-flex align-items-center"
-							style={{ height: "55vh", width: "auto" }}
-						>
-							<DateCalendar
-								value={date}
-								onChange={changeDate}
-							/>
-						</div>
+						<DatePicker
+							label="Controlled picker"
+							value={date}
+							onChange={changeDate}
+							sx={{ width: '100%' }}
+						/>
 					</LocalizationProvider>
+					<br />
 					<br />
 					<Typography
 						variant="h5"
 						component="div"
 						style={{ fontFamily: "Poppins" }}
 					>
-						<b>Select Task Category</b>
+						<b>Select Thumbnail</b>
 					</Typography>
-
+					<br />
+					<VisualSupportImage
+						image={image}
+						setImage={setImage}
+						uniqueID={-1}
+						imgHeight={"35vh"}
+						deleteImage={() => setImage(null)}
+					/>
+					<br />
+					<Typography
+						variant="h5"
+						component="div"
+						style={{ fontFamily: "Poppins" }}
+					>
+						<b>Select Category</b>
+					</Typography>
 					<div
 						className="d-flex align-items-center"
 						style={{

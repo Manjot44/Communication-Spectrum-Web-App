@@ -14,10 +14,9 @@ import {
 import '../App.css';
 import dayjs from "dayjs";
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
-import EditTitleComponent from '../components/EditTitleComponent';
-import VisualSupportImage from '../components/VisualSupportImage';
 import ChoiceBoardStep from '../components/ChoiceBoardStep';
 import ChoiceBoardStepHorizontal from '../components/ChoiceBoardStepHorizontal';
+import TaskHeader from "../components/Taskheader.jsx";
 
 function ChoiceBoards({ token, setTokenFunc }) {
   const { profileID } = useParams();
@@ -94,6 +93,8 @@ function ChoiceBoards({ token, setTokenFunc }) {
               category={category}
               changeCategory={(e) => setCategory(e.target.value)}
               handleCreate={handleCreate}
+              image={image}
+              setImage={(image) => setImage(image)}
             />
           </Grid>
           <Grid item xs={12} md={9}>
@@ -102,48 +103,24 @@ function ChoiceBoards({ token, setTokenFunc }) {
               style={{ height: "87vh" }}
             >
               <CardContent>
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  style={{
-                    margin: "10px",
-                    fontFamily: "Poppins",
-                    color: "black",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <EditTitleComponent
-                    text={text}
-                    changeText={setText}
-                    isEditing={isEditing}
-                    setIsEditing={setIsEditing}
-                    nameError={nameError}
-                    setNameError={setNameError}
-                    defaultText="Enter Choice Board Name"
-                    errorMsg="Please enter a name for this choice board"
-                  />
-                  <Button onClick={toggleComponentType}>
-                      Toggle Visual Style
-                  </Button>
-                  <Button onClick={addChoice}>
-                    + Add Choice
-                  </Button>
-                </Typography>
+                <TaskHeader
+                  text={text}
+                  setText={setText}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  nameError={nameError}
+                  setNameError={setNameError}
+                  toggleComponentType={toggleComponentType}
+                  addStep={addChoice}
+                  defaultText="Insert Choice Board Name"
+                  errorMsg="Please enter a name for this choice board"
+                  addMsg="+ Add Choice"
+                />
                 <Grid container spacing={2} style={{ padding: "2%" }}>
-                  <Grid item xs={12} md={6}>
-                    <VisualSupportImage
-                      image={image}
-                      setImage={setImage}
-                      uniqueID={-1}
-                      imgHeight={"55vh"}
-                      deleteImage={() => setImage(null)}
-                    />
-                  </Grid>
                   <Grid
                     item
                     xs={12}
-                    md={6}
+                    md={12}
                     style={{
                       display: "flex",
                       flexWrap: "wrap",
@@ -155,7 +132,7 @@ function ChoiceBoards({ token, setTokenFunc }) {
                       isHorizontal ? (
                         <ChoiceBoardStepHorizontal
                           key={choice.id}
-                          index={index}
+                          index={`Choice ${index + 1}`}
                           image={choiceImages[index]}
                           removeStep={() => removeChoice(index, choice.id)}
                           setImage={(newImage) => updateChoiceImage(index, newImage)}
@@ -166,13 +143,14 @@ function ChoiceBoards({ token, setTokenFunc }) {
                       ) : (
                         <ChoiceBoardStep
                           key={choice.id}
-                          index={index}
+                          index={`Choice ${index + 1}`}
                           image={choiceImages[index]}
                           removeStep={() => removeChoice(index, choice.id)}
                           setImage={(newImage) => updateChoiceImage(index, newImage)}
                           deleteImage={() => deleteChoiceImageChange(index)}
                           setName={(newName) => updateChoiceName(index, newName)}
                           stepName={choiceNames[index]}
+                          label="Choice Name"
                         />
                       )
                     ))}

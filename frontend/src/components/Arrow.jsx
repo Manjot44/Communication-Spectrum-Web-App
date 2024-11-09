@@ -6,10 +6,10 @@ function Arrow() {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      margin: '0 30px',
+      margin: '0 15px',
     }}>
       <div style={{
-        width: '200px',
+        width: '50px',
         height: '12px',
         backgroundColor: '#FF7C33', 
         position: 'relative',

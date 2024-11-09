@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import SelectDateCategoryComponent from "../components/SelectDateCategoryComponent.jsx";
 import EditTitleComponent from "../components/EditTitleComponent.jsx";
 import LoadTaskSteps from "../components/LoadTaskSteps.jsx";
+import TaskHeader from "../components/Taskheader.jsx";
 
 function TaskAnalyses({ token }) {
   const navigate = useNavigate();
@@ -119,6 +120,8 @@ function TaskAnalyses({ token }) {
               category={category}
               changeCategory={(e) => setCategory(e.target.value)}
               handleCreate={handleCreate}
+              image={image}
+              setImage={(image) => setImage(image)}
             />
           </Grid>
           <Grid item xs={12} md={9}>
@@ -132,48 +135,24 @@ function TaskAnalyses({ token }) {
                   component="div"
                   style={{ fontFamily: "Poppins" }}
                 >
-                  <Typography
-                    variant="h6"
-                    gutterBottom
-                    style={{
-                      margin: "10px",
-                      fontFamily: "Poppins",
-                      color: "black",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <EditTitleComponent
-                      text={text}
-                      changeText={setText}
-                      isEditing={isEditing}
-                      setIsEditing={setIsEditing}
-                      nameError={nameError}
-                      setNameError={setNameError}
-                      defaultText="Insert Task Name"
-                      errorMsg="Please enter a task name"
-                    />
-                    <Button onClick={toggleComponentType}>
-                      Toggle Visual Style
-                    </Button>
-                    <Button onClick={addStep}>
-                      + Add Step
-                    </Button>
-                  </Typography>
+                  <TaskHeader
+                    text={text}
+                    setText={setText}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    nameError={nameError}
+                    setNameError={setNameError}
+                    toggleComponentType={toggleComponentType}
+                    addStep={addStep}
+                    defaultText="Insert Task Name"
+                    errorMsg="Please enter a task name"
+                    addMsg="+ Add Step"
+                  />
                   <Grid container spacing={2} style={{ padding: "2%" }}>
-                    <Grid item xs={12} md={6}>
-                      <VisualSupportImage
-                        image={image}
-                        setImage={setImage}
-                        uniqueID={-1}
-                        imgHeight={"55vh"}
-                        deleteImage={() => setImage(null)}
-                      />
-                    </Grid>
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      md={12}
                       style={{
                         display: "flex",
                         flexWrap: "wrap",

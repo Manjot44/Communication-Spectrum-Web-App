@@ -13,7 +13,7 @@ function ChoiceBoardStepHorizontal ({ image, setImage, index, deleteImage, remov
     <>
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12} style={{ color: 'white', backgroundColor: '#000CA4', display: 'flex', fontWeight: 'bold', height: '50px', width: '550px', justifyContent: 'center', alignItems: 'center', position: 'relative', borderRadius: '15px 15px 0 0' }}>
-          Choice {index + 1}
+          {index}
           <IconButton
               aria-label="delete"
               onClick={removeStep}
