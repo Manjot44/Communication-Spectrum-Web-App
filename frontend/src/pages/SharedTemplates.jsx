@@ -116,7 +116,7 @@ function SharedTemplates ({ token, setTokenFunc }) {
               textAlign: "center",
             }}
           >
-            <b>Shared Templates</b>
+            <b>Public Templates</b>
           </Typography>
         </Box>
 				<br />
