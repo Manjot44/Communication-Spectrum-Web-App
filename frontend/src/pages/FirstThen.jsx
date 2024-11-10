@@ -9,17 +9,12 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import dayjs from 'dayjs';
 import '../App.css';
-import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
-import FirstStep from '../components/FirstStep';
-import ThenStep from '../components/ThenStep';
 import Arrow from '../components/Arrow';
-import DropdownComponent from '../components/DropdownComponent';
+import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
+import EditTitleComponent from '../components/EditTitleComponent';
+import ChoiceBoardStep from '../components/ChoiceBoardStep';
 
 function FirstThen({ token, setTokenFunc }) {
   const { profileID } = useParams();
@@ -27,15 +22,19 @@ function FirstThen({ token, setTokenFunc }) {
   const [isEditing, setIsEditing] = useState(false);
   const [imageFirst, setImageFirst] = useState(null);
   const [imageThen, setImageThen] = useState(null);
-  const [value, setValue] = useState(dayjs());
+  const [firstName, setFirstname] = useState("");
+  const [thenName, setThenName] = useState("");
   const [category, setCategory] = useState('');
+  const [date, setDate] = useState(dayjs());
+  const [nameError, setNameError] = useState(false);
+  const [image, setImage] = useState(null);
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
-
-  const toggleEditing = () => {
-    setIsEditing(!isEditing);
+  const handleCreate = async () => {
+    if (text.trim() === "") {
+      setNameError(true); // Set error state if no name is entered
+      return;
+    }
+    // ADD PUT REQUEST HERE
   };
 
   return (
@@ -48,85 +47,76 @@ function FirstThen({ token, setTokenFunc }) {
       <br />
       <div className="page-wrapper-style" style={{ padding: '0 1%' }}>
         <Grid container spacing={3}>
-          {/* Sidebar with Date, Category */}
           <Grid item xs={12} md={3}>
-            <Card className="task-analyses-create-options" style={{ height: '87vh' }}>
-              <CardContent>
-                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>Select Task Date</b>
-                </Typography>
-                
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <div className="d-flex align-items-center" style={{ height: '55vh', width: 'auto', backgroundColor: '#f0f0f0' }}>
-                    <DateCalendar value={value} onChange={(newValue) => setValue(newValue)} style={{ color: 'black', height: '37vh', width: 'auto' }} />
-                  </div>
-                </LocalizationProvider>
-                <br />
-                <Typography variant="h7" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>Select Task Category</b>
-                </Typography>
-
-                <div className="d-flex align-items-center" style={{ height: '75px', backgroundColor: 'white', padding: '5px', backgroundColor: '#f0f0f0' }}>
-                  <DropdownComponent
-                    id="category-dropdown"
-                    label="Select Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    options={[
-                      { value: 'Self-Care', label: 'Self-Care' },
-                      { value: 'Routines', label: 'Routines' },
-                      { value: 'School', label: 'School' },
-                      { value: 'Work', label: 'Work' },
-                      { value: 'Fun Activities', label: 'Fun Activities' },
-                      { value: 'Emotional Regulation', label: 'Emotional Regulation' },
-                      { value: 'Beliefs and Practices', label: 'Beliefs and Practices' },
-                      { value: 'Health and Wellbeing', label: 'Health and Wellbeing' },
-                      { value: 'Transport', label: 'Transport' },
-                      { value: 'Events', label: 'Events' },
-                      { value: 'Places', label: 'Places' },
-                      { value: 'Other', label: 'Other' },
-                    ]}
-                    width="100%"
-                  />
-                </div>
-
-                <br />
-                <Button 
-                  variant="contained"
-                  style={{ width: '100%', backgroundColor: '#26c3ba', fontFamily: 'Poppins' }}
-                >
-                  Create Visual Support
-                </Button>
-              </CardContent>
-            </Card>
+            <SelectDateCategoryComponent
+              date={date}
+              changeDate={(newDate) => setDate(newDate)}
+              category={category}
+              changeCategory={(e) => setCategory(e.target.value)}
+              handleCreate={handleCreate}
+              image={image}
+              setImage={(image) => setImage(image)}
+            />
           </Grid>
-
           {/* First-Then Section */}
           <Grid item xs={12} md={9}>
-            <Card className="task-analyses-create-options" style={{ backgroundColor: '#f0f0f0', height: '87vh' }}>
+            <Card className="task-analyses-create-options" style={{ backgroundColor: 'white', height: '87vh' }}>
               <CardContent>
-                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <Typography variant="h6" gutterBottom style={{ margin: '10px', fontFamily: 'Poppins', color: 'black', display: 'flex', justifyContent: 'space-between' }}>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={text}
-                        onChange={handleTextChange}
-                        onBlur={toggleEditing}
-                        autoFocus
+                <EditTitleComponent
+                  text={text}
+                  changeText={setText}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  nameError={nameError}
+                  setNameError={setNameError}
+                  defaultText="Insert First-Then Support Name"
+                  errorMsg="Please enter a name for this First-Then visual support"
+                />
+                <div 
+                    class="d-flex justify-content-center align-items-center"  
+                  >
+                  <div>
+                    <Grid
+                      class="d-flex justify-content-center align-items-center" 
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        height: "75vh",
+                      }}
+                    >
+                      <ChoiceBoardStep
+                        image={imageFirst}
+                        index="First"
+                        setName={(newName) => setFirstname(newName)}
+                        setImage={(imageFirst) => setImageFirst(imageFirst)}
+                        label="First Step"
                       />
-                    ) : (
-                      <b onClick={toggleEditing} style={{ cursor: 'pointer' }}>
-                        {text || <span style={{ color: 'grey', fontFamily: 'Poppins' }}>Insert Task Name Here</span>}
-                      </b>
-                    )}
-                  </Typography>
-                  <div style={{ height: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <FirstStep image={imageFirst} setImage={setImageFirst} />
-                    <Arrow />
-                    <ThenStep image={imageThen} setImage={setImageThen} />
+                      <Arrow style={{ width: '20px' }}/>
+                      <ChoiceBoardStep
+                        image={imageThen}
+                        index="Then"
+                        setName={(newName) => setThenName(newName)}
+                        setImage={(imageThen) => setImageThen(imageThen)}
+                        label="Then Step"
+                      />
+                      {/* <ChoiceBoardStep
+                        image={imageFirst}
+                        index="First"
+                        setName={(newName) => setFirstname(newName)}
+                        setImage={(imageFirst) => setImageFirst(imageFirst)}
+                        label="First Step"
+                      />
+                      <Arrow style={{ width: '20px' }}/>
+                      <ChoiceBoardStep
+                        image={imageThen}
+                        index="Then"
+                        setName={(newName) => setThenName(newName)}
+                        setImage={(imageThen) => setImageThen(imageThen)}
+                        label="Then Step"
+                      /> */}
+                    </Grid>
                   </div>
-                </Typography>
+                </div>
               </CardContent>
             </Card>
           </Grid>

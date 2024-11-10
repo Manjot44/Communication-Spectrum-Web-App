@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
-import CreateOptionsModal from "../components/CreateOptionsModal";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Grid,
@@ -13,156 +12,150 @@ import {
 } from "@mui/material";
 // import Grid from '@mui/material/Grid2';
 import '../App.css';
-import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import dayjs from "dayjs";
+import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
+import ChoiceBoardStep from '../components/ChoiceBoardStep';
+import ChoiceBoardStepHorizontal from '../components/ChoiceBoardStepHorizontal';
+import TaskHeader from "../components/Taskheader.jsx";
 
 function ChoiceBoards({ token, setTokenFunc }) {
   const { profileID } = useParams();
   const [text, setText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [image, setImage] = useState(null);
-  const [stepImages, setStepImages] = useState(Array(5).fill(null)); // Array to store images for each step
-  const [createOptVis, setCreateOptVis] = useState(true); // Array to store images for each step
-  const navigate = useNavigate();
+  const [date, setDate] = useState(dayjs());               // Date of the Visual Support
+  const [category, setCategory] = useState("");            // Variable storing category type
+  const [nameError, setNameError] = useState(false);       // State for task name error
+  const [choices, setChoices] = useState([]);
+  const [choiceNames, setChoiceNames] = useState([]);
+  const [choiceImages, setChoiceImages] = useState([]);
+  const [isHorizontal, setIsHorizontal] = useState(false);
 
-  // Toggle VS create option
-  const toggleCreateOption = (boolView) => {
-    setCreateOptVis(boolView);
+  const handleCreate = async () => {
+    if (text.trim() === "") {
+      setNameError(true); // Set error state if no name is entered
+      return;
+    }
+    // ADD PUT REQUEST HERE
+  };
+
+  // Add new choice to choice board
+  const addChoice = () => {
+    const newChoice = { id: Date.now() };
+    setChoices([...choices, newChoice]);
+    setChoiceImages([...choiceImages, null]);
+    setChoiceNames([...choiceNames, null]);
+  };
+
+  // Remove choice from choice board
+  const removeChoice = (index, id) => {
+    setChoices(choices.filter((choice) => choice.id !== id));
+    setChoiceImages(choiceImages.filter((_, imgIndex) => imgIndex !== index));
+    setChoiceNames(choiceNames.filter((_, imgIndex) => imgIndex !== index));
   }
 
-  // Function to update image for a specific step
-  const handleStepImageChange = (index, newImage) => {
-    setStepImages((prev) => {
-      const updatedImages = [...prev];
-      updatedImages[index] = newImage;
-      return updatedImages;
-    });
+  // Update name for particular choice on choice board
+  const updateChoiceImage = (index, newImage) => {
+    const updatedImages = [...choiceImages];
+    updatedImages[index] = newImage;
+    setChoiceImages(updatedImages);
   };
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
+  // Update name for choice on choice board
+  const updateChoiceName = (index, newName) => {
+    const updatedNames = [...choiceNames];
+    updatedNames[index] = newName;
+    setChoiceNames(updatedNames);
   };
 
-  const toggleEditing = () => {
-    setIsEditing(!isEditing);
+  // Delete an image change for a specific choice
+  const deleteChoiceImageChange = (index) => {
+    const updatedImages = [...choiceImages];
+    updatedImages[index] = "";
+    setChoiceImages(updatedImages);
+  };
+
+  // Toggle between horizontal and vertical step display
+  const toggleComponentType = () => {
+    setIsHorizontal((prev) => !prev);
   };
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
       <Navbar profileID={profileID}/>
       <br />
-      <Typography variant="h4" align="center" gutterBottom>
-        {isEditing ? (
-          <input
-            type="text"
-            value={text}
-            onChange={handleTextChange}
-            onBlur={toggleEditing} // Stop editing when input loses focus
-            autoFocus
-          />
-        ) : (
-          <b onClick={toggleEditing} style={{ cursor: 'pointer' }}>
-            {text || <span style={{ color: 'grey' }}>Insert Choice Board Name Here</span>}
-          </b>
-        )}
-      </Typography>
-      <br />
-      <div class='page-wrapper-style' style={{ padding: '0 50px' }}>
+      <div class='page-wrapper-style' style={{ padding: '0 1%' }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={2.5}>
-            <Card class='task-analyses-create-options' style={{ height: '80vh' }}>
-              <CardContent>
-                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <b>Visual Support Options</b>
-                </Typography>
-                <br />
-                <TextField
-                    label="Search Assets/Shapes"
-                    variant="filled"
-                    fullWidth
-                    style={{
-                      marginBottom: "20px",
-                      backgroundColor: "white",
-                    }}
-                />
-                <br/>
-
-                {/* <VisualSupportImage /> */}
-                <br />
-                <Button 
-                  variant="contained"
-                  style={{ width: '100%', height: '10vh', backgroundColor: '#6b4bef', fontFamily: 'Poppins' }}
-                >
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={4}>
-                      <PhotoCameraBackIcon style={{ height: '7vh', width: '7vh' }}/>
-                    </Grid>
-                    <Grid item xs={12} md={8} class="d-flex align-items-center justify-content-center">
-                      <h5>Pick From Gallery</h5>
-                    </Grid>
-                  </Grid>
-                </Button>
-                <br />
-                <br />
-                <Button 
-                  variant="contained"
-                  style={{ width: '100%', height: '10vh', backgroundColor: '#6b4bef', fontFamily: 'Poppins' }}
-                >
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={4}>
-                      <FormatColorTextIcon style={{ height: '7vh', width: '7vh' }}/>
-                    </Grid>
-                    <Grid item xs={12} md={8} class="d-flex align-items-center justify-content-center">
-                      <h5>Insert Text</h5>
-                    </Grid>
-                  </Grid>
-                </Button>
-                <br/>
-                <br/>
-                <Button 
-                  variant="contained"
-                  style={{ width: '100%', backgroundColor: '#26c3ba', fontFamily: 'Poppins' }}
-                  onClick={() => {navigate(`/createChoiceBoard/${profileID}`)}}
-                >
-                  Create Visual Support
-                </Button>
-              </CardContent>
-            </Card>
+          <Grid item xs={12} md={3}>
+            <SelectDateCategoryComponent
+              date={date}
+              changeDate={(newDate) => setDate(newDate)}
+              category={category}
+              changeCategory={(e) => setCategory(e.target.value)}
+              handleCreate={handleCreate}
+              image={image}
+              setImage={(image) => setImage(image)}
+            />
           </Grid>
-          <Grid item xs={12} md={9.5}>
-            <Card class='task-analyses-create-options' style={{ backgroundColor: '#f0f0f0', height: '80vh' }}>
+          <Grid item xs={12} md={9}>
+            <Card
+              className="task-analyses-create-options"
+              style={{ height: "87vh" }}
+            >
               <CardContent>
-                <Typography variant="h5" component="div" style={{ fontFamily: 'Poppins' }}>
-                  <h4 style={{ fontFamily: 'Poppins', color: 'black' }}>
-                    <b>Choices</b>
-                    <div class='task-analyses-create-options' style={{ backgroundColor: '#000CA4' }}>
-                    {createOptVis && (
-                      <div class='choiceboard-create-opt'>
-                        <CreateOptionsModal 
-                          title={"Create from scratch"} 
-                          open={true} 
-                          handleClose={toggleCreateOption} 
-                          pic={DriveFileRenameOutlineIcon}
-                        >
-                          Create your visual support from scratch
-                        </CreateOptionsModal>
-                        <CreateOptionsModal title={"Create from template"} open={true} handleClose={toggleCreateOption} pic={DriveFileRenameOutlineIcon}>
-                          Add your own images and text with a structured template. 
-                          {/* For quick and convenient visual supports on demand. */}
-                        </CreateOptionsModal>
-                        <CreateOptionsModal title={"Create from premade template"} open={true} handleClose={toggleCreateOption} pic={DriveFileRenameOutlineIcon}>
-                          Use one of our pre-made templates to help create your visual support.
-                        </CreateOptionsModal>
-                      </div>
-                    )}
-                    </div>
-                  </h4>
-                </Typography>
+                <TaskHeader
+                  text={text}
+                  setText={setText}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  nameError={nameError}
+                  setNameError={setNameError}
+                  toggleComponentType={toggleComponentType}
+                  addStep={addChoice}
+                  defaultText="Insert Choice Board Name"
+                  errorMsg="Please enter a name for this choice board"
+                  addMsg="+ Add Choice"
+                />
+                <Grid container spacing={2} style={{ padding: "2%" }}>
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      overflowY: "scroll",
+                      height: "75vh",
+                    }}
+                  >
+                    {choices.map((choice, index) => (
+                      isHorizontal ? (
+                        <ChoiceBoardStepHorizontal
+                          key={choice.id}
+                          index={`Choice ${index + 1}`}
+                          image={choiceImages[index]}
+                          removeStep={() => removeChoice(index, choice.id)}
+                          setImage={(newImage) => updateChoiceImage(index, newImage)}
+                          deleteImage={() => deleteChoiceImageChange(index)}
+                          setName={(newName) => updateChoiceName(index, newName)}
+                          stepName={choiceNames[index]}
+                        />
+                      ) : (
+                        <ChoiceBoardStep
+                          key={choice.id}
+                          index={`Choice ${index + 1}`}
+                          image={choiceImages[index]}
+                          removeStep={() => removeChoice(index, choice.id)}
+                          setImage={(newImage) => updateChoiceImage(index, newImage)}
+                          deleteImage={() => deleteChoiceImageChange(index)}
+                          setName={(newName) => updateChoiceName(index, newName)}
+                          stepName={choiceNames[index]}
+                          label="Choice Name"
+                        />
+                      )
+                    ))}
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
           </Grid>

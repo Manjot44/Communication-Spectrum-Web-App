@@ -17,7 +17,6 @@ import SocialStories from "./pages/SocialStories.jsx";
 import EnvironmentalSupports from "./pages/EnvironmentalSupports.jsx";
 import ChoiceBoards from "./pages/ChoiceBoards.jsx";
 import FirstThen from "./pages/FirstThen.jsx";
-import CreateChoiceBoard from "./pages/CreateChoiceBoard.jsx";
 import TemplateChoice from "./pages/TemplateChoice.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
 
@@ -197,17 +196,6 @@ function App() {
             element={
               <ProtectedRoute
                 element={ChoiceBoards}
-                isAuth={isAuth}
-                token={token}
-                setTokenFunc={updateToken}
-              />
-            }
-          />
-          <Route
-            path="/createChoiceBoard/:profileID"
-            element={
-              <ProtectedRoute
-                element={CreateChoiceBoard}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}
