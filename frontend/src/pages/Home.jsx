@@ -186,6 +186,7 @@ function Home({ token, setTokenFunc }) {
               supportData={supportData}
               token={token}
               setSupportData={setSupportData}
+              title={`${profileData.name}'s Recent Supports`}
             />
           </Grid>
         </Grid>

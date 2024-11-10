@@ -15,16 +15,14 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import VisualSupportTypes from "../components/VisualSupportTypes.jsx"; 
+import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
 
-function Supports({ token, setTokenFunc }) {
+function SharedTemplates ({ token, setTokenFunc }) {
 	const { profileID } = useParams();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const [images, setImages] = useState(null);
-  const { notify, showNotification, notificationMessage } = useNotification();
 	const [supportData, setSupportData] = useState(null);
 	const [profileData, setProfileData] = useState(null);
+	const [images, setImages] = useState(null);
+	const { notify, showNotification, notificationMessage } = useNotification();
 
 	// Booleans for the Categories
 	const [selfCare, setSelfCare] = useState(false);
@@ -39,15 +37,6 @@ function Supports({ token, setTokenFunc }) {
 	const [event, setEvent] = useState(false);
 	const [place, setPlace] = useState(false);
 	const [other, setOther] = useState(false);
-  
-	// For popup
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
 	useEffect(() => {
     const fetchClient = async () => {
@@ -106,6 +95,7 @@ function Supports({ token, setTokenFunc }) {
       <Navbar profileID={profileID} />
       <div className="page-wrapper-style">
         <br />
+				<br />
         <Box
           sx={{
             position: "relative",
@@ -126,16 +116,10 @@ function Supports({ token, setTokenFunc }) {
               textAlign: "center",
             }}
           >
-            <b>Visual Supports Gallery</b>
+            <b>Shared Templates</b>
           </Typography>
-          <Button
-            sx={{ ml: "auto", backgroundColor: "#ff7c33" }}
-            onClick={handleClickOpen}
-            variant="contained"
-          >
-            + Add Visual Support
-          </Button>
         </Box>
+				<br />
 				<br />
 				<Accordion sx={{ borderRadius: '15px', fontFamily: 'Poppins', border: 'none', color: '#000CA4' }}>
 					<AccordionSummary
@@ -173,26 +157,11 @@ function Supports({ token, setTokenFunc }) {
 					supportData={supportData}
 					token={token}
 					setSupportData={setSupportData}
-					title={`${profileData.name}'s Supports`}
 				/>
 				<br />
       </div>
-			<Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-				maxWidth="lg"  // Set max width (options: 'xs', 'sm', 'md', 'lg', 'xl')
-  			fullWidth      // Ensures the dialog stretches to the full width
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-						<VisualSupportTypes profileID={profileID} />
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
 
-export default Supports;
+export default SharedTemplates;

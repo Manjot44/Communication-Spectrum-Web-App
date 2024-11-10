@@ -11,6 +11,7 @@ function RecentSupportsBox({
   supportData,
   token,
   setSupportData,
+  title
 }) {
   const [showNotification, setShowNotification] = useState(false); // State to control notification visibility
   const [notificationMessage, setNotificationMessage] = useState(""); // State for the notification message
@@ -50,6 +51,7 @@ function RecentSupportsBox({
       <Card
         className="snapshot-style"
         style={{
+          height: "700px",
           fontFamily: "Poppins",
           borderRadius: "15px",
           color: "#000CA4",
@@ -60,7 +62,7 @@ function RecentSupportsBox({
           variant="h6"
           style={{ marginBottom: "10px", fontFamily: "Poppins" }}
         >
-          <b>{profileData.name}'s Recent Supports</b>
+          <b>{title}</b>
         </Typography>
         <div
           style={{
