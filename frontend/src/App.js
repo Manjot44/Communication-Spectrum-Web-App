@@ -19,6 +19,8 @@ import ChoiceBoards from "./pages/ChoiceBoards.jsx";
 import FirstThen from "./pages/FirstThen.jsx";
 import TemplateChoice from "./pages/TemplateChoice.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
+import Supports from "./pages/Supports.jsx";
+import { Support } from "@mui/icons-material";
 
 // ProtectedRoute component to handle route protection
 const ProtectedRoute = ({
@@ -218,6 +220,17 @@ function App() {
             element={
               <ProtectedRoute
                 element={TemplateChoice}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/supports/:profileID"
+            element={
+              <ProtectedRoute
+                element={Supports}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}

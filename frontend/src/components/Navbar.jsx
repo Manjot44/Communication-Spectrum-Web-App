@@ -16,8 +16,8 @@ const Navbar = ({ profileID }) => {
         <Link to={`/home/${profileID}`} className="nav-item">
           Home
         </Link>
-        <Link to={`/explore/${profileID}`} className="nav-item">
-          Explore
+        <Link to={`/supports/${profileID}`} className="nav-item">
+          Supports
         </Link>
         <Link to={`/gallery/${profileID}`} className="nav-item">
           Gallery
