@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Typography, Checkbox } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -9,13 +9,7 @@ const RedCheckbox = styled(Checkbox)({
   },
 });
 
-function ProfileBox({ profileName, profilePicture, profileID }) {
-  const [checked, setChecked] = useState(false);
-
-  const handleCheckboxChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
+function ProfileBox({ profileName, profilePicture, profileID, checked, onChange }) {
   return (
     <Box
       sx={{
@@ -50,7 +44,7 @@ function ProfileBox({ profileName, profilePicture, profileID }) {
       {/* Red checkbox in bottom-right corner */}
       <RedCheckbox
         checked={checked}
-        onChange={handleCheckboxChange}
+        onChange={onChange}
         sx={{
           position: "absolute",
           bottom: 0,
