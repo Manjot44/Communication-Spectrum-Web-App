@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Card, Typography, IconButton, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmationModal from "./ConfirmationModal";
+import ShareModal from "./ShareModal";
+import IosShareIcon from '@mui/icons-material/IosShare';
 import "../App.css";
 
 function RecentSupports({ profileData, token, onDelete }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   // Open confirmation modal
   const handleDeleteClick = () => {
@@ -17,6 +20,11 @@ function RecentSupports({ profileData, token, onDelete }) {
     onDelete(profileData.support_id); // Call the onDelete function passed from RecentSupportsBox
     setIsConfirmModalOpen(false); // Close the modal
   };
+
+  // Open Share Modal
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  }
 
   return (
     <Card
@@ -67,6 +75,20 @@ function RecentSupports({ profileData, token, onDelete }) {
         >
           {profileData.title}
         </Typography>
+        
+        <IconButton
+          aria-label="share"
+          onClick={handleShareClick}
+          style={{
+            color: "grey",
+            position: "absolute",
+            right: 35,
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <IosShareIcon />
+        </IconButton>
         <IconButton
           aria-label="delete"
           onClick={handleDeleteClick}
@@ -89,6 +111,15 @@ function RecentSupports({ profileData, token, onDelete }) {
         onConfirm={confirmDeleteSupport} // Confirm delete action
         message="Are you sure you want to delete this support?"
         description="This action cannot be undone. The support will be permanently deleted."
+      />
+
+      <ShareModal
+        open={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)} // Close modal on cancel
+        // onConfirm={confirmDeleteSupport} // Confirm delete action
+        message="Share Visual Support"
+        description="Please Select User Profiles To Share"
+        token={token}
       />
     </Card>
   );

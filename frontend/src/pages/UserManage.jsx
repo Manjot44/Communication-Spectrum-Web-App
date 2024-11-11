@@ -35,6 +35,7 @@ function UserManage({ token, setTokenFunc }) {
           Select User Profile
         </h1>
       </div>
+      <br />
       <UserProfileContainer token={token}></UserProfileContainer>
     </>
   );
