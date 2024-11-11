@@ -62,6 +62,13 @@ function FirstThen({ token, setTokenFunc }) {
           <Grid item xs={12} md={9}>
             <Card className="task-analyses-create-options" style={{ backgroundColor: 'white', height: '87vh' }}>
               <CardContent>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{
+                    margin: "10px",
+                  }}
+                >
                 <EditTitleComponent
                   text={text}
                   changeText={setText}
@@ -72,6 +79,7 @@ function FirstThen({ token, setTokenFunc }) {
                   defaultText="Insert First-Then Support Name"
                   errorMsg="Please enter a name for this First-Then visual support"
                 />
+                </Typography>
                 <div 
                     class="d-flex justify-content-center align-items-center"  
                   >
@@ -90,6 +98,7 @@ function FirstThen({ token, setTokenFunc }) {
                         setName={(newName) => setFirstname(newName)}
                         setImage={(imageFirst) => setImageFirst(imageFirst)}
                         label="First Step"
+                        showCancel={false}
                       />
                       <Arrow style={{ width: '20px' }}/>
                       <ChoiceBoardStep
@@ -98,22 +107,8 @@ function FirstThen({ token, setTokenFunc }) {
                         setName={(newName) => setThenName(newName)}
                         setImage={(imageThen) => setImageThen(imageThen)}
                         label="Then Step"
+                        showCancel={false}
                       />
-                      {/* <ChoiceBoardStep
-                        image={imageFirst}
-                        index="First"
-                        setName={(newName) => setFirstname(newName)}
-                        setImage={(imageFirst) => setImageFirst(imageFirst)}
-                        label="First Step"
-                      />
-                      <Arrow style={{ width: '20px' }}/>
-                      <ChoiceBoardStep
-                        image={imageThen}
-                        index="Then"
-                        setName={(newName) => setThenName(newName)}
-                        setImage={(imageThen) => setImageThen(imageThen)}
-                        label="Then Step"
-                      /> */}
                     </Grid>
                   </div>
                 </div>

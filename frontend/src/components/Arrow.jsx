@@ -6,7 +6,7 @@ function Arrow() {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      margin: '0 15px',
+      margin: '0 25px',
     }}>
       <div style={{
         width: '50px',

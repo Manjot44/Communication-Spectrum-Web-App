@@ -4,19 +4,13 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Grid,
   Card,
-  Typography,
   CardContent,
-  Button,
-  TextField,
-  Avatar,
 } from "@mui/material";
-// import Grid from '@mui/material/Grid2';
 import '../App.css';
 import dayjs from "dayjs";
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
-import ChoiceBoardStep from '../components/ChoiceBoardStep';
-import ChoiceBoardStepHorizontal from '../components/ChoiceBoardStepHorizontal';
 import TaskHeader from "../components/Taskheader.jsx";
+import LoadTaskSteps from '../components/LoadTaskSteps.jsx';
 
 function SocialStories({ token, setTokenFunc }) {
   const { profileID } = useParams();
@@ -128,32 +122,21 @@ function SocialStories({ token, setTokenFunc }) {
                       height: "75vh",
                     }}
                   >
-                    {choices.map((choice, index) => (
-                      isHorizontal ? (
-                        <ChoiceBoardStepHorizontal
-                          key={choice.id}
-                          index={`Story Point ${index + 1}`}
-                          image={choiceImages[index]}
-                          removeStep={() => removeChoice(index, choice.id)}
-                          setImage={(newImage) => updateChoiceImage(index, newImage)}
-                          deleteImage={() => deleteChoiceImageChange(index)}
-                          setName={(newName) => updateChoiceName(index, newName)}
-                          stepName={choiceNames[index]}
-                        />
-                      ) : (
-                        <ChoiceBoardStep
-                          key={choice.id}
-                          index={`Story Point ${index + 1}`}
-                          image={choiceImages[index]}
-                          removeStep={() => removeChoice(index, choice.id)}
-                          setImage={(newImage) => updateChoiceImage(index, newImage)}
-                          deleteImage={() => deleteChoiceImageChange(index)}
-                          setName={(newName) => updateChoiceName(index, newName)}
-                          stepName={choiceNames[index]}
-                          label="Story Point"
-                        />
-                      )
-                    ))}
+                    <LoadTaskSteps
+                      steps={choices}
+                      title={'Story Point'}
+                      stepImages={choiceImages}
+                      stepNames={choiceNames}
+                      isHorizontal={isHorizontal}
+                      removeStep={removeChoice}
+                      updateStepImage={updateChoiceImage}
+                      updateStepName={updateChoiceName}
+                      deleteStepImageChange={deleteChoiceImageChange}
+                      showCancel={true}
+                      showTime={false}
+                      stepTimes={[]}
+                      label={'Story Point Description'}
+                    />
                   </Grid>
                 </Grid>
               </CardContent>
