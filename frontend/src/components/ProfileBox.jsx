@@ -3,9 +3,9 @@ import { Box, Typography, Checkbox } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const RedCheckbox = styled(Checkbox)({
-  color: "red",
+  color: "#ff7c33",
   "&.Mui-checked": {
-    color: "red",
+    color: "#ff7c33",
   },
 });
 
@@ -19,8 +19,8 @@ function ProfileBox({ profileName, profilePicture, profileID }) {
   return (
     <Box
       sx={{
-        width: 150,                // Set the width of the box
-        height: 200,               // Set the height of the box
+        width: 150,
+        height: 200,
         borderRadius: 2,
         boxShadow: 3,
         overflow: "hidden",
