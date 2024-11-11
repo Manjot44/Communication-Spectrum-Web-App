@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import SelectDateCategoryComponent from "../components/SelectDateCategoryComponent.jsx";
 import LoadTaskSteps from "../components/LoadTaskSteps.jsx";
 import TaskHeader from "../components/Taskheader.jsx";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 function TaskAnalyses({ token }) {
   const navigate = useNavigate();
@@ -105,6 +107,9 @@ function TaskAnalyses({ token }) {
     }
   };
 
+  const contentRef = useRef(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
+
   return (
     <>
       <Navbar profileID={profileID} />
@@ -145,8 +150,9 @@ function TaskAnalyses({ token }) {
                     defaultText="Insert Task Name"
                     errorMsg="Please enter a task name"
                     addMsg="+ Add Step"
+                    reactToPrintFn={reactToPrintFn}
                   />
-                  <Grid container spacing={2} style={{ padding: "2%" }}>
+                  <Grid container spacing={2} style={{ padding: "2%" }} >
                     <Grid
                       item
                       xs={12}
@@ -158,22 +164,31 @@ function TaskAnalyses({ token }) {
                         height: "75vh",
                       }}
                     >
-                      <LoadTaskSteps
-                        steps={steps}
-                        title={'Step'}
-                        stepImages={stepImages}
-                        stepNames={stepNames}
-                        stepTimes={stepTimes}
-                        isHorizontal={isHorizontal}
-                        removeStep={removeStep}
-                        updateStepImage={updateStepImage}
-                        updateStepName={updateStepName}
-                        updateStepTime={updateStepTime}
-                        deleteStepImageChange={deleteStepImageChange}
-                        showCancel={true}
-                        showTime={true}
-                        label={'Task Step'}
-                      />
+                      <div
+                        ref={contentRef}
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          height: "75vh",
+                        }}
+                      >
+                        <LoadTaskSteps
+                          steps={steps}
+                          title={'Step'}
+                          stepImages={stepImages}
+                          stepNames={stepNames}
+                          stepTimes={stepTimes}
+                          isHorizontal={isHorizontal}
+                          removeStep={removeStep}
+                          updateStepImage={updateStepImage}
+                          updateStepName={updateStepName}
+                          updateStepTime={updateStepTime}
+                          deleteStepImageChange={deleteStepImageChange}
+                          showCancel={true}
+                          showTime={true}
+                          label={'Task Step'}
+                        />
+                      </div>
                     </Grid>
                   </Grid>
                 </Typography>

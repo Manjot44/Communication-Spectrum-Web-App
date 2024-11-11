@@ -5,6 +5,7 @@ import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import axios from "axios";
 import NotificationPopup from "../components/NotificationPopup"; // Import your notification component
+import { useNavigate, useParams } from "react-router-dom";
 
 function RecentSupportsBox({
   profileData,
@@ -15,6 +16,8 @@ function RecentSupportsBox({
 }) {
   const [showNotification, setShowNotification] = useState(false); // State to control notification visibility
   const [notificationMessage, setNotificationMessage] = useState(""); // State for the notification message
+  const navigate = useNavigate();
+  const { profileID } = useParams();
 
   const loadingMessage = profileData
     ? `Loading ${profileData.name}'s recent supports...`
@@ -68,6 +71,7 @@ function RecentSupportsBox({
           style={{
             overflowY: "auto",
             height: "600px",
+            padding: "15px",
           }}
         >
           {supportData.length === 0 ? ( // Check if there are no supports
@@ -86,6 +90,7 @@ function RecentSupportsBox({
                     profileData={support}
                     token={token}
                     onDelete={handleDeleteSupport} // Pass the delete handler
+                    onClick={async () => {navigate(`/viewsupport/${profileID}/${support.support_id}`)}}
                   />
                 </Grid>
               ))}

@@ -97,7 +97,7 @@ function ShareModal({ open, onClose, onConfirm, message, description, token }) {
             variant="contained"
             color="success"
             onClick={onConfirm}
-            sx={{ width: "100px" }}
+            sx={{ width: "150px" }}
           >
             Share
           </Button>
@@ -115,7 +115,7 @@ function ShareModal({ open, onClose, onConfirm, message, description, token }) {
           >
             Deselect All
           </Button>
-          <Button variant="outlined" onClick={onClose} sx={{ width: "100px" }}>
+          <Button variant="outlined" onClick={onClose} sx={{ width: "150px" }}>
             Cancel
           </Button>
         </Box>

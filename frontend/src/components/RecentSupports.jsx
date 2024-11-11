@@ -4,9 +4,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmationModal from "./ConfirmationModal";
 import ShareModal from "./ShareModal";
 import IosShareIcon from '@mui/icons-material/IosShare';
+import EditIcon from '@mui/icons-material/Edit';
 import "../App.css";
 
-function RecentSupports({ profileData, token, onDelete }) {
+function RecentSupports({ profileData, token, onDelete, onClick }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
@@ -28,12 +29,7 @@ function RecentSupports({ profileData, token, onDelete }) {
 
   return (
     <Card
-      className="recent-supports-style"
-      style={{
-        width: "100%", // Use 100% width to fit the container
-        padding: "10px",
-        textAlign: "center",
-      }}
+      class="recent-supports-style"
     >
       {/* Image container with a fixed aspect ratio */}
       <div
@@ -44,6 +40,7 @@ function RecentSupports({ profileData, token, onDelete }) {
           overflow: "hidden",
           borderRadius: "10px",
         }}
+        onClick={onClick}
       >
         {profileData.title_img && (
           <img
@@ -56,7 +53,7 @@ function RecentSupports({ profileData, token, onDelete }) {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              borderRadius: "10px",
+              borderRadius: "5px",
             }}
           />
         )}
@@ -73,9 +70,22 @@ function RecentSupports({ profileData, token, onDelete }) {
           variant="body1"
           style={{ fontSize: "1.2rem", textAlign: "center" }}
         >
-          {profileData.title}
+          <b>{profileData.title}</b>
         </Typography>
         
+        <IconButton
+          aria-label="share"
+          // onClick={handleShareClick}
+          style={{
+            color: "grey",
+            position: "absolute",
+            right: 70,
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <EditIcon />
+        </IconButton>
         <IconButton
           aria-label="share"
           onClick={handleShareClick}
@@ -116,7 +126,6 @@ function RecentSupports({ profileData, token, onDelete }) {
       <ShareModal
         open={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)} // Close modal on cancel
-        // onConfirm={confirmDeleteSupport} // Confirm delete action
         message="Share Visual Support"
         description="Please Select User Profiles To Share"
         token={token}
