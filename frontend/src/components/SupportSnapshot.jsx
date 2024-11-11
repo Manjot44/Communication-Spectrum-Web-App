@@ -139,10 +139,8 @@ function SupportSnapshot({
         ) : (
           <h6>{commEnv}</h6>
         )}
-
-        <br />
-
         {/* Toggle Edit Button */}
+        <br />
         <div
           style={{
             display: "flex",
@@ -175,28 +173,27 @@ function SupportSnapshot({
               variant="contained"
               color="primary"
               onClick={toggleEditing}
-              style={{ fontFamily: "Poppins" }}
+              style={{
+                backgroundColor: "#000CA4",
+                width: "100%",
+                borderRadius: "20px",
+                fontFamily: "Poppins",
+              }}
             >
-              Edit
+              Edit Profile
             </Button>
           )}
         </div>
-
-        {/* Search Recent Supports */}
-        <Card
-          className="search-recent-supports-style"
-          style={{ marginTop: "20px" }}
-        >
-          <Typography variant="h6">Search recent supports</Typography>
-          <TextField
-            placeholder="Search"
-            variant="outlined"
-            fullWidth
-            style={{
-              marginBottom: "20px",
-            }}
-          />
-        </Card>
+        <br />
+        <Typography variant="h6"><b>Search recent supports</b></Typography>
+        <TextField
+          placeholder="Search"
+          variant="outlined"
+          fullWidth
+          style={{
+            marginBottom: "20px",
+          }}
+        />
       </Card>
 
       {/* Edit Profile Picture Modal */}

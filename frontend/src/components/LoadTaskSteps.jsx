@@ -1,10 +1,11 @@
 import React from "react";
 import "../App.css";
-import TaskAnalysesStep from "../components/TaskAnalysesStep";
-import TaskAnalysesStepHorizontal from "../components/TaskAnalysesStepHorizontal";
+import ChoiceBoardStep from "./ChoiceBoardStep";
+import ChoiceBoardStepHorizontal from "./ChoiceBoardStepHorizontal";
 
 function LoadTaskSteps({
 	steps,
+  title,
   stepImages,
   stepNames,
   stepTimes,
@@ -13,15 +14,18 @@ function LoadTaskSteps({
   updateStepImage,
   updateStepName,
   updateStepTime,
-  deleteStepImageChange
+  deleteStepImageChange,
+  showCancel,
+  showTime,
+  label
 }) {
   return (
     <>
       {steps.map((step, index) =>
         isHorizontal ? (
-          <TaskAnalysesStepHorizontal
+          <ChoiceBoardStepHorizontal
             key={step.id}
-            index={index}
+            index={`${title} ${index + 1}`}
             image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
             setImage={(newImage) => updateStepImage(index, newImage)}
@@ -30,11 +34,14 @@ function LoadTaskSteps({
             stepName={stepNames[index]}
             setTime={(newTime) => updateStepTime(index, newTime)}
             stepTime={stepTimes[index]}
+            showCancel={showCancel}
+            showTime={showTime}
+            label={label}
           />
         ) : (
-          <TaskAnalysesStep
+          <ChoiceBoardStep
             key={step.id}
-            index={index}
+            index={`${title} ${index + 1}`}
             image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
             setImage={(newImage) => updateStepImage(index, newImage)}
@@ -43,6 +50,9 @@ function LoadTaskSteps({
             stepName={stepNames[index]}
             setTime={(newTime) => updateStepTime(index, newTime)}
             stepTime={stepTimes[index]}
+            label={label}
+            showCancel={showCancel}
+            showTime={showTime}
           />
         )
       )}

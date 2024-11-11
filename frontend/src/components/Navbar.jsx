@@ -16,13 +16,13 @@ const Navbar = ({ profileID }) => {
         <Link to={`/home/${profileID}`} className="nav-item">
           Home
         </Link>
-        <Link to={`/explore/${profileID}`} className="nav-item">
-          Explore
+        <Link to={`/supports/${profileID}`} className="nav-item">
+          Supports
         </Link>
         <Link to={`/gallery/${profileID}`} className="nav-item">
           Gallery
         </Link>
-        <Link to={`/templates/${profileID}`} className="nav-item">
+        <Link to={`/sharedtemplates/${profileID}`} className="nav-item">
           Templates
         </Link>
         <Link to={`/learn/${profileID}`} className="nav-item">

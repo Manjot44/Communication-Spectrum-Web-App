@@ -3,11 +3,9 @@ import Navbar from "../components/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
 import "../App.css";
-import VisualSupportImage from "../components/VisualSupportImage";
 import axios from "axios";
 import dayjs from "dayjs";
 import SelectDateCategoryComponent from "../components/SelectDateCategoryComponent.jsx";
-import EditTitleComponent from "../components/EditTitleComponent.jsx";
 import LoadTaskSteps from "../components/LoadTaskSteps.jsx";
 import TaskHeader from "../components/Taskheader.jsx";
 
@@ -162,6 +160,7 @@ function TaskAnalyses({ token }) {
                     >
                       <LoadTaskSteps
                         steps={steps}
+                        title={'Step'}
                         stepImages={stepImages}
                         stepNames={stepNames}
                         stepTimes={stepTimes}
@@ -171,6 +170,9 @@ function TaskAnalyses({ token }) {
                         updateStepName={updateStepName}
                         updateStepTime={updateStepTime}
                         deleteStepImageChange={deleteStepImageChange}
+                        showCancel={true}
+                        showTime={true}
+                        label={'Task Step'}
                       />
                     </Grid>
                   </Grid>
