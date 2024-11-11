@@ -21,6 +21,7 @@ import TemplateChoice from "./pages/TemplateChoice.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import Supports from "./pages/Supports.jsx";
 import SharedTemplates from "./pages/SharedTemplates.jsx";
+import ViewSupport from "./pages/ViewSupport.jsx";
 import { Support } from "@mui/icons-material";
 
 // ProtectedRoute component to handle route protection
@@ -243,6 +244,17 @@ function App() {
             element={
               <ProtectedRoute
                 element={SharedTemplates}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/viewsupport/:profileID/:supportID"
+            element={
+              <ProtectedRoute
+                element={ViewSupport}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}
