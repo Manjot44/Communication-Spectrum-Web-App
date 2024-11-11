@@ -17,11 +17,17 @@ const ImageCropperModal = ({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [originalImage, setOriginalImage] = useState(null);
   const [lastCropArea, setLastCropArea] = useState(null);
+  const [originalAspect, setOriginalAspect] = useState(defaultAspect);
 
-  // Set the original image only once when the component mounts or when a new image is provided
+  // Set the original image and calculate the original aspect ratio
   useEffect(() => {
     if (image && originalImage !== image) {
       setOriginalImage(image);
+      const img = new Image();
+      img.src = image;
+      img.onload = () => {
+        setOriginalAspect(img.width / img.height);
+      };
     }
   }, [image, originalImage]);
 
@@ -103,6 +109,9 @@ const ImageCropperModal = ({
               <Button onClick={() => setAspect(1)}>1:1</Button>
               <Button onClick={() => setAspect(4 / 3)}>4:3</Button>
               <Button onClick={() => setAspect(16 / 9)}>16:9</Button>
+              <Button onClick={() => setAspect(originalAspect)}>
+                Original
+              </Button>
             </Box>
           </>
         )}
