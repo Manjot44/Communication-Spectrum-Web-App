@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -11,18 +11,21 @@ import dayjs from "dayjs";
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
 import TaskHeader from "../components/Taskheader.jsx";
 import LoadTaskSteps from '../components/LoadTaskSteps.jsx';
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 function SocialStories({ token, setTokenFunc }) {
   const { profileID } = useParams();
-  const [text, setText] = useState("");
+  const { state } = useLocation();
+  const [text, setText] = useState(state.text);
+  const [image, setImage] = useState(state.image);
+  const [choices, setChoices] = useState(state.steps);
+  const [choiceNames, setChoiceNames] = useState(state.stepNames);
+  const [choiceImages, setChoiceImages] = useState(state.stepImages);
   const [isEditing, setIsEditing] = useState(false);
-  const [image, setImage] = useState(null);
   const [date, setDate] = useState(dayjs());               // Date of the Visual Support
   const [category, setCategory] = useState("");            // Variable storing category type
   const [nameError, setNameError] = useState(false);       // State for task name error
-  const [choices, setChoices] = useState([]);
-  const [choiceNames, setChoiceNames] = useState([]);
-  const [choiceImages, setChoiceImages] = useState([]);
   const [isHorizontal, setIsHorizontal] = useState(false);
 
   const handleCreate = async () => {
@@ -74,6 +77,9 @@ function SocialStories({ token, setTokenFunc }) {
     setIsHorizontal((prev) => !prev);
   };
 
+  const contentRef = useRef(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
+
   return (
     <>
       <Navbar profileID={profileID}/>
@@ -109,6 +115,7 @@ function SocialStories({ token, setTokenFunc }) {
                   defaultText="Insert Social Story Name"
                   errorMsg="Please enter a name for this social story"
                   addMsg="+ Add Story Point"
+                  reactToPrintFn={reactToPrintFn}
                 />
                 <Grid container spacing={2} style={{ padding: "2%" }}>
                   <Grid
@@ -122,21 +129,30 @@ function SocialStories({ token, setTokenFunc }) {
                       height: "75vh",
                     }}
                   >
-                    <LoadTaskSteps
-                      steps={choices}
-                      title={'Story Point'}
-                      stepImages={choiceImages}
-                      stepNames={choiceNames}
-                      isHorizontal={isHorizontal}
-                      removeStep={removeChoice}
-                      updateStepImage={updateChoiceImage}
-                      updateStepName={updateChoiceName}
-                      deleteStepImageChange={deleteChoiceImageChange}
-                      showCancel={true}
-                      showTime={false}
-                      stepTimes={[]}
-                      label={'Story Point Description'}
-                    />
+                    <div
+                        ref={contentRef}
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          height: "75vh",
+                        }}
+                    >
+                      <LoadTaskSteps
+                        steps={choices}
+                        title={'Story Point'}
+                        stepImages={choiceImages}
+                        stepNames={choiceNames}
+                        isHorizontal={isHorizontal}
+                        removeStep={removeChoice}
+                        updateStepImage={updateChoiceImage}
+                        updateStepName={updateChoiceName}
+                        deleteStepImageChange={deleteChoiceImageChange}
+                        showCancel={true}
+                        showTime={false}
+                        stepTimes={[]}
+                        label={'Story Point Description'}
+                      />
+                    </div>
                   </Grid>
                 </Grid>
               </CardContent>

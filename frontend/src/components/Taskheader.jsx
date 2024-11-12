@@ -13,7 +13,8 @@ function TaskHeader({
   addStep,
   defaultText,
   errorMsg,
-  addMsg
+  addMsg,
+  reactToPrintFn
 }) {
   return (
     <Typography
@@ -37,6 +38,7 @@ function TaskHeader({
         defaultText={defaultText}
         errorMsg={errorMsg}
       />
+      <Button onClick={reactToPrintFn}>Print to PDF</Button>
       <Button onClick={toggleComponentType}>Toggle Visual Style</Button>
       <Button onClick={addStep}>{addMsg}</Button>
     </Typography>

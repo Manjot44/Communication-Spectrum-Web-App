@@ -90,7 +90,17 @@
 .recent-supports-style {
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #f0f0f0;
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  text-Align: center;
+  border: 1px solid #000CA4;
+  border-Radius: 15px;
+  transition: transform 0.3s;
+}
+
+.recent-supports-style:hover {
+  transform: scale(1.05);
 }
 
 .support-card-style {
