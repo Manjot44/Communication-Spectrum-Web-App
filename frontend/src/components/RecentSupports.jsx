@@ -7,7 +7,7 @@ import IosShareIcon from '@mui/icons-material/IosShare';
 import EditIcon from '@mui/icons-material/Edit';
 import "../App.css";
 
-function RecentSupports({ profileData, token, onDelete, onClick }) {
+function RecentSupports({ profileData, token, onDelete, onClick, showIcons }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
@@ -73,45 +73,48 @@ function RecentSupports({ profileData, token, onDelete, onClick }) {
           <b>{profileData.title}</b>
         </Typography>
         
-        <IconButton
-          aria-label="share"
-          // onClick={handleShareClick}
-          style={{
-            color: "grey",
-            position: "absolute",
-            right: 70,
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-        <IconButton
-          aria-label="share"
-          onClick={handleShareClick}
-          style={{
-            color: "grey",
-            position: "absolute",
-            right: 35,
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
-        >
-          <IosShareIcon />
-        </IconButton>
-        <IconButton
-          aria-label="delete"
-          onClick={handleDeleteClick}
-          style={{
-            color: "grey",
-            position: "absolute",
-            right: 0,
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
+        {showIcons && (
+          <>
+            <IconButton
+              aria-label="edit"
+              style={{
+                color: "grey",
+                position: "absolute",
+                right: 70,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              aria-label="share"
+              onClick={handleShareClick}
+              style={{
+                color: "grey",
+                position: "absolute",
+                right: 35,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              <IosShareIcon />
+            </IconButton>
+            <IconButton
+              aria-label="delete"
+              onClick={handleDeleteClick}
+              style={{
+                color: "grey",
+                position: "absolute",
+                right: 0,
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </>
+        )}
       </Box>
 
       {/* Confirmation Modal for Deletion */}

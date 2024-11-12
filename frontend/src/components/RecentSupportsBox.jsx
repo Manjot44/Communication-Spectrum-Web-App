@@ -91,6 +91,7 @@ function RecentSupportsBox({
                     token={token}
                     onDelete={handleDeleteSupport} // Pass the delete handler
                     onClick={async () => {navigate(`/viewsupport/${profileID}/${support.support_id}`)}}
+                    showIcons={true}
                   />
                 </Grid>
               ))}
