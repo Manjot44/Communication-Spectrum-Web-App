@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -16,16 +16,17 @@ import ChoiceBoardStep from '../components/ChoiceBoardStep';
 
 function FirstThen({ token, setTokenFunc }) {
   const { profileID } = useParams();
-  const [text, setText] = useState("");
+  const { state } = useLocation();
+  const [text, setText] = useState(state.text);
+  const [image, setImage] = useState(state.image);
+  const [imageFirst, setImageFirst] = useState(state.imageFirst);
+  const [imageThen, setImageThen] = useState(state.imageThen);
+  const [firstName, setFirstname] = useState(state.firstName);
+  const [thenName, setThenName] = useState(state.thenName);
+  const [category, setCategory] = useState(state.category);
   const [isEditing, setIsEditing] = useState(false);
-  const [imageFirst, setImageFirst] = useState(null);
-  const [imageThen, setImageThen] = useState(null);
-  const [firstName, setFirstname] = useState("");
-  const [thenName, setThenName] = useState("");
-  const [category, setCategory] = useState('');
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
-  const [image, setImage] = useState(null);
 
   const handleCreate = async () => {
     if (text.trim() === "") {

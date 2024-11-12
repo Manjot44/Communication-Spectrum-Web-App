@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
 import "../App.css";
 import axios from "axios";
@@ -13,17 +13,18 @@ import { useReactToPrint } from "react-to-print";
 
 function TaskAnalyses({ token }) {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const { profileID } = useParams();
-  const [text, setText] = useState("");                    // Name of the Visual Support
+  const [text, setText] = useState(state.text);
+  const [image, setImage] = useState(state.image);
+  const [steps, setSteps] = useState(state.steps);
+  const [stepImages, setStepImages] = useState(state.stepImages);
+  const [stepNames, setStepNames] = useState(state.stepNames);
+  const [stepTimes, setStepTimes] = useState(state.stepTimes);
+  const [category, setCategory] = useState(state.category);
   const [isEditing, setIsEditing] = useState(false);
-  const [image, setImage] = useState(null);
   const [date, setDate] = useState(dayjs());               // Date of the Visual Support
-  const [steps, setSteps] = useState([]);                  // Array to track steps with unique IDs
-  const [stepImages, setStepImages] = useState([]);        // Array to store images for each step
   const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
-  const [stepNames, setStepNames] = useState([]);          // Array to keep track of the step names
-  const [stepTimes, setStepTimes] = useState([]);          // Array to keep track of the step times
-  const [category, setCategory] = useState("");            // Variable storing category type
   const [nameError, setNameError] = useState(false);       // State for task name error
 
   // Toggle between horizontal and vertical step display

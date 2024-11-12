@@ -17,13 +17,13 @@ import { useNavigate } from "react-router-dom";
 
 function VisualSupportTypes({ profileID }) {
 	const navigate = useNavigate();
-  const taskAnalyses = { title: "Create New Task Analyses", scratch: `/taskanalyses/${profileID}`, temp: `/taskanalyses/${profileID}`, exist: `/taskanalyses/${profileID}` };
-  const dailySchedule = { title: "Create New Daily Schedule", scratch: `/dailyschedules/${profileID}`, temp: `/dailyschedules/${profileID}`, exist: `/dailyschedules/${profileID}` };
-  const weeklyCalendars = { title: "Create New Weekly Calendar", scratch: `/weeklycalendars/${profileID}`, temp: `/weeklycalendars/${profileID}`, exist: `/weeklycalendars/${profileID}` };
-  const socialStory = { title: "Create New Social Story", scratch: `/socialstories/${profileID}`, temp: `/socialstories/${profileID}`, exist: `/socialstories/${profileID}` };
-  const envirSupport = { title: "Create New Environment Support", scratch: `/envirsupports/${profileID}`, temp: `/envirsupports/${profileID}`, exist: `/envirsupports/${profileID}` };
-  const choiceBoard = { title: "Create New Choice Board", scratch: `/choiceboards/${profileID}`, temp: `/choiceboards/${profileID}`, exist: `/choiceboards/${profileID}` };
-  const firstThen = { title: "Create New First-Then", scratch: `/firstthen/${profileID}`, temp: `/firstthen/${profileID}`, exist: `/firstthen/${profileID}` };
+  const taskAnalyses = { title: "Create New Task Analyses", scratch: `/taskanalyses/${profileID}`, temp: `/taskanalyses/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "Task Analyses" };
+  const dailySchedule = { title: "Create New Daily Schedule", scratch: `/dailyschedules/${profileID}`, temp: `/dailyschedules/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "Daily Schedule" };
+  const weeklyCalendars = { title: "Create New Weekly Calendar", scratch: `/weeklycalendars/${profileID}`, temp: `/weeklycalendars/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "Weekly Calendar" };
+  const socialStory = { title: "Create New Social Story", scratch: `/socialstories/${profileID}`, temp: `/socialstories/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "Social Story" };
+  const envirSupport = { title: "Create New Environment Support", scratch: `/envirsupports/${profileID}`, temp: `/envirsupports/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "Environmental Support" };
+  const choiceBoard = { title: "Create New Choice Board", scratch: `/choiceboards/${profileID}`, temp: `/choiceboards/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "Choice Board" };
+  const firstThen = { title: "Create New First-Then", scratch: `/firstthen/${profileID}`, temp: `/firstthen/${profileID}`, exist: `/choosepublictemplate/${profileID}`, category: "First-Then" };
 
   return (
 		<>
