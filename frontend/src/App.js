@@ -22,7 +22,6 @@ import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import Supports from "./pages/Supports.jsx";
 import SharedTemplates from "./pages/SharedTemplates.jsx";
 import ViewSupport from "./pages/ViewSupport.jsx";
-import ChoosePublicTemplate from "./pages/ChoosePublicTemplate.jsx";
 import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
 import { Support } from "@mui/icons-material";
 
@@ -257,17 +256,6 @@ function App() {
             element={
               <ProtectedRoute
                 element={ViewSupport}
-                isAuth={isAuth}
-                token={token}
-                setTokenFunc={updateToken}
-              />
-            }
-          />
-          <Route
-            path="/choosepublictemplate/:profileID"
-            element={
-              <ProtectedRoute
-                element={ChoosePublicTemplate}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}
