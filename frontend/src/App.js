@@ -23,6 +23,7 @@ import Supports from "./pages/Supports.jsx";
 import SharedTemplates from "./pages/SharedTemplates.jsx";
 import ViewSupport from "./pages/ViewSupport.jsx";
 import ChoosePublicTemplate from "./pages/ChoosePublicTemplate.jsx";
+import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
 import { Support } from "@mui/icons-material";
 
 // ProtectedRoute component to handle route protection
@@ -267,6 +268,17 @@ function App() {
             element={
               <ProtectedRoute
                 element={ChoosePublicTemplate}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/choosepremadetemplate/:profileID"
+            element={
+              <ProtectedRoute
+                element={ChoosePreMadeTemplate}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}
