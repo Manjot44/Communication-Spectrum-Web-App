@@ -9,7 +9,7 @@ import { useNotification } from "../services/notificationService";
 import RecentSupportsBox from "../components/RecentSupportsBox";
 import RecentSupports from "../components/RecentSupports";
 
-function ChoosePublicTemplate ({ token, setTokenFunc }) {
+function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
 	const { profileID } = useParams();
 	const [supportData, setSupportData] = useState([]);
 	const [profileData, setProfileData] = useState([]);
@@ -142,4 +142,4 @@ function ChoosePublicTemplate ({ token, setTokenFunc }) {
   );
 }
 
-export default ChoosePublicTemplate;
+export default ChoosePreMadeTemplate;
