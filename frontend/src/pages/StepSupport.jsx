@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Grid, Card, Typography, CardContent } from "@mui/material";
@@ -11,17 +11,18 @@ import TaskHeader from "../components/Taskheader.jsx";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
-function TaskAnalyses({ token }) {
+function StepSupport({ token }) {
   const navigate = useNavigate();
   const { state } = useLocation();
+  // const data = state?.data;
   const { profileID } = useParams();
-  const [text, setText] = useState(state.text);
-  const [image, setImage] = useState(state.image);
-  const [steps, setSteps] = useState(state.steps);
-  const [stepImages, setStepImages] = useState(state.stepImages);
-  const [stepNames, setStepNames] = useState(state.stepNames);
-  const [stepTimes, setStepTimes] = useState(state.stepTimes);
-  const [category, setCategory] = useState(state.category);
+  const [text, setText] = useState(state.data.text);
+  const [image, setImage] = useState(state.data.image);
+  const [steps, setSteps] = useState(state.data.steps);
+  const [stepImages, setStepImages] = useState(state.data.stepImages);
+  const [stepNames, setStepNames] = useState(state.data.stepNames);
+  const [stepTimes, setStepTimes] = useState(state.data.stepTimes);
+  const [category, setCategory] = useState(state.data.category);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());               // Date of the Visual Support
   const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
@@ -87,7 +88,7 @@ function TaskAnalyses({ token }) {
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
-          type: state.type,
+          type: state.state.type,
           text,
           image,
           date,
@@ -149,9 +150,9 @@ function TaskAnalyses({ token }) {
                     setNameError={setNameError}
                     toggleComponentType={toggleComponentType}
                     addStep={addStep}
-                    defaultText={state.defaultText}
-                    errorMsg={state.errorMsg}
-                    addMsg={state.addMsg}
+                    defaultText={state.state.defaultText}
+                    errorMsg={state.state.errorMsg}
+                    addMsg={state.state.addMsg}
                     reactToPrintFn={reactToPrintFn}
                   />
                   <Grid container spacing={2} style={{ padding: "2%" }} >
@@ -176,7 +177,7 @@ function TaskAnalyses({ token }) {
                       >
                         <LoadTaskSteps
                           steps={steps}
-                          title={state.stepTitle}
+                          title={state.state.stepTitle}
                           stepImages={stepImages}
                           stepNames={stepNames}
                           stepTimes={stepTimes}
@@ -187,8 +188,8 @@ function TaskAnalyses({ token }) {
                           updateStepTime={updateStepTime}
                           deleteStepImageChange={deleteStepImageChange}
                           showCancel={true}
-                          showTime={state.showTime}
-                          label={state.label}
+                          showTime={state.state.showTime}
+                          label={state.state.label}
                         />
                       </div>
                     </Grid>
@@ -203,4 +204,4 @@ function TaskAnalyses({ token }) {
   );
 }
 
-export default TaskAnalyses;
+export default StepSupport;

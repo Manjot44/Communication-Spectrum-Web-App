@@ -85,7 +85,8 @@ function VisualSupportTypes({ profileID }) {
     title: "Create New First-Then", 
     scratch: `/firstthen/${profileID}`, 
     temp: `/firstthen/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}` 
+    exist: `/choosepremadetemplate/${profileID}`,
+    type: `First-Then`
   };
 
   return (
