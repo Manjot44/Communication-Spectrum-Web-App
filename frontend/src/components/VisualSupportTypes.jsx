@@ -14,79 +14,16 @@ import {
 } from "@mui/icons-material";
 import '../App.css'
 import { useNavigate } from "react-router-dom";
+import { getVisualSupportConfig } from './VisualSupportConfig.jsx';
 
 function VisualSupportTypes({ profileID }) {
 	const navigate = useNavigate();
-  const taskAnalyses = { 
-    title: "Create New Task Analyses", 
-    scratch: `/stepsupport/${profileID}`, 
-    temp: `/stepsupport/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}`,
-    type: "Task Analysis",
-    defaultText: "Insert Task Name",
-    errorMsg: "Please enter a task name",
-    addMsg: "+ Add Step",
-    stepTitle: "Step",
-    showTime: true,
-    label: "Task Step"
-  };
-  const dailySchedule = { 
-    title: "Create New Daily Schedule", 
-    scratch: `/dailyschedules/${profileID}`, 
-    temp: `/dailyschedules/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}` 
-  };
-  const weeklyCalendars = { 
-    title: "Create New Weekly Calendar", 
-    scratch: `/weeklycalendars/${profileID}`, 
-    temp: `/weeklycalendars/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}` 
-  };
-  const socialStory = { 
-    title: "Create New Social Story", 
-    scratch: `/stepsupport/${profileID}`, 
-    temp: `/stepsupport/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}`,
-    type: "Social Story",
-    defaultText: "Insert Social Story Name",
-    errorMsg: "Please enter a name for this social story",
-    addMsg: "+ Add Story Point",
-    stepTitle: "Story Point",
-    showTime: false,
-    label: "Story Point Description"
-  };
-  const envirSupport = { 
-    title: "Create New Environment Support", 
-    scratch: `/stepsupport/${profileID}`, 
-    temp: `/stepsupport/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}`,
-    type: "Environmental Support",
-    defaultText: "Insert Environmental Support Name",
-    errorMsg: "Please enter a name for this environmental support",
-    addMsg: "+ Add Environmental Support",
-    stepTitle: "Environment Support",
-    showTime: false,
-    label: "Environmental Support Description"
-  };
-  const choiceBoard = { 
-    title: "Create New Choice Board", 
-    scratch: `/stepsupport/${profileID}`, 
-    temp: `/stepsupport/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}`,
-    type: "Choice Board",
-    defaultText: "Insert Choice Board Name",
-    errorMsg: "Please enter a name for this choice board",
-    addMsg: "+ Add Choice",
-    stepTitle: "Choice",
-    showTime: false,
-    label: "Choice Name"
-  };
-  const firstThen = { 
-    title: "Create New First-Then", 
-    scratch: `/firstthen/${profileID}`, 
-    temp: `/firstthen/${profileID}`, 
-    exist: `/choosepremadetemplate/${profileID}`,
-    type: `First-Then`
+
+  const navigateToTemplate = (type) => {
+    const config = getVisualSupportConfig(type, profileID);
+    if (config) {
+      navigate(`/chooseTemplate/${profileID}`, { state: config });
+    }
   };
 
   return (
@@ -96,43 +33,43 @@ function VisualSupportTypes({ profileID }) {
         <br />
         <Grid container spacing={2} justifyContent="space-around">
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: taskAnalyses })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Task Analysis")}>
               <Task fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Task Analyses</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: dailySchedule })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Daily Schedule")}>
               <CalendarViewDay fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Daily Schedules</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: weeklyCalendars })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Weekly Calendar")}>
               <CalendarViewWeek fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Weekly Calendars</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: socialStory })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Social Story")}>
               <Group fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Social Stories</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: envirSupport })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Environmental Support")}>
               <Warning fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Environmental Supports</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: choiceBoard })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Choice Board")}>
               <CheckBox fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Choice Boards</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={async () => {navigate(`/chooseTemplate/${profileID}`, { state: firstThen })}}>
+            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("First-Then")}>
               <Checklist fontSize="large" />
             </Button>
             <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>First-Then</Typography>
