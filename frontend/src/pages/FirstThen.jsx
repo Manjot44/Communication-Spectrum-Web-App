@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -12,10 +12,12 @@ import '../App.css';
 import Arrow from '../components/Arrow';
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
 import EditTitleComponent from '../components/EditTitleComponent';
-import ChoiceBoardStep from '../components/ChoiceBoardStep';
+import ChoiceBoardStep from '../components/TaskStep';
+import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
   const { profileID } = useParams();
+  const navigate = useNavigate();
   const [text, setText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [imageFirst, setImageFirst] = useState(null);
@@ -32,7 +34,30 @@ function FirstThen({ token, setTokenFunc }) {
       setNameError(true); // Set error state if no name is entered
       return;
     }
-    // ADD PUT REQUEST HERE
+    try {
+      await axios.post(
+        `http://localhost:5005/new_support/${profileID}`,
+        {
+          type: "First-Then",
+          text,
+          image,
+          date,
+          stepImages: [imageFirst, imageThen],
+          stepNames: [firstName, thenName],
+          stepTimes: null,
+          category,
+          isHorizontal: null,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      navigate(`/home/${profileID}`);
+    } catch (err) {
+      alert(err.response.data.error);
+    }
   };
 
   return (

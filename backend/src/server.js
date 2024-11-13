@@ -245,6 +245,7 @@ app.post(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       const {
+        type, 
         text,
         image,
         value,
@@ -264,7 +265,8 @@ app.post(
         stepNames,
         stepTimes,
         category,
-        isHorizontal
+        isHorizontal,
+        type,
       );
       return res.json({});
     })
@@ -285,10 +287,6 @@ app.delete(
   "/delete_support/:supportID",
   catchErrors(
     authed(async (req, res, email) => {
-      // console.log(
-      //   `Delete request received for supportID: ${req.params.supportID} by user: ${email}`
-      // );
-
       const { supportID } = req.params;
       if (!supportID) {
         console.log("No support ID provided in request.");
@@ -297,10 +295,6 @@ app.delete(
 
       try {
         await delete_support(email, supportID);
-        console
-          .log
-          // `Support ${supportID} deleted successfully by user ${email}`
-          ();
         return res.json({ message: "Support deleted successfully" });
       } catch (error) {
         console.log(

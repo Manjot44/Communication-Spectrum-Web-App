@@ -17,13 +17,76 @@ import { useNavigate } from "react-router-dom";
 
 function VisualSupportTypes({ profileID }) {
 	const navigate = useNavigate();
-  const taskAnalyses = { title: "Create New Task Analyses", scratch: `/taskanalyses/${profileID}`, temp: `/taskanalyses/${profileID}`, exist: `/taskanalyses/${profileID}` };
-  const dailySchedule = { title: "Create New Daily Schedule", scratch: `/dailyschedules/${profileID}`, temp: `/dailyschedules/${profileID}`, exist: `/dailyschedules/${profileID}` };
-  const weeklyCalendars = { title: "Create New Weekly Calendar", scratch: `/weeklycalendars/${profileID}`, temp: `/weeklycalendars/${profileID}`, exist: `/weeklycalendars/${profileID}` };
-  const socialStory = { title: "Create New Social Story", scratch: `/socialstories/${profileID}`, temp: `/socialstories/${profileID}`, exist: `/socialstories/${profileID}` };
-  const envirSupport = { title: "Create New Environment Support", scratch: `/envirsupports/${profileID}`, temp: `/envirsupports/${profileID}`, exist: `/envirsupports/${profileID}` };
-  const choiceBoard = { title: "Create New Choice Board", scratch: `/choiceboards/${profileID}`, temp: `/choiceboards/${profileID}`, exist: `/choiceboards/${profileID}` };
-  const firstThen = { title: "Create New First-Then", scratch: `/firstthen/${profileID}`, temp: `/firstthen/${profileID}`, exist: `/firstthen/${profileID}` };
+  const taskAnalyses = { 
+    title: "Create New Task Analyses", 
+    scratch: `/stepsupport/${profileID}`, 
+    temp: `/stepsupport/${profileID}`, 
+    exist: `/stepsupport/${profileID}`,
+    type: "Task Analysis",
+    defaultText: "Insert Task Name",
+    errorMsg: "Please enter a task name",
+    addMsg: "+ Add Step",
+    stepTitle: "Step",
+    showTime: true,
+    label: "Task Step"
+  };
+  const dailySchedule = { 
+    title: "Create New Daily Schedule", 
+    scratch: `/dailyschedules/${profileID}`, 
+    temp: `/dailyschedules/${profileID}`, 
+    exist: `/dailyschedules/${profileID}` 
+  };
+  const weeklyCalendars = { 
+    title: "Create New Weekly Calendar", 
+    scratch: `/weeklycalendars/${profileID}`, 
+    temp: `/weeklycalendars/${profileID}`, 
+    exist: `/weeklycalendars/${profileID}` 
+  };
+  const socialStory = { 
+    title: "Create New Social Story", 
+    scratch: `/stepsupport/${profileID}`, 
+    temp: `/stepsupport/${profileID}`, 
+    exist: `/stepsupport/${profileID}`,
+    type: "Social Story",
+    defaultText: "Insert Social Story Name",
+    errorMsg: "Please enter a name for this social story",
+    addMsg: "+ Add Story Point",
+    stepTitle: "Story Point",
+    showTime: false,
+    label: "Story Point Description"
+  };
+  const envirSupport = { 
+    title: "Create New Environment Support", 
+    scratch: `/stepsupport/${profileID}`, 
+    temp: `/stepsupport/${profileID}`, 
+    exist: `/stepsupport/${profileID}`,
+    type: "Environmental Support",
+    defaultText: "Insert Environmental Support Name",
+    errorMsg: "Please enter a name for this environmental support",
+    addMsg: "+ Add Environmental Support",
+    stepTitle: "Environment Support",
+    showTime: false,
+    label: "Environmental Support Description"
+  };
+  const choiceBoard = { 
+    title: "Create New Choice Board", 
+    scratch: `/stepsupport/${profileID}`, 
+    temp: `/stepsupport/${profileID}`, 
+    exist: `/stepsupport/${profileID}`,
+    type: "Choice Board",
+    defaultText: "Insert Choice Board Name",
+    errorMsg: "Please enter a name for this choice board",
+    addMsg: "+ Add Choice",
+    stepTitle: "Choice",
+    showTime: false,
+    label: "Choice Name"
+  };
+  const firstThen = { 
+    title: "Create New First-Then", 
+    scratch: `/firstthen/${profileID}`, 
+    temp: `/firstthen/${profileID}`, 
+    exist: `/firstthen/${profileID}` 
+  };
 
   return (
 		<>

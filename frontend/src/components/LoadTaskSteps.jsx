@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
-import ChoiceBoardStep from "./ChoiceBoardStep";
-import ChoiceBoardStepHorizontal from "./ChoiceBoardStepHorizontal";
+import TaskStep from "./TaskStep";
+import TaskStepHorizontal from "./TaskStepHorizontal";
 
 function LoadTaskSteps({
 	steps,
@@ -23,7 +23,7 @@ function LoadTaskSteps({
     <>
       {steps.map((step, index) =>
         isHorizontal ? (
-          <ChoiceBoardStepHorizontal
+          <TaskStepHorizontal
             key={step.id}
             index={`${title} ${index + 1}`}
             image={stepImages[index]}
@@ -39,7 +39,7 @@ function LoadTaskSteps({
             label={label}
           />
         ) : (
-          <ChoiceBoardStep
+          <TaskStep
             key={step.id}
             index={`${title} ${index + 1}`}
             image={stepImages[index]}

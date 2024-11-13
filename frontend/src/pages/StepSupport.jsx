@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import { useParams, useNavigate } from "react-router-dom";
-import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Grid, Card, Typography, CardContent } from "@mui/material";
 import "../App.css";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -11,6 +11,7 @@ import TaskHeader from "../components/Taskheader.jsx";
 
 function TaskAnalyses({ token }) {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const { profileID } = useParams();
   const [text, setText] = useState("");                    // Name of the Visual Support
   const [isEditing, setIsEditing] = useState(false);
@@ -84,8 +85,9 @@ function TaskAnalyses({ token }) {
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
+          type: state.type,
           text,
-          image, // This is now a base64 image string
+          image,
           date,
           stepImages,
           stepNames,
@@ -142,9 +144,9 @@ function TaskAnalyses({ token }) {
                     setNameError={setNameError}
                     toggleComponentType={toggleComponentType}
                     addStep={addStep}
-                    defaultText="Insert Task Name"
-                    errorMsg="Please enter a task name"
-                    addMsg="+ Add Step"
+                    defaultText={state.defaultText}
+                    errorMsg={state.errorMsg}
+                    addMsg={state.addMsg}
                   />
                   <Grid container spacing={2} style={{ padding: "2%" }}>
                     <Grid
@@ -160,7 +162,7 @@ function TaskAnalyses({ token }) {
                     >
                       <LoadTaskSteps
                         steps={steps}
-                        title={'Step'}
+                        title={state.stepTitle}
                         stepImages={stepImages}
                         stepNames={stepNames}
                         stepTimes={stepTimes}
@@ -171,8 +173,8 @@ function TaskAnalyses({ token }) {
                         updateStepTime={updateStepTime}
                         deleteStepImageChange={deleteStepImageChange}
                         showCancel={true}
-                        showTime={true}
-                        label={'Task Step'}
+                        showTime={state.showTime}
+                        label={state.label}
                       />
                     </Grid>
                   </Grid>

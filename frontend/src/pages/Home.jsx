@@ -38,7 +38,7 @@ const modalStyle = {
   overflowY: "auto",
 };
 
-function Home({ token, setTokenFunc }) {
+function Home({ token }) {
   const { profileID } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
