@@ -164,6 +164,7 @@ function Gallery({ token }) {
                     image={image.url}
                     onDelete={() => confirmDeleteImage(image.img_id)} // Use confirmDeleteImage instead of deleteImage
                     onClick={() => setSelectedImage(image.url)}
+                    hasOptions={true}
                   />
                 ))}
             </Grid>

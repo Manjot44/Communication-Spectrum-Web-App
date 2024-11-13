@@ -8,6 +8,7 @@ function GalleryPhotoComponent({
   onDelete,
   onRemoveBackground,
   onClick,
+  hasOptions
 }) {
   return (
     <Card
@@ -53,26 +54,29 @@ function GalleryPhotoComponent({
       </Box>
 
       {/* Non-clickable Action Buttons */}
-      <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-        <IconButton
-          aria-label="delete"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
-        <IconButton
-          aria-label="zoom-in"
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemoveBackground();
-          }}
-        >
-          <ZoomInIcon />
-        </IconButton>
-      </CardActions>
+      {hasOptions && (
+        <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+          <IconButton
+            aria-label="delete"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+
+          <IconButton
+            aria-label="zoom-in"
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemoveBackground();
+            }}
+          >
+            <ZoomInIcon />
+          </IconButton>
+        </CardActions>
+      )}
     </Card>
   );
 }
