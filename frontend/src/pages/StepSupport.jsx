@@ -14,7 +14,6 @@ import { useReactToPrint } from "react-to-print";
 function StepSupport({ token }) {
   const navigate = useNavigate();
   const { state } = useLocation();
-  // const data = state?.data;
   const { profileID } = useParams();
   const [text, setText] = useState(state.data.text);
   const [image, setImage] = useState(state.data.image);
