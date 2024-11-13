@@ -12,6 +12,18 @@ function TemplateChoice({ token }) {
   const { profileID } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const supportType = { type: state.category, link: state.temp };
+
+  const getMakeEmpty = (category) => {
+    switch (category) {
+      case "First-Then":
+        return { text: '', image: '', imageFirst: '', imageThen: '', firstName: '', thenName: '', category: '' };
+      default:
+        return { text: '', image: '', steps: [], stepImages: [], stepNames: [], stepTimes: [], category: '' };
+    }
+  };
+  
+  const makeEmpty = getMakeEmpty(state.category);
 
   return (
     <>

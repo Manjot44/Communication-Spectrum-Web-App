@@ -20,14 +20,8 @@ function FirstThen({ token, setTokenFunc }) {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [imageFirst, setImageFirst] = useState(null);
-  const [imageThen, setImageThen] = useState(null);
-  const [firstName, setFirstname] = useState("");
-  const [thenName, setThenName] = useState("");
-  const [category, setCategory] = useState('');
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
-  const [image, setImage] = useState(null);
 
   const handleCreate = async () => {
     if (text.trim() === "") {

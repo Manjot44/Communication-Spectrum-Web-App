@@ -142,7 +142,7 @@ app.put(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      const { name, snapshot, interests, commEnv } = req.body;
+      const { name, snapshot, interests, comm_env } = req.body;
 
       // Ensure the user has access to modify this profile
       const authRows = await checkClientAuth(email, profileID);
@@ -151,7 +151,7 @@ app.put(
       }
 
       // Update the profile
-      await update_user_profile(profileID, name, snapshot, interests, commEnv);
+      await update_user_profile(profileID, name, snapshot, interests, comm_env);
       return res.json({ message: "Profile updated successfully" });
     })
   )

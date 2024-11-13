@@ -21,7 +21,7 @@ function VisualSupportTypes({ profileID }) {
     title: "Create New Task Analyses", 
     scratch: `/stepsupport/${profileID}`, 
     temp: `/stepsupport/${profileID}`, 
-    exist: `/stepsupport/${profileID}`,
+    exist: `/choosepremadetemplate/${profileID}`,
     type: "Task Analysis",
     defaultText: "Insert Task Name",
     errorMsg: "Please enter a task name",
@@ -34,19 +34,19 @@ function VisualSupportTypes({ profileID }) {
     title: "Create New Daily Schedule", 
     scratch: `/dailyschedules/${profileID}`, 
     temp: `/dailyschedules/${profileID}`, 
-    exist: `/dailyschedules/${profileID}` 
+    exist: `/choosepremadetemplate/${profileID}` 
   };
   const weeklyCalendars = { 
     title: "Create New Weekly Calendar", 
     scratch: `/weeklycalendars/${profileID}`, 
     temp: `/weeklycalendars/${profileID}`, 
-    exist: `/weeklycalendars/${profileID}` 
+    exist: `/choosepremadetemplate/${profileID}` 
   };
   const socialStory = { 
     title: "Create New Social Story", 
     scratch: `/stepsupport/${profileID}`, 
     temp: `/stepsupport/${profileID}`, 
-    exist: `/stepsupport/${profileID}`,
+    exist: `/choosepremadetemplate/${profileID}`,
     type: "Social Story",
     defaultText: "Insert Social Story Name",
     errorMsg: "Please enter a name for this social story",
@@ -59,7 +59,7 @@ function VisualSupportTypes({ profileID }) {
     title: "Create New Environment Support", 
     scratch: `/stepsupport/${profileID}`, 
     temp: `/stepsupport/${profileID}`, 
-    exist: `/stepsupport/${profileID}`,
+    exist: `/choosepremadetemplate/${profileID}`,
     type: "Environmental Support",
     defaultText: "Insert Environmental Support Name",
     errorMsg: "Please enter a name for this environmental support",
@@ -72,7 +72,7 @@ function VisualSupportTypes({ profileID }) {
     title: "Create New Choice Board", 
     scratch: `/stepsupport/${profileID}`, 
     temp: `/stepsupport/${profileID}`, 
-    exist: `/stepsupport/${profileID}`,
+    exist: `/choosepremadetemplate/${profileID}`,
     type: "Choice Board",
     defaultText: "Insert Choice Board Name",
     errorMsg: "Please enter a name for this choice board",
@@ -85,7 +85,7 @@ function VisualSupportTypes({ profileID }) {
     title: "Create New First-Then", 
     scratch: `/firstthen/${profileID}`, 
     temp: `/firstthen/${profileID}`, 
-    exist: `/firstthen/${profileID}` 
+    exist: `/choosepremadetemplate/${profileID}` 
   };
 
   return (
