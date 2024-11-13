@@ -10,12 +10,9 @@ import EnterAccDetails from "./pages/EnterAccDetails";
 import UserManage from "./pages/UserManage";
 import EnterUserDetails from "./pages/EnterUserDetails";
 import Gallery from "./pages/Gallery";
-import TaskAnalyses from "./pages/TaskAnalyses.jsx";
+import StepSupport from "./pages/StepSupport.jsx";
 import DailySchedules from "./pages/DailySchedules.jsx";
 import WeeklyCalendars from "./pages/WeeklyCalendars.jsx";
-import SocialStories from "./pages/SocialStories.jsx";
-import EnvironmentalSupports from "./pages/EnvironmentalSupports.jsx";
-import ChoiceBoards from "./pages/ChoiceBoards.jsx";
 import FirstThen from "./pages/FirstThen.jsx";
 import TemplateChoice from "./pages/TemplateChoice.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
@@ -23,7 +20,6 @@ import Supports from "./pages/Supports.jsx";
 import SharedTemplates from "./pages/SharedTemplates.jsx";
 import ViewSupport from "./pages/ViewSupport.jsx";
 import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
-import { Support } from "@mui/icons-material";
 
 // ProtectedRoute component to handle route protection
 const ProtectedRoute = ({
@@ -142,10 +138,10 @@ function App() {
             }
           />
           <Route
-            path="/taskanalyses/:profileID"
+            path="/stepsupport/:profileID"
             element={
               <ProtectedRoute
-                element={TaskAnalyses}
+                element={StepSupport}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}
@@ -168,39 +164,6 @@ function App() {
             element={
               <ProtectedRoute
                 element={WeeklyCalendars}
-                isAuth={isAuth}
-                token={token}
-                setTokenFunc={updateToken}
-              />
-            }
-          />
-          <Route
-            path="/socialstories/:profileID"
-            element={
-              <ProtectedRoute
-                element={SocialStories}
-                isAuth={isAuth}
-                token={token}
-                setTokenFunc={updateToken}
-              />
-            }
-          />
-          <Route
-            path="/envirsupports/:profileID"
-            element={
-              <ProtectedRoute
-                element={EnvironmentalSupports}
-                isAuth={isAuth}
-                token={token}
-                setTokenFunc={updateToken}
-              />
-            }
-          />
-          <Route
-            path="/choiceboards/:profileID"
-            element={
-              <ProtectedRoute
-                element={ChoiceBoards}
                 isAuth={isAuth}
                 token={token}
                 setTokenFunc={updateToken}

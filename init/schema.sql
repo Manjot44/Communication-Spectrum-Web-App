@@ -35,6 +35,7 @@ create table "SupportUsers" (
 
 create table "Supports" (
     support_id  serial not null unique,
+    type        text,
     title       text,
     title_img   text,
     date        date,
@@ -65,7 +66,6 @@ create table "hasSupport" (
     primary key (support_id, user_id)
 );
 
--- This table manages images linked to professionals and support users.
 create table "ProfUserImageAccess" (
     img_id      integer not null references "Images"(img_id),
     prof_id     text not null references "Professionals"(email),

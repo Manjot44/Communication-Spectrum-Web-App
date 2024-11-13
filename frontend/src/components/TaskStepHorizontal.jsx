@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import {
@@ -6,10 +6,22 @@ import {
 } from "@mui/material";
 import VisualSupportImage from './VisualSupportImage';
 import CancelIcon from '@mui/icons-material/Cancel';
-import IconButton from "@mui/material/IconButton";
-import "../App.css";
+import IconButton from '@mui/material/IconButton';
 
-function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, removeStep, setName, stepName, setTime, stepTime }) {
+function ChoiceBoardStepHorizontal ({ 
+  image,
+  setImage,
+  index,
+  deleteImage,
+  removeStep,
+  setName,
+  stepName,
+  showCancel,
+  showTime,
+  stepTime,
+  setTime,
+  label
+}) {
   const handleTimeChange = (e) => {
     let input = e.target.value;
     
@@ -21,13 +33,14 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
       setTime(input);
     }
   };
-
+  
   return (
     <>
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12} style={{ color: 'white', backgroundColor: '#000CA4', display: 'flex', fontWeight: 'bold', height: '50px', width: '550px', justifyContent: 'center', alignItems: 'center', position: 'relative', borderRadius: '15px 15px 0 0' }}>
-          Step {index + 1}
-          <IconButton
+          {index}
+          {showCancel && (
+            <IconButton
               aria-label="delete"
               onClick={removeStep}
               sx={{ position: 'absolute', right: 8, color: 'white' }}
@@ -35,6 +48,7 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
             >
               <CancelIcon/>
             </IconButton>
+          )}
         </Grid>
         <Grid item xs={12}>
           {/* Inside Grid */}
@@ -43,7 +57,7 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
               <Box sx={{ height: '230px', width: '350px' }} style={{ padding: '0 15px', alignItems: "center", justifyContent: "center", borderRadius: '0 0 0 15px', borderBottom: '1px solid #000CA4', borderLeft: '1px solid #000CA4' }}>
                   <br/>
                   <TextField
-                    label="Step Name"
+                    label={label}
                     variant="outlined"
                     fullWidth
                     style={{
@@ -54,19 +68,21 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
                     onChange={(e) => setName(e.target.value)}
                   />
                   <br />
-                  <TextField
-                    label="Timer"
-                    variant="outlined"
-                    fullWidth
-                    style={{
-                      marginBottom: "20px",
-                      backgroundColor: "white",
-                    }}
-                    value={stepTime}
-                    onChange={handleTimeChange}
-                    inputProps={{ inputMode: 'numeric', pattern: "[0-9]*" }}
-                    placeholder="00:00:00"
-                  />
+                  {showTime && (
+                    <TextField
+                      label="Timer"
+                      variant="outlined"
+                      fullWidth
+                      style={{
+                        marginBottom: "20px",
+                        backgroundColor: "white",
+                      }}
+                      value={stepTime}
+                      onChange={handleTimeChange}
+                      inputProps={{ inputMode: 'numeric', pattern: "[0-9]*" }}
+                      placeholder="00:00:00"
+                    />
+                  )}
               </Box>
             </Grid>
             <Grid item xs={12} md={3} style={{ backgroundColor: 'white' }}>
@@ -83,4 +99,4 @@ function TaskAnalysesStepHorizontal ({ image, setImage, index, deleteImage, remo
   );
 }
 
-export default TaskAnalysesStepHorizontal;
+export default ChoiceBoardStepHorizontal;

@@ -427,15 +427,16 @@ export const new_support = async (
   stepNames,
   stepTimes,
   category,
-  isHorizontal
+  isHorizontal,
+  type
 ) => {
   return userLock(async (resolve, reject) => {
     try {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
         const supportQuery = `
-          INSERT INTO "Supports" (title, title_img, date, step_img, step_names, step_times, category, layout, prof_id)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          INSERT INTO "Supports" (type, title, title_img, date, step_img, step_names, step_times, category, layout, prof_id)
+          VALUES ($10, $1, $2, $3, $4, $5, $6, $7, $8, $9)
           RETURNING support_id;
         `;
         const supportResult = await pool.query(supportQuery, [
@@ -448,6 +449,7 @@ export const new_support = async (
           category,
           isHorizontal,
           email,
+          type,
         ]);
         const support_id = supportResult.rows[0].support_id;
 

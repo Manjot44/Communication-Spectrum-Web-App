@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import { useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -12,18 +12,13 @@ import '../App.css';
 import Arrow from '../components/Arrow';
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
 import EditTitleComponent from '../components/EditTitleComponent';
-import ChoiceBoardStep from '../components/ChoiceBoardStep';
+import ChoiceBoardStep from '../components/TaskStep';
+import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
   const { profileID } = useParams();
-  const { state } = useLocation();
-  const [text, setText] = useState(state.text);
-  const [image, setImage] = useState(state.image);
-  const [imageFirst, setImageFirst] = useState(state.imageFirst);
-  const [imageThen, setImageThen] = useState(state.imageThen);
-  const [firstName, setFirstname] = useState(state.firstName);
-  const [thenName, setThenName] = useState(state.thenName);
-  const [category, setCategory] = useState(state.category);
+  const navigate = useNavigate();
+  const [text, setText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
@@ -33,7 +28,30 @@ function FirstThen({ token, setTokenFunc }) {
       setNameError(true); // Set error state if no name is entered
       return;
     }
-    // ADD PUT REQUEST HERE
+    try {
+      await axios.post(
+        `http://localhost:5005/new_support/${profileID}`,
+        {
+          type: "First-Then",
+          text,
+          image,
+          date,
+          stepImages: [imageFirst, imageThen],
+          stepNames: [firstName, thenName],
+          stepTimes: null,
+          category,
+          isHorizontal: null,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      navigate(`/home/${profileID}`);
+    } catch (err) {
+      alert(err.response.data.error);
+    }
   };
 
   return (

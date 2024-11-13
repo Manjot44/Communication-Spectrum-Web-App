@@ -8,7 +8,7 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import TemplateChoiceCard from '../components/TemplateChoiceCard';
 
-function TemplateChoice({ }) {
+function TemplateChoice({ token }) {
   const { profileID } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -53,7 +53,7 @@ function TemplateChoice({ }) {
               TemplateType="Create From Scratch"
               TemplateDesc="Create your visual support from scratch."
               IconComponent={LibraryAddIcon}
-							NavigateTo={async () => {navigate(state.scratch, { state: makeEmpty })}}
+							NavigateTo={async () => {navigate(state.scratch, { state: state })}}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -61,7 +61,7 @@ function TemplateChoice({ }) {
               TemplateType="Create From Template"
               TemplateDesc="Create a visual support using your own images and text with a structured template."
               IconComponent={DashboardIcon}
-              NavigateTo={async () => {navigate(state.temp, { state: makeEmpty })}}
+              NavigateTo={async () => {navigate(state.temp, { state: state })}}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -69,7 +69,7 @@ function TemplateChoice({ }) {
               TemplateType="Create From Existing Template"
               TemplateDesc="Use one of our pre-made templates to help create your visual support."
               IconComponent={ImageSearchIcon}
-							NavigateTo={async () => {navigate(state.exist, { state: supportType })}}
+							NavigateTo={async () => {navigate(state.exist, { state: state })}}
             />
           </Grid>
         </Grid>
