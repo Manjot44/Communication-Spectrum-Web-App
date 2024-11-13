@@ -20,7 +20,7 @@ function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
 
   // Pretend this is the Pre-Made Template (ACTUAL DATA WILL COME FROM API REQUEST)
   const testSupport = { text: 'How to banana', image: 'https://media.istockphoto.com/id/619046500/photo/bananas.jpg?s=612x612&w=0&k=20&c=p5-v1iKwhOhw5cFjfx83qgaZcOBSVpUuicZi4VIGF2Y=', steps: [ { id: 1 }, { id: 2 }], stepImages: [null, null], stepNames: ["hey", "bob"], stepTimes: [null, null], category: '' }
-  const supportType = { state: state, data: testSupport };
+  const supportType = { state: state.state, data: testSupport };
 
   // NEED TO FETCH PUBLIC TEMPLATES INSTEAD
 	useEffect(() => {
