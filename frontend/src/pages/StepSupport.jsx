@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Grid, Card, Typography, CardContent } from "@mui/material";
@@ -8,24 +8,51 @@ import dayjs from "dayjs";
 import SelectDateCategoryComponent from "../components/SelectDateCategoryComponent.jsx";
 import LoadTaskSteps from "../components/LoadTaskSteps.jsx";
 import TaskHeader from "../components/Taskheader.jsx";
-import { useRef } from "react";
+import LoadingSpinner from "../components/LoadingSpinner.jsx"; // Import LoadingSpinner
 import { useReactToPrint } from "react-to-print";
 
 function StepSupport({ token }) {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { profileID } = useParams();
-  const [text, setText] = useState(state.data.text);
-  const [image, setImage] = useState(state.data.image);
-  const [steps, setSteps] = useState(state.data.steps);
-  const [stepImages, setStepImages] = useState(state.data.stepImages);
-  const [stepNames, setStepNames] = useState(state.data.stepNames);
-  const [stepTimes, setStepTimes] = useState(state.data.stepTimes);
-  const [category, setCategory] = useState(state.data.category);
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  // Default values for state data properties to handle null cases
+  const defaultData = {
+    text: "",
+    image: null,
+    steps: [],
+    stepImages: [],
+    stepNames: [],
+    stepTimes: [],
+    category: "",
+    type: "",
+    defaultText: "",
+    errorMsg: "",
+    addMsg: "",
+    stepTitle: "",
+    showTime: false,
+    label: "",
+  };
+
+  // Destructure data from state or use defaultData
+  const data = state?.data || defaultData;
+  const [text, setText] = useState(data.text);
+  const [image, setImage] = useState(data.image);
+  const [steps, setSteps] = useState(data.steps);
+  const [stepImages, setStepImages] = useState(data.stepImages);
+  const [stepNames, setStepNames] = useState(data.stepNames);
+  const [stepTimes, setStepTimes] = useState(data.stepTimes);
+  const [category, setCategory] = useState(data.category);
   const [isEditing, setIsEditing] = useState(false);
-  const [date, setDate] = useState(dayjs());               // Date of the Visual Support
-  const [isHorizontal, setIsHorizontal] = useState(false); // New state to toggle component type
-  const [nameError, setNameError] = useState(false);       // State for task name error
+  const [date, setDate] = useState(dayjs());
+  const [isHorizontal, setIsHorizontal] = useState(false);
+  const [nameError, setNameError] = useState(false);
+
+  // Set loading to false once component is mounted
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   // Toggle between horizontal and vertical step display
   const toggleComponentType = () => {
@@ -37,8 +64,8 @@ function StepSupport({ token }) {
     const newStep = { id: Date.now() };
     setSteps([...steps, newStep]);
     setStepImages([...stepImages, null]); // Initialize a placeholder for the new step's image
-    setStepNames([...stepNames, null]);   // Initialize a placeholder for the new step's name
-    setStepTimes([...stepTimes, null]);   // Initialize a placeholder for the new step's time
+    setStepNames([...stepNames, null]); // Initialize a placeholder for the new step's name
+    setStepTimes([...stepTimes, null]); // Initialize a placeholder for the new step's time
   };
 
   // Remove a step by index
@@ -87,7 +114,7 @@ function StepSupport({ token }) {
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
-          type: state.state.type,
+          type: data.type,
           text,
           image,
           date,
@@ -111,6 +138,11 @@ function StepSupport({ token }) {
 
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
+
+  // Show loading spinner while data is loading
+  if (loading) {
+    return <LoadingSpinner message="Loading data..." />;
+  }
 
   return (
     <>
@@ -149,12 +181,12 @@ function StepSupport({ token }) {
                     setNameError={setNameError}
                     toggleComponentType={toggleComponentType}
                     addStep={addStep}
-                    defaultText={state.state.defaultText}
-                    errorMsg={state.state.errorMsg}
-                    addMsg={state.state.addMsg}
+                    defaultText={data.defaultText}
+                    errorMsg={data.errorMsg}
+                    addMsg={data.addMsg}
                     reactToPrintFn={reactToPrintFn}
                   />
-                  <Grid container spacing={2} style={{ padding: "2%" }} >
+                  <Grid container spacing={2} style={{ padding: "2%" }}>
                     <Grid
                       item
                       xs={12}
@@ -176,7 +208,7 @@ function StepSupport({ token }) {
                       >
                         <LoadTaskSteps
                           steps={steps}
-                          title={state.state.stepTitle}
+                          title={data.stepTitle}
                           stepImages={stepImages}
                           stepNames={stepNames}
                           stepTimes={stepTimes}
@@ -187,8 +219,8 @@ function StepSupport({ token }) {
                           updateStepTime={updateStepTime}
                           deleteStepImageChange={deleteStepImageChange}
                           showCancel={true}
-                          showTime={state.state.showTime}
-                          label={state.state.label}
+                          showTime={data.showTime}
+                          label={data.label}
                         />
                       </div>
                     </Grid>
