@@ -12,7 +12,7 @@ function TemplateChoice({ token }) {
   const { profileID } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const supportType = { type: state.category, link: state.temp };
+  // const supportType = { type: state.category, link: state.temp };
 
   const getMakeEmpty = (category) => {
     switch (category) {
@@ -23,7 +23,8 @@ function TemplateChoice({ token }) {
     }
   };
   
-  const makeEmpty = getMakeEmpty(state.category);
+  const makeEmpty = getMakeEmpty(state.type);
+  const supportType = { state: state, data: makeEmpty };
 
   return (
     <>
@@ -61,7 +62,7 @@ function TemplateChoice({ token }) {
               TemplateType="Create From Template"
               TemplateDesc="Create a visual support using your own images and text with a structured template."
               IconComponent={DashboardIcon}
-              NavigateTo={async () => {navigate(state.temp, { state: state })}}
+              NavigateTo={async () => {navigate(state.temp, { state: supportType })}}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -69,7 +70,7 @@ function TemplateChoice({ token }) {
               TemplateType="Create From Existing Template"
               TemplateDesc="Use one of our pre-made templates to help create your visual support."
               IconComponent={ImageSearchIcon}
-							NavigateTo={async () => {navigate(state.exist, { state: state })}}
+							NavigateTo={async () => {navigate(state.exist, { state: supportType })}}
             />
           </Grid>
         </Grid>

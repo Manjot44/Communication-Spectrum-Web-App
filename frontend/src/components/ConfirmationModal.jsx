@@ -1,5 +1,3 @@
-// ConfirmationModal.jsx
-
 import React from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 
@@ -8,7 +6,8 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "500px",
+  width: "90%",
+  maxWidth: "750px",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -20,13 +19,27 @@ function ConfirmationModal({ open, onClose, onConfirm, message, description }) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
-        <Typography variant="h6" component="h2" gutterBottom>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{
+            fontSize: "1.3rem",
+            fontWeight: 600,
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            wordBreak: "break-word",
+          }}
+        >
           {message || "Are you sure you want to proceed?"}
         </Typography>
 
-        {/* Render description if provided */}
         {description && (
-          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            sx={{ mt: 1, fontSize: "0.9rem" }}
+          >
             {description}
           </Typography>
         )}

@@ -132,6 +132,7 @@ function RecentSupports({ profileData, token, onDelete, onClick, showIcons }) {
         message="Share Visual Support"
         description="Please Select User Profiles To Share"
         token={token}
+        profileType={"User"}
       />
     </Card>
   );

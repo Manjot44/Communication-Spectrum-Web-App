@@ -23,7 +23,9 @@ import {
   update_user_profile,
   new_support,
   get_client_support,
+  update_image,
 } from "./service.js";
+
 
 const app = express();
 
@@ -235,6 +237,18 @@ app.delete(
   )
 );
 
+app.put(
+  "/update_image/:img_id",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { img_id } = req.params;
+      const { image } = req.body; // The updated base64 image data
+      await update_image(email, img_id, image);
+      return res.json({ message: "Image updated successfully" });
+    })
+  )
+);
+
 /***************************************************************
                       Supports Functions
 ***************************************************************/
@@ -244,7 +258,7 @@ app.post(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       const {
-        type, 
+        type,
         text,
         image,
         value,
@@ -265,7 +279,7 @@ app.post(
         stepTimes,
         category,
         isHorizontal,
-        type,
+        type
       );
       return res.json({});
     })

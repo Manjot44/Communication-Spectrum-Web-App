@@ -20,15 +20,15 @@ function FirstThen({ token, setTokenFunc }) {
   const { profileID } = useParams();
   const { state } = useLocation();
   const [text, setText] = useState(state.text);
-  const [image, setImage] = useState(state.image);
-  const [imageFirst, setImageFirst] = useState(state.imageFirst);
-  const [imageThen, setImageThen] = useState(state.imageThen);
-  const [firstName, setFirstname] = useState(state.firstName);
-  const [thenName, setThenName] = useState(state.thenName);
-  const [category, setCategory] = useState(state.category);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
+  const [category, setCategory] = useState(state.data.category);
+  const [image, setImage] = useState(state.data.image);
+  const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
+  const [imageThen, setImageThen] = useState(state.data.imageThen);
+  const [firstName, setFirstname] = useState(state.data.firstName);
+  const [thenName, setThenName] = useState(state.data.thenName);
 
   const handleCreate = async () => {
     if (text.trim() === "") {
