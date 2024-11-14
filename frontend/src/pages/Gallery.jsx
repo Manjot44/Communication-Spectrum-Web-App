@@ -130,7 +130,7 @@ function Gallery({ token }) {
               textAlign: "center",
             }}
           >
-            <b>Gallery</b>
+            <b>Image Gallery</b>
           </Typography>
           <Button
             sx={{ ml: "auto", backgroundColor: "#ff7c33" }}

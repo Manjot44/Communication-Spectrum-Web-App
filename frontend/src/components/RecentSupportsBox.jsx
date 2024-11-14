@@ -4,7 +4,7 @@ import RecentSupports from "../components/RecentSupports.jsx";
 import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import axios from "axios";
-import NotificationPopup from "../components/NotificationPopup"; // Import your notification component
+import NotificationPopup from "../components/NotificationPopup";
 import { useNavigate, useParams } from "react-router-dom";
 
 function RecentSupportsBox({
@@ -12,10 +12,11 @@ function RecentSupportsBox({
   supportData,
   token,
   setSupportData,
-  title
+  title,
+  noSupportMessage, // Add the noSupportMessage prop
 }) {
-  const [showNotification, setShowNotification] = useState(false); // State to control notification visibility
-  const [notificationMessage, setNotificationMessage] = useState(""); // State for the notification message
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const navigate = useNavigate();
   const { profileID } = useParams();
 
@@ -23,7 +24,6 @@ function RecentSupportsBox({
     ? `Loading ${profileData.name}'s recent supports...`
     : "Loading recent supports...";
 
-  // Handle the deletion of a support item
   const handleDeleteSupport = async (supportId) => {
     try {
       await axios.delete(`http://localhost:5005/delete_support/${supportId}`, {
@@ -32,12 +32,10 @@ function RecentSupportsBox({
         },
       });
 
-      // Update the supportData state by removing the deleted item
       setSupportData((prevData) =>
         prevData.filter((support) => support.support_id !== supportId)
       );
 
-      // Show success notification
       setNotificationMessage("Support has been deleted successfully.");
       setShowNotification(true);
     } catch (error) {
@@ -80,7 +78,7 @@ function RecentSupportsBox({
               align="center"
               style={{ marginTop: "20px", color: "#666" }}
             >
-              {profileData.name} has no recent supports. Create some!
+              {noSupportMessage} {/* Display the specific message here */}
             </Typography>
           ) : (
             <Grid container spacing={2} alignItems="stretch">
@@ -89,8 +87,12 @@ function RecentSupportsBox({
                   <RecentSupports
                     profileData={support}
                     token={token}
-                    onDelete={handleDeleteSupport} // Pass the delete handler
-                    onClick={async () => {navigate(`/viewsupport/${profileID}/${support.support_id}`)}}
+                    onDelete={handleDeleteSupport}
+                    onClick={async () => {
+                      navigate(
+                        `/viewsupport/${profileID}/${support.support_id}`
+                      );
+                    }}
                     showIcons={true}
                   />
                 </Grid>
@@ -100,12 +102,11 @@ function RecentSupportsBox({
         </div>
       </Card>
 
-      {/* Notification Popup */}
       {showNotification && (
         <NotificationPopup
           message={notificationMessage}
-          duration={5000} // Show for 5 seconds
-          onClose={() => setShowNotification(false)} // Close the notification after it expires
+          duration={5000}
+          onClose={() => setShowNotification(false)}
         />
       )}
     </>
