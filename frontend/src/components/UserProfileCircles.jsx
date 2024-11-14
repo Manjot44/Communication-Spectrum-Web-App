@@ -1,38 +1,67 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Grid from '@mui/material/Grid2';
-import Box from '@mui/material/Box';
-import "../App.css"
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { IconButton, Grid, Box, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import "../App.css";
 
-function UserProfileCircles ({ profileName, profilePicture, profileID }) {
+function UserProfileCircles({
+  profileName,
+  profilePicture,
+  profileID,
+  onDelete,
+  onShare,
+}) {
   const navigate = useNavigate();
 
-  // Navigate to the home page for the user profile
   const handleUser = () => {
-    navigate(`/home/${profileID}`)
-  }
+    navigate(`/home/${profileID}`);
+  };
 
   return (
-    <>
-      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-      <Grid container direction="column" spacing={0} onClick={handleUser}>
-        <Grid item xs={12}>
-          <img
-            src={profilePicture}
-            alt=""
-            className="profile-picture"
-            class="user-profile-image"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Box 
-            class="user-profile-name"
+    <Grid item xs={12} sm={4} md={3} lg={2}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        onClick={handleUser}
+      >
+        <img
+          src={profilePicture}
+          alt=""
+          className="user-profile-image"
+          style={{ cursor: "pointer" }}
+        />
+        <Typography
+          variant="body1"
+          sx={{ fontFamily: "Poppins", mt: 1, fontWeight: 500 }}
+        >
+          {profileName}
+        </Typography>
+        <Box display="flex" justifyContent="center" mt={1}>
+          <IconButton
+            aria-label="delete"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            color="error"
           >
-            {profileName}
-          </Box>
-        </Grid>
-      </Grid>
-    </>
+            <DeleteIcon />
+          </IconButton>
+          <IconButton
+            aria-label="share"
+            onClick={(e) => {
+              e.stopPropagation();
+              onShare();
+            }}
+            color="primary"
+          >
+            <IosShareIcon />
+          </IconButton>
+        </Box>
+      </Box>
+    </Grid>
   );
 }
 

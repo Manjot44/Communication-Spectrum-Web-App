@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
+import { Button, Box } from "@mui/material";
+import ListIcon from "@mui/icons-material/List";
+import GridOnIcon from "@mui/icons-material/GridOn";
 import UserProfileContainer from "../components/UserProfileContainer";
+import UserProfileList from "../components/UserProfileList";
 import Logo from "../assets/mycomm.png";
 import "../App.css";
 
 function UserManage({ token, setTokenFunc }) {
   const navigate = useNavigate();
+  const [isListView, setIsListView] = useState(false);
 
-  const logOut = async() => {
-    localStorage.removeItem('token');
+  const logOut = async () => {
+    localStorage.removeItem("token");
     await setTokenFunc(null);
     navigate("/");
-  }
+  };
+
+  const toggleView = () => setIsListView(!isListView);
+
+  const handleAddUser = () => {
+    navigate("/AddUser"); // Navigate to the AddUser page
+  };
 
   return (
     <>
@@ -20,7 +30,7 @@ function UserManage({ token, setTokenFunc }) {
         href="https://fonts.googleapis.com/css?family=Poppins"
         rel="stylesheet"
       ></link>
-      <div class="d-flex justify-content-between">
+      <div className="d-flex justify-content-between">
         <img
           src={Logo}
           alt="MyComms Logo"
@@ -30,13 +40,38 @@ function UserManage({ token, setTokenFunc }) {
           LOG OUT
         </Button>
       </div>
-      <div class="d-flex justify-content-center align-items-center">
-        <h1 class="login-text" style={{ marginTop: "15vh" }}>
+      <div className="d-flex justify-content-center align-items-center">
+        <h1 className="login-text" style={{ marginTop: "15vh" }}>
           Select User Profile
         </h1>
       </div>
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        gap={2}
+      >
+        <Button
+          onClick={toggleView}
+          variant="contained"
+          color="primary"
+          startIcon={isListView ? <GridOnIcon /> : <ListIcon />}
+        >
+          {isListView ? "Grid View" : "List View"}
+        </Button>
+        <Button onClick={handleAddUser} variant="contained" color="secondary">
+          + Create New User
+        </Button>
+      </Box>
+
       <br />
-      <UserProfileContainer token={token}></UserProfileContainer>
+      {isListView ? (
+        <UserProfileList token={token} />
+      ) : (
+        <UserProfileContainer token={token} />
+      )}
     </>
   );
 }
