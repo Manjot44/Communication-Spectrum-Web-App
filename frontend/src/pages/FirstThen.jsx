@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -17,11 +17,16 @@ import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
   const { profileID } = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
+  const [category, setCategory] = useState(state.data.category);
+  const [image, setImage] = useState(state.data.image);
+  const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
+  const [imageThen, setImageThen] = useState(state.data.imageThen);
 
   const handleCreate = async () => {
     if (text.trim() === "") {
