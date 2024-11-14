@@ -185,15 +185,6 @@ function SupportSnapshot({
           )}
         </div>
         <br />
-        <Typography variant="h6"><b>Search recent supports</b></Typography>
-        <TextField
-          placeholder="Search"
-          variant="outlined"
-          fullWidth
-          style={{
-            marginBottom: "20px",
-          }}
-        />
       </Card>
 
       {/* Edit Profile Picture Modal */}
