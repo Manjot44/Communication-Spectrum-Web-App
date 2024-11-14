@@ -21,7 +21,7 @@ const SettingsSection = ({ settings, handleChange, isEditing, isPasswordChange }
             label="Email"
             value={settings.email}
             onChange={handleChange("email")}
-            disabled={!isEditing}
+            disabled={true}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -41,7 +41,11 @@ const SettingsSection = ({ settings, handleChange, isEditing, isPasswordChange }
             options={[
               { value: "Australia", label: "Australia" },
               { value: "New Zealand", label: "New Zealand" },
+              { value: "China", label: "China" },
+              { value: "India", label: "India" },
               { value: "United States", label: "United States" },
+              { value: "United Kingdom", label: "United Kingdom" },
+              { value: "Kazakhstan", label: "Kazakhstan" },
             ]}
           />
         </Grid>
@@ -61,8 +65,15 @@ const SettingsSection = ({ settings, handleChange, isEditing, isPasswordChange }
             disabled={!isEditing}
             options={[
               { value: "Speech Therapist", label: "Speech Therapist" },
+              {
+                value: "Behaviour Support Practitioner",
+                label: "Behaviour Support Practitioner",
+              },
               { value: "Educator", label: "Educator" },
               { value: "Psychologist", label: "Psychologist" },
+              { value: "Support Worker", label: "Support Worker" },
+              { value: "Parent/Carer", label: "Parent/Carer" },
+              { value: "Other", label: "Other" },
             ]}
           />
         </Grid>

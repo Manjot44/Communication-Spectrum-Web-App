@@ -12,7 +12,11 @@ function UserManage({ token, setTokenFunc }) {
     localStorage.removeItem('token');
     await setTokenFunc(null);
     navigate("/");
-  }
+  };
+
+  const goToSettings = () => {
+    navigate("/settings");
+  };
 
   return (
     <>
@@ -20,18 +24,23 @@ function UserManage({ token, setTokenFunc }) {
         href="https://fonts.googleapis.com/css?family=Poppins"
         rel="stylesheet"
       ></link>
-      <div class="d-flex justify-content-between">
+      <div className="d-flex justify-content-between align-items-center">
         <img
           src={Logo}
           alt="MyComms Logo"
           style={{ maxWidth: "15%", height: "auto" }}
         />
-        <Button style={{ width: "10%" }} onClick={logOut}>
-          LOG OUT
-        </Button>
+        <div>
+          <Button style={{ marginRight: "20px" }} onClick={goToSettings}>
+            My Settings
+          </Button>
+          <Button style={{ width: "10%" }} onClick={logOut}>
+            LOG OUT
+          </Button>
+        </div>
       </div>
-      <div class="d-flex justify-content-center align-items-center">
-        <h1 class="login-text" style={{ marginTop: "15vh" }}>
+      <div className="d-flex justify-content-center align-items-center">
+        <h1 className="login-text" style={{ marginTop: "15vh" }}>
           Select User Profile
         </h1>
       </div>
