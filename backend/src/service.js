@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import AsyncLock from "async-lock";
 import bcrypt from "bcrypt";
-import { InputError, AccessError } from "./error";
-import { pool } from "./server";
+import { InputError, AccessError } from "./error.js";
+import { pool } from "./server.js";
 
 const lock = new AsyncLock();
 

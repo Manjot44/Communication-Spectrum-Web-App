@@ -1,11 +1,9 @@
 import express from "express";
-import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { InputError, AccessError } from "./error";
-import swaggerDocument from "../swagger.json";
-import { Pool } from "pg";
-import config from "./config";
+import { InputError, AccessError } from "./error.js";
+import pkg from "pg";
+import config from "./config.js";
 import {
   getEmailFromAuthorization,
   login,
@@ -25,10 +23,11 @@ import {
   update_user_profile,
   new_support,
   get_client_support,
-} from "./service";
+} from "./service.js";
 
 const app = express();
 
+const { Pool } = pkg;
 export const pool = new Pool(config);
 
 app.use(cors());
@@ -63,7 +62,7 @@ const authed = (fn) => async (req, res) => {
 app.get(
   "/authenticate",
   catchErrors(
-    authed(async (req, res, email) => {
+    authed(async (req, res) => {
       return res.json({ authenticated: true });
     })
   )
@@ -160,7 +159,7 @@ app.put(
 app.post(
   "/admin/update_user_profilepicture/:profileID",
   catchErrors(
-    authed(async (req, res, email) => {
+    authed(async (req, res) => {
       const { profileID } = req.params;
       const { profilePicture } = req.body;
       await updateProfilePicture(profileID, profilePicture);
@@ -312,8 +311,6 @@ app.delete(
 ***************************************************************/
 
 app.get("/", (req, res) => res.redirect("/docs"));
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = 5005;
 

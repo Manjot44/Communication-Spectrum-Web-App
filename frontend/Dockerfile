@@ -1,6 +1,5 @@
 # Dockerfile for React frontend
-# Taken from Docker Primer
-FROM node:22
+FROM node:21
 
 WORKDIR /frontend
 COPY ./package*.json .
