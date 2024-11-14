@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -22,6 +22,33 @@ function EnterAccDetails({ token, setTokenFunc }) {
   const [isSubscribed, setSubscribe] = React.useState(false);
   const { notify, showNotification, notificationMessage } = useNotification();
   const navigate = useNavigate();
+  const [settings, setSettings] = useState({
+    full_name: "",
+    email: "",
+    dob: dayjs(),
+    location: "",
+    postcode: "",
+    profession: "",
+    is_subbed: false,
+  });
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await axios.get("http://localhost:5005/admin/auth/get_user_settings", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setSettings({
+        ...response.data,
+        dob: dayjs(response.data.dob),
+      });
+    } catch (error) {
+      alert(error.response.data.error);
+    }
+  };
 
   // Submits the register form when the enter key is pressed in any of the fields
   function handleKeyDown(event) {
@@ -35,12 +62,9 @@ function EnterAccDetails({ token, setTokenFunc }) {
   const handleCreateButton = () => {
     const postcodePattern = /^[0-9]{4,6}$/;
 
-    if (!name.trim()) {
-      notify("Please enter your name.");
-    } else if (!postcodePattern.test(postcode)) {
+    if (!postcodePattern.test(postcode)) {
       notify("Please enter a valid postcode (4-6 digits).");
     } else if (
-      email === "" ||
       profession === "" ||
       country === "" ||
       date === ""
@@ -93,18 +117,20 @@ function EnterAccDetails({ token, setTokenFunc }) {
           </h4>
 
           <TextFieldComponent
-            label="Full Name"
-            value={name}
+            label="Name"
+            value={settings.full_name}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={true}
           />
           <br />
           <br />
           <TextFieldComponent
             label="Email"
-            value={email}
+            value={settings.email}
             onChange={(e) => setEmail(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={true}
           />
           <br />
           <br />

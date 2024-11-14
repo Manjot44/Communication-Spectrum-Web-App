@@ -16,10 +16,10 @@ import ChoiceBoardStep from '../components/TaskStep';
 import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
+  const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
-  const navigate = useNavigate();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(state.text);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
@@ -27,6 +27,8 @@ function FirstThen({ token, setTokenFunc }) {
   const [image, setImage] = useState(state.data.image);
   const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
   const [imageThen, setImageThen] = useState(state.data.imageThen);
+  const [firstName, setFirstname] = useState(state.data.firstName);
+  const [thenName, setThenName] = useState(state.data.thenName);
 
   const handleCreate = async () => {
     if (text.trim() === "") {

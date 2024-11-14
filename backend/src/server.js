@@ -1,11 +1,10 @@
 import express from "express";
-import swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { InputError, AccessError } from "./error";
-import swaggerDocument from "../swagger.json";
-import { Pool } from "pg";
-import config from "./config";
+import { InputError, AccessError } from "./error.js";
+import pkg from "pg";
+import config from "./config.js";
+
 import {
   getEmailFromAuthorization,
   login,
@@ -25,10 +24,15 @@ import {
   update_user_profile,
   new_support,
   get_client_support,
-} from "./service";
+  getUserSettings,
+  updateUserSettings,
+  changeUserPassword,
+  update_image,
+} from "./service.js";
 
 const app = express();
 
+const { Pool } = pkg;
 export const pool = new Pool(config);
 
 app.use(cors());
@@ -63,7 +67,7 @@ const authed = (fn) => async (req, res) => {
 app.get(
   "/authenticate",
   catchErrors(
-    authed(async (req, res, email) => {
+    authed(async (req, res) => {
       return res.json({ authenticated: true });
     })
   )
@@ -160,7 +164,7 @@ app.put(
 app.post(
   "/admin/update_user_profilepicture/:profileID",
   catchErrors(
-    authed(async (req, res, email) => {
+    authed(async (req, res) => {
       const { profileID } = req.params;
       const { profilePicture } = req.body;
       await updateProfilePicture(profileID, profilePicture);
@@ -195,6 +199,38 @@ app.delete(
       const { user_id } = req.params;
       await delete_user(email, user_id); // Delete user function
       return res.json({ message: "Profile deleted successfully" });
+    })
+  )
+);
+
+app.get(
+  "/admin/auth/get_user_settings",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const settings = await getUserSettings(email);
+      return res.json(settings);
+    })
+  )
+);
+
+app.put(
+  "/admin/auth/update_user_settings",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { full_name, dob, location, postcode, profession, is_subbed } = req.body;
+      await updateUserSettings(email, full_name, dob, location, postcode, profession, is_subbed);
+      return res.json({ message: "Settings updated successfully" });
+    })
+  )
+);
+
+app.put(
+  "/admin/auth/change_password",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { currentPassword, newPassword } = req.body;
+      await changeUserPassword(email, currentPassword, newPassword);
+      return res.json({ message: "Password updated successfully" });
     })
   )
 );
@@ -236,6 +272,18 @@ app.delete(
   )
 );
 
+app.put(
+  "/update_image/:img_id",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { img_id } = req.params;
+      const { image } = req.body; // The updated base64 image data
+      await update_image(email, img_id, image);
+      return res.json({ message: "Image updated successfully" });
+    })
+  )
+);
+
 /***************************************************************
                       Supports Functions
 ***************************************************************/
@@ -245,7 +293,7 @@ app.post(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       const {
-        type, 
+        type,
         text,
         image,
         value,
@@ -266,7 +314,7 @@ app.post(
         stepTimes,
         category,
         isHorizontal,
-        type,
+        type
       );
       return res.json({});
     })
@@ -312,8 +360,6 @@ app.delete(
 ***************************************************************/
 
 app.get("/", (req, res) => res.redirect("/docs"));
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = 5005;
 

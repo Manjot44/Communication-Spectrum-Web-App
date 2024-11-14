@@ -3,7 +3,6 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import ProfileBox from "./ProfileBox";
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import ProfessionalBox from "./ProfessionalBox.jsx";
 
 const modalStyle = {
@@ -26,7 +25,7 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
 
   useEffect(() => {
     // Fetch the profiles when the component mounts
-    if (profileType == 'User') {
+    if (profileType === 'User') {
       axios
       .get("http://localhost:5005/get_clients", {
         headers: {
@@ -42,14 +41,10 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
           error.response ? error.response.data : error.message
         );
       });
-    } else if (profileType == 'Pro') {
+    } else if (profileType === 'Pro') {
       console.log("Insert Profile type over here")
     }
-  }, [token]);
-
-  useEffect(() => {
-    console.log("hi")
-  })
+  }, [token, profileType]);
 
   // Handle checkbox toggle
   const handleCheckboxToggle = (profileID) => {

@@ -39,7 +39,6 @@ export const getVisualSupportConfig = (type, profileID) => {
       stepTitle: "Story Point",
       showTime: false,
       label: "Story Point Description",
-			type: "Social Story"
     },
     "Environmental Support": { 
       title: "Create New Environment Support",
@@ -53,7 +52,6 @@ export const getVisualSupportConfig = (type, profileID) => {
       stepTitle: "Environment Support",
       showTime: false,
       label: "Environmental Support Description",
-			type: "Environmental Support"
     },
     "Choice Board": { 
       title: "Create New Choice Board",
@@ -67,7 +65,6 @@ export const getVisualSupportConfig = (type, profileID) => {
       stepTitle: "Choice",
       showTime: false,
       label: "Choice Name",
-			type: "Choice Board"
     },
     "First-Then": { 
       title: "Create New First-Then",

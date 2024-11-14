@@ -9,6 +9,7 @@ const TextFieldComponent = ({
   type,
   error,
   helperText,
+  disabled,
 }) => {
   return (
     <>
@@ -21,7 +22,8 @@ const TextFieldComponent = ({
         onChange={onChange}
         onKeyDown={onKeyDown}
         error={error}
-        helperText={helperText}
+        helperText={helperText} 
+        disabled={disabled}
       />
     </>
   );

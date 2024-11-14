@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -7,21 +7,24 @@ import TextFieldComponent from "../components/TextFieldComponent";
 import DropdownComponent from "../components/DropdownComponent";
 import SelectDOBComponent from "../components/SelectDOBComponent";
 import NotificationPopup from "../components/NotificationPopup";
+import ImageCropperModal from "../components/ImageCropperModal";
 import { useNotification } from "../services/notificationService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
 function EnterUserDetails({ token, setTokenFunc }) {
-  const [name, setName] = React.useState("");
-  const [dob, setDob] = React.useState(dayjs("2024-01-01"));
-  const [postcode, setPostcode] = React.useState("");
-  const [postcodeError, setPostcodeError] = React.useState("");
-  const [nameError, setNameError] = React.useState("");
-  const [dobError, setDobError] = React.useState("");
-  const [communication, setCommunication] = React.useState("");
-  const [interests, setInterests] = React.useState("");
-  const [environments, setEnvironments] = React.useState("");
-  const [profilePicture, setProfilePicture] = React.useState("");
+  const [name, setName] = useState("");
+  const [dob, setDob] = useState(dayjs("2024-01-01"));
+  const [postcode, setPostcode] = useState("");
+  const [postcodeError, setPostcodeError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [dobError, setDobError] = useState("");
+  const [communication, setCommunication] = useState("");
+  const [interests, setInterests] = useState("");
+  const [environments, setEnvironments] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
   const { notify, showNotification, notificationMessage } = useNotification();
   const navigate = useNavigate();
 
@@ -87,11 +90,16 @@ function EnterUserDetails({ token, setTokenFunc }) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setProfilePicture(reader.result);
+      setSelectedImage(reader.result); // Store the original image for cropping
+      setIsCropperOpen(true); // Open the cropper modal
     };
     if (file) {
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleCropComplete = (croppedImage) => {
+    setProfilePicture(croppedImage); // Set the cropped image as profile picture
   };
 
   const createUserProfile = async () => {
@@ -256,6 +264,16 @@ function EnterUserDetails({ token, setTokenFunc }) {
           onClose={() => notify("")}
         />
       )}
+
+      {/* Image Cropper Modal */}
+      <ImageCropperModal
+        open={isCropperOpen}
+        onClose={() => setIsCropperOpen(false)}
+        image={selectedImage}
+        onCropComplete={handleCropComplete}
+        defaultAspect={1}
+        circleCrop
+      />
     </>
   );
 }

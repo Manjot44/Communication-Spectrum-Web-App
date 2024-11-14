@@ -1,31 +1,60 @@
 import React, { useState } from "react";
-import { Card, Typography, TextField, Avatar, Button } from "@mui/material";
+import {
+  Card,
+  TextField,
+  Avatar,
+  Button,
+  Box,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
 import "../App.css";
 
-const avatarStyle = {
+const avatarContainerStyle = {
+  position: "relative",
   width: "100px",
   height: "100px",
   margin: "0 auto",
   cursor: "pointer",
+};
+
+const avatarStyle = {
+  width: "100%",
+  height: "100%",
+  borderRadius: "50%",
   border: "0.2px solid lightgray",
 };
 
-function SupportSnapshot({
+const overlayStyle = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+  opacity: 0,
+  transition: "opacity 0.3s ease",
+};
+
+const SupportSnapshot = ({
   profileData,
   openEditModal,
   setOpenEditModal,
   handleProfilePictureClick,
   handleProfilePictureUpload,
   handleSaveProfile,
-}) {
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(profileData.name || "");
   const [snapshot, setSnapshot] = useState(profileData.snapshot || "");
   const [interests, setInterests] = useState(profileData.interests || "");
   const [commEnv, setCommEnv] = useState(profileData.comm_env || "");
 
-  // Store initial values to reset changes on cancel
   const [initialValues, setInitialValues] = useState({
     name: profileData.name || "",
     snapshot: profileData.snapshot || "",
@@ -33,18 +62,15 @@ function SupportSnapshot({
     commEnv: profileData.comm_env || "",
   });
 
-  // Toggle editing mode and save changes
   const toggleEditing = () => {
     if (isEditing) {
       handleSaveProfile({ name, snapshot, interests, comm_env: commEnv });
     } else {
-      // Store initial values when editing is first activated
       setInitialValues({ name, snapshot, interests, commEnv });
     }
     setIsEditing(!isEditing);
   };
 
-  // Cancel changes and revert to initial values
   const handleCancel = () => {
     setName(initialValues.name);
     setSnapshot(initialValues.snapshot);
@@ -64,14 +90,19 @@ function SupportSnapshot({
           color: "#000CA4",
         }}
       >
-        {/* Add avatar and name */}
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <Avatar
-            alt={name}
-            src={profileData.profile_pic}
-            style={avatarStyle}
-            onClick={handleProfilePictureClick} // Open modal on click
-          />
+          <Box sx={avatarContainerStyle} onClick={handleProfilePictureClick}>
+            <Avatar alt={name} src={profileData.profile_pic} sx={avatarStyle} />
+            <Box
+              sx={{
+                ...overlayStyle,
+                "&:hover": { opacity: 1 }, // Show overlay on hover
+              }}
+            >
+              <EditIcon />
+            </Box>
+          </Box>
+
           {isEditing ? (
             <TextField
               value={name}
@@ -139,8 +170,7 @@ function SupportSnapshot({
         ) : (
           <h6>{commEnv}</h6>
         )}
-        {/* Toggle Edit Button */}
-        <br />
+
         <div
           style={{
             display: "flex",
@@ -187,7 +217,6 @@ function SupportSnapshot({
         <br />
       </Card>
 
-      {/* Edit Profile Picture Modal */}
       <EditProfilePictureModal
         open={openEditModal}
         handleClose={() => setOpenEditModal(false)}
@@ -196,6 +225,6 @@ function SupportSnapshot({
       />
     </>
   );
-}
+};
 
 export default SupportSnapshot;

@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import AsyncLock from "async-lock";
 import bcrypt from "bcrypt";
-import { InputError, AccessError } from "./error";
-import { pool } from "./server";
+import { InputError, AccessError } from "./error.js";
+import { pool } from "./server.js";
 
 const lock = new AsyncLock();
 
@@ -336,6 +336,63 @@ export const get_client = async (email, profileID) => {
   });
 };
 
+export const getUserSettings = async (email) => {
+  const queryText = `
+    SELECT full_name, email, dob, location, postcode, profession, is_subbed 
+    FROM "Professionals" 
+    WHERE email = $1
+  `;
+  const result = await pool.query(queryText, [email]);
+  if (result.rows.length === 0) {
+    throw new InputError("Professional not found.");
+  }
+  return result.rows[0];
+};
+
+export const updateUserSettings = async (
+  email,
+  full_name,
+  dob,
+  location,
+  postcode,
+  profession,
+  is_subbed
+) => {
+  const queryText = `
+    UPDATE "Professionals"
+    SET full_name = $2, dob = $3, location = $4, postcode = $5, profession = $6, is_subbed = $7
+    WHERE email = $1;
+  `;
+  const values = [email, full_name, dob, location, postcode, profession, is_subbed];
+  await pool.query(queryText, values);
+};
+
+// Change user password
+export const changeUserPassword = async (email, currentPassword, newPassword) => {
+  // Get the current hashed password from the database
+  const result = await pool.query(
+    'SELECT password FROM "Professionals" WHERE email = $1',
+    [email]
+  );
+  if (result.rows.length === 0) {
+    throw new InputError("User not found.");
+  }
+
+  // Verify current password
+  const isPasswordValid = await bcrypt.compare(currentPassword, result.rows[0].password);
+  if (!isPasswordValid) {
+    throw new InputError("Current password is incorrect.");
+  }
+
+  // Hash new password and update
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  await pool.query(
+    'UPDATE "Professionals" SET password = $1 WHERE email = $2',
+    [hashedNewPassword, email]
+  );
+};
+
+
 /***************************************************************
                       Images Functions
 ***************************************************************/
@@ -407,6 +464,37 @@ export const delete_image = async (email, img_id) => {
       await pool.query('DELETE FROM "Images" WHERE img_id = $1', [img_id]);
 
       resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const update_image = async (email, img_id, newImage) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      // Check if the user has access to update this image
+      const checkAccessQuery = `
+        SELECT 1
+        FROM "ProfUserImageAccess" AS access
+        INNER JOIN "Images" AS img ON access.img_id = img.img_id
+        WHERE access.img_id = $1 AND access.prof_id = $2;
+      `;
+      const accessResult = await pool.query(checkAccessQuery, [img_id, email]);
+
+      if (accessResult.rows.length > 0) {
+        // Update the image URL in the Images table
+        const updateImageQuery = `
+          UPDATE "Images"
+          SET url = $1
+          WHERE img_id = $2;
+        `;
+        await pool.query(updateImageQuery, [newImage, img_id]);
+
+        resolve();
+      } else {
+        reject(new AccessError("You do not have access to update this image"));
+      }
     } catch (error) {
       reject(error);
     }
