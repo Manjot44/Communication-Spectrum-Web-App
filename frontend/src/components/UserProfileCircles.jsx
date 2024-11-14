@@ -1,38 +1,105 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Grid from '@mui/material/Grid2';
-import Box from '@mui/material/Box';
-import "../App.css"
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { IconButton, Box, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import "../App.css";
 
-function UserProfileCircles ({ profileName, profilePicture, profileID }) {
+function UserProfileCircles({
+  profileName,
+  profilePicture,
+  profileID,
+  onDelete,
+  onShare,
+}) {
   const navigate = useNavigate();
 
-  // Navigate to the home page for the user profile
   const handleUser = () => {
-    navigate(`/home/${profileID}`)
-  }
+    navigate(`/home/${profileID}`);
+  };
 
   return (
-    <>
-      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'></link>
-      <Grid container direction="column" spacing={0} onClick={handleUser}>
-        <Grid item xs={12}>
-          <img
-            src={profilePicture}
-            alt=""
-            className="profile-picture"
-            class="user-profile-image"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Box 
-            class="user-profile-name"
-          >
-            {profileName}
-          </Box>
-        </Grid>
-      </Grid>
-    </>
+    <Box
+      onClick={handleUser}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        cursor: "pointer",
+        padding: 2,
+        borderRadius: "12px",
+        backgroundColor: "#f9f9f9",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        width: "200px",
+        height: "270px",
+        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          transform: "scale(1.05)",
+          boxShadow: "0 8px 16px rgba(0, 112, 255, 0.5)",
+        },
+        position: "relative",
+      }}
+    >
+      {/* Profile Picture */}
+      <Box
+        component="img"
+        src={profilePicture}
+        alt=""
+        sx={{
+          width: "80%",
+          height: "auto",
+          borderRadius: "50%",
+          marginBottom: "12px",
+          border: "2px solid #ddd",
+        }}
+      />
+
+      {/* Profile Name */}
+      <Typography
+        variant="body1"
+        sx={{
+          fontWeight: "bold",
+          fontFamily: "Poppins",
+          color: "#333",
+          textAlign: "center",
+          marginBottom: "auto",
+        }}
+      >
+        {profileName}
+      </Typography>
+
+      {/* Action Buttons */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          justifyContent: "center",
+          mt: "auto",
+          paddingTop: "8px",
+        }}
+      >
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          color="error"
+          size="small"
+        >
+          <DeleteIcon />
+        </IconButton>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onShare();
+          }}
+          color="primary"
+          size="small"
+        >
+          <IosShareIcon />
+        </IconButton>
+      </Box>
+    </Box>
   );
 }
 

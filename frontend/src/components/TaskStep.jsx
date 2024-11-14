@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import VisualSupportImage from './VisualSupportImage';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
@@ -37,7 +37,14 @@ function ChoiceBoardStep ({
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12}>
           <Box sx={{ height: '50px', width: '350px', color: 'white', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000CA4', borderRadius: '15px 15px 0 0', position: 'relative', border: '1px solid #000CA4' }}>
-            {index}
+            <Typography
+              variant="h6"
+              align="center"
+              gutterBottom
+              style={{ fontFamily: "Poppins" }}
+            >
+              <b>{index}</b>
+            </Typography>
             {showCancel && (
               <IconButton
                 aria-label="delete"

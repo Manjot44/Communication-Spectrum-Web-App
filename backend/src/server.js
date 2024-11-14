@@ -23,7 +23,9 @@ import {
   update_user_profile,
   new_support,
   get_client_support,
+  update_image,
 } from "./service.js";
+
 
 const app = express();
 
@@ -237,8 +239,6 @@ app.delete(
   )
 );
 
-<<<<<<< Updated upstream
-=======
 app.put(
   "/update_image/:img_id",
   catchErrors(
@@ -251,7 +251,7 @@ app.put(
   )
 );
 
->>>>>>> Stashed changes
+
 /***************************************************************
                       Supports Functions
 ***************************************************************/
@@ -261,7 +261,7 @@ app.post(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
       const {
-        type, 
+        type,
         text,
         image,
         value,
@@ -282,7 +282,7 @@ app.post(
         stepTimes,
         category,
         isHorizontal,
-        type,
+        type
       );
       return res.json({});
     })

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
 /* LOGIN SCREEN */
 .login-background {
@@ -70,7 +70,7 @@
 
 .circular-icon-style:hover {
   background-color: #4f49c5;
-  border: 1px solid #000CA4;
+  border: 1px solid #000ca4;
 }
 
 .avatar-style {
@@ -84,7 +84,7 @@
   /* background-color: #d3c3ff; */
   background-color: #f0f0f0;
   border-radius: 15px;
-  color: #000CA4;
+  color: #000ca4;
 }
 
 .recent-supports-style {
@@ -93,9 +93,9 @@
   background-color: white;
   width: 100%;
   padding: 10px;
-  text-Align: center;
-  border: 1px solid #000CA4;
-  border-Radius: 15px;
+  text-align: center;
+  border: 1px solid #000ca4;
+  border-radius: 15px;
   transition: transform 0.3s;
 }
 
@@ -118,7 +118,7 @@
   background-color: #ff7c33;
   color: white;
   border-radius: 15px;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 .task-analyses-type:hover {
@@ -127,11 +127,12 @@
 }
 
 .task-analyses-create-options {
-  background-color: #000CA4;
+  background-color: #000ca4;
   color: white;
   border-radius: 15px;
-  font-family: 'Poppins';
-  box-shadow: 0 4px 8px 0 rgba(153, 153, 153, 0.2), 0 6px 20px 0 rgba(153, 153, 153, 0.2);
+  font-family: "Poppins";
+  box-shadow: 0 4px 8px 0 rgba(153, 153, 153, 0.2),
+    0 6px 20px 0 rgba(153, 153, 153, 0.2);
 }
 
 /* Create New Task Analyses Page */
@@ -139,7 +140,7 @@
   background-color: #ff7c33;
   color: white;
   border-radius: 15px;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   transition: transform 0.3s;
 }
 
@@ -150,16 +151,16 @@
 
 .task-analyses-create-options {
   background-color: white;
-  color: #000CA4;
+  color: #000ca4;
   border-radius: 15px;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 .choiceboard-create-opt {
   background-color: white;
   color: black;
   border-radius: 15px;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   height: 500px;
   display: flex;
   flex-direction: row;
@@ -187,15 +188,15 @@
   width: 100%;
   border: 2px dashed #ccc;
   display: flex;
-  justify-Content: center;
-  align-Items: center;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  background-Size: cover;
-  background-Position: center;
-  background-Repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #666;
-  background-Color: white;
-  font-Size: 18px;
+  background-color: white;
+  font-size: 18px;
   transition: background-color 0.3s;
 }
 
@@ -208,7 +209,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #000CA4;
+  background-color: #000ca4;
   padding: 10px 20px;
   color: white;
   font-family: "Poppins", sans-serif;
@@ -260,9 +261,9 @@
 .add-user-button {
   width: 200px;
   height: 200px;
-  border: 1px solid #26C3BA;
+  border: 1px solid #26c3ba;
   font-size: 2rem;
-  background-color: #26C3BA;
+  background-color: #26c3ba;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -291,12 +292,12 @@
   display: flex;
   font-family: "Poppins";
   font-weight: bold;
-  justify-content: center
+  justify-content: center;
 }
 
 .user-profile-image:hover {
   opacity: 0.6;
-  border: 1px solid #000CA4
+  border: 1px solid #000ca4;
 }
 
 /* REACT SET UP STUFF */
@@ -376,4 +377,26 @@
   font-size: 24px;
   color: #000;
   cursor: pointer;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
