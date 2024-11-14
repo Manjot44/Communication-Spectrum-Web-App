@@ -16,10 +16,10 @@ import ChoiceBoardStep from '../components/TaskStep';
 import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
+  const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
-  const navigate = useNavigate();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(state.text);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
