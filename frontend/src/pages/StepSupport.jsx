@@ -13,7 +13,7 @@ import { useReactToPrint } from "react-to-print";
 
 function StepSupport({ token }) {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const location = useLocation();
   const { profileID } = useParams();
   const [loading, setLoading] = useState(true); // Add loading state
 
@@ -181,9 +181,9 @@ function StepSupport({ token }) {
                     setNameError={setNameError}
                     toggleComponentType={toggleComponentType}
                     addStep={addStep}
-                    defaultText={state.state.defaultText}
-                    errorMsg={state.state.errorMsg}
-                    addMsg={state.state.addMsg}
+                    defaultText={state.state?.defaultText}
+                    errorMsg={state.state?.errorMsg}
+                    addMsg={state.state?.addMsg}
                     reactToPrintFn={reactToPrintFn}
                   />
                   <Grid container spacing={2} style={{ padding: "2%" }}>
@@ -208,7 +208,7 @@ function StepSupport({ token }) {
                       >
                         <LoadTaskSteps
                           steps={steps}
-                          title={state.state.stepTitle}
+                          title={state.state?.stepTitle}
                           stepImages={stepImages}
                           stepNames={stepNames}
                           stepTimes={stepTimes}
@@ -219,8 +219,8 @@ function StepSupport({ token }) {
                           updateStepTime={updateStepTime}
                           deleteStepImageChange={deleteStepImageChange}
                           showCancel={true}
-                          showTime={state.state.showTime}
-                          label={state.state.label}
+                          showTime={state.state?.showTime}
+                          label={state.state?.label}
                         />
                       </div>
                     </Grid>
