@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography, Button, IconButton, Box } from "@mui/material";
+import { Typography, Button, Box } from "@mui/material";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "../App.css";
@@ -8,39 +8,25 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { useNotification } from "../services/notificationService";
 import RecentSupportsBox from "../components/RecentSupportsBox";
 import CategorySelectCheckboxes from "../components/CategorySelectCheckboxes";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import VisualSupportTypes from "../components/VisualSupportTypes.jsx"; 
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
 
-function Supports({ token, setTokenFunc }) {
-	const { profileID } = useParams();
+function Supports({ token }) {
+  const { profileID } = useParams();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const [images, setImages] = useState(null);
-  const { notify, showNotification, notificationMessage } = useNotification();
-	const [supportData, setSupportData] = useState(null);
-	const [profileData, setProfileData] = useState(null);
+  const { notify } = useNotification();
+  const [supportData, setSupportData] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-	// Booleans for the Categories
-	const [selfCare, setSelfCare] = useState(false);
-	const [routine, setRoutine] = useState(false);
-	const [school, setSchool] = useState(false);
-	const [work, setWork] = useState(false);
-	const [fun, setFun] = useState(false);
-	const [emotion, setEmotion] = useState(false);
-	const [belief, setBelief] = useState(false);
-	const [health, setHealth] = useState(false);
-	const [transport, setTransport] = useState(false);
-	const [event, setEvent] = useState(false);
-	const [place, setPlace] = useState(false);
-	const [other, setOther] = useState(false);
-  
-	// For popup
+  // For popup
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -49,7 +35,24 @@ function Supports({ token, setTokenFunc }) {
     setOpen(false);
   };
 
-	useEffect(() => {
+  const noSupportMessage =
+    selectedCategories.length > 0
+      ? `${
+          profileData?.name || "This profile"
+        } has no supports in the selected categories. Create some!`
+      : `${
+          profileData?.name || "This profile"
+        } has no recent supports. Create some!`;
+
+  const handleCategoryChange = (category, isSelected) => {
+    setSelectedCategories((prevSelected) =>
+      isSelected
+        ? [...prevSelected, category]
+        : prevSelected.filter((item) => item !== category)
+    );
+  };
+
+  useEffect(() => {
     const fetchClient = async () => {
       try {
         const profileResponse = await axios.get(
@@ -78,8 +81,8 @@ function Supports({ token, setTokenFunc }) {
 
     fetchClient();
   }, [profileID, token]);
-	
-	// Fetch images
+
+  // Fetch images
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -99,7 +102,16 @@ function Supports({ token, setTokenFunc }) {
     fetchImages();
   }, [profileID, token, open, notify]);
 
-  if (!images) return <LoadingSpinner />;
+  // Filtered support data based on selected categories
+  const filteredSupportData = supportData
+    ? supportData.filter(
+        (support) =>
+          selectedCategories.length === 0 ||
+          selectedCategories.includes(support.category)
+      )
+    : null;
+
+  if (!images || !profileData) return <LoadingSpinner />;
 
   return (
     <>
@@ -136,58 +148,55 @@ function Supports({ token, setTokenFunc }) {
             + Add Visual Support
           </Button>
         </Box>
-				<br />
-				<Accordion sx={{ borderRadius: '15px', fontFamily: 'Poppins', border: 'none', color: '#000CA4' }}>
-					<AccordionSummary
-						expandIcon={<ArrowDownwardIcon />}
-						aria-controls="panel1-content"
-						id="panel2-header"
-						style={{ border: "none" }}
-					>
-						<Typography variant="h6">
-							<b>Filter by Category</b>
-						</Typography>
-					</AccordionSummary>
-					<AccordionDetails>
-						<Typography>
-							<CategorySelectCheckboxes 
-								setSelfCare={(e) => setSelfCare(e.target.checked)}
-								setRoutine={(e) => setRoutine(e.target.checked)}
-								setSchool={(e) => setSchool(e.target.checked)}
-								setWork={(e) => setWork(e.target.checked)}
-								setFun={(e) => setFun(e.target.checked)}
-								setEmotion={(e) => setEmotion(e.target.checked)}
-								setBelief={(e) => setBelief(e.target.checked)}
-								setHealth={(e) => setHealth(e.target.checked)}
-								setTransport={(e) => setTransport(e.target.checked)}
-								setEvent={(e) => setEvent(e.target.checked)}
-								setPlace={(e) => setPlace(e.target.checked)}
-								setOther={(e) => setOther(e.target.checked)}
-							/>
-						</Typography>
-					</AccordionDetails>
-				</Accordion>
-				<br/>
-				<RecentSupportsBox
-					profileData={profileData}
-					supportData={supportData}
-					token={token}
-					setSupportData={setSupportData}
-					title={`${profileData.name}'s Supports`}
-				/>
-				<br />
+        <br />
+        <Accordion
+          sx={{
+            borderRadius: "15px",
+            fontFamily: "Poppins",
+            border: "none",
+            color: "#000CA4",
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ArrowDownwardIcon />}
+            aria-controls="panel1-content"
+            id="panel2-header"
+            style={{ border: "none" }}
+          >
+            <Typography variant="h6">
+              <b>Filter by Category</b>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              <CategorySelectCheckboxes
+                handleCategoryChange={handleCategoryChange}
+              />
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <br />
+        <RecentSupportsBox
+          profileData={profileData}
+          supportData={filteredSupportData}
+          token={token}
+          setSupportData={setSupportData}
+          title={`${profileData?.name || "Profile"}'s Supports`}
+          noSupportMessage={noSupportMessage}
+        />
+        <br />
       </div>
-			<Dialog
+      <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-				maxWidth="lg"  // Set max width (options: 'xs', 'sm', 'md', 'lg', 'xl')
-  			fullWidth      // Ensures the dialog stretches to the full width
+        maxWidth="lg"
+        fullWidth
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-						<VisualSupportTypes profileID={profileID} />
+            <VisualSupportTypes profileID={profileID} />
           </DialogContentText>
         </DialogContent>
       </Dialog>

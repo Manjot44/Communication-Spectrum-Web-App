@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Button, Grid } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import EditTitleComponent from './EditTitleComponent';
 
 function TaskHeader({

@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import AsyncLock from "async-lock";
 import bcrypt from "bcrypt";
-import { InputError, AccessError } from "./error";
-import { pool } from "./server";
+import { InputError, AccessError } from "./error.js";
+import { pool } from "./server.js";
 
 const lock = new AsyncLock();
 
@@ -470,6 +470,37 @@ export const delete_image = async (email, img_id) => {
   });
 };
 
+export const update_image = async (email, img_id, newImage) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      // Check if the user has access to update this image
+      const checkAccessQuery = `
+        SELECT 1
+        FROM "ProfUserImageAccess" AS access
+        INNER JOIN "Images" AS img ON access.img_id = img.img_id
+        WHERE access.img_id = $1 AND access.prof_id = $2;
+      `;
+      const accessResult = await pool.query(checkAccessQuery, [img_id, email]);
+
+      if (accessResult.rows.length > 0) {
+        // Update the image URL in the Images table
+        const updateImageQuery = `
+          UPDATE "Images"
+          SET url = $1
+          WHERE img_id = $2;
+        `;
+        await pool.query(updateImageQuery, [newImage, img_id]);
+
+        resolve();
+      } else {
+        reject(new AccessError("You do not have access to update this image"));
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 /***************************************************************
                       Supports Functions
 ***************************************************************/
@@ -484,15 +515,16 @@ export const new_support = async (
   stepNames,
   stepTimes,
   category,
-  isHorizontal
+  isHorizontal,
+  type
 ) => {
   return userLock(async (resolve, reject) => {
     try {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
         const supportQuery = `
-          INSERT INTO "Supports" (title, title_img, date, step_img, step_names, step_times, category, layout, prof_id)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          INSERT INTO "Supports" (type, title, title_img, date, step_img, step_names, step_times, category, layout, prof_id)
+          VALUES ($10, $1, $2, $3, $4, $5, $6, $7, $8, $9)
           RETURNING support_id;
         `;
         const supportResult = await pool.query(supportQuery, [
@@ -505,6 +537,7 @@ export const new_support = async (
           category,
           isHorizontal,
           email,
+          type,
         ]);
         const support_id = supportResult.rows[0].support_id;
 

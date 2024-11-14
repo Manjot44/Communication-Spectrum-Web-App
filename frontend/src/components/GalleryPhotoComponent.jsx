@@ -1,13 +1,14 @@
 import React from "react";
 import { Card, CardActions, IconButton, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
 function GalleryPhotoComponent({
   image,
   onDelete,
   onRemoveBackground,
   onClick,
+  hasOptions,
 }) {
   return (
     <Card
@@ -52,27 +53,31 @@ function GalleryPhotoComponent({
         />
       </Box>
 
-      {/* Non-clickable Action Buttons */}
-      <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-        <IconButton
-          aria-label="delete"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
-        <IconButton
-          aria-label="zoom-in"
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemoveBackground();
-          }}
-        >
-          <ZoomInIcon />
-        </IconButton>
-      </CardActions>
+      {/* Action Buttons */}
+      {hasOptions && (
+        <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+          <IconButton
+            aria-label="delete"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+
+          <IconButton
+            aria-label="remove background"
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("Magic wand icon clicked");
+              onRemoveBackground();
+            }}
+          >
+            <AutoFixHighIcon />
+          </IconButton>
+        </CardActions>
+      )}
     </Card>
   );
 }

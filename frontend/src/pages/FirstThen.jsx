@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import { useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -12,28 +12,53 @@ import '../App.css';
 import Arrow from '../components/Arrow';
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
 import EditTitleComponent from '../components/EditTitleComponent';
-import ChoiceBoardStep from '../components/ChoiceBoardStep';
+import ChoiceBoardStep from '../components/TaskStep';
+import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
+  const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
   const [text, setText] = useState(state.text);
-  const [image, setImage] = useState(state.image);
-  const [imageFirst, setImageFirst] = useState(state.imageFirst);
-  const [imageThen, setImageThen] = useState(state.imageThen);
-  const [firstName, setFirstname] = useState(state.firstName);
-  const [thenName, setThenName] = useState(state.thenName);
-  const [category, setCategory] = useState(state.category);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
+  const [category, setCategory] = useState(state.data.category);
+  const [image, setImage] = useState(state.data.image);
+  const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
+  const [imageThen, setImageThen] = useState(state.data.imageThen);
+  const [firstName, setFirstname] = useState(state.data.firstName);
+  const [thenName, setThenName] = useState(state.data.thenName);
 
   const handleCreate = async () => {
     if (text.trim() === "") {
       setNameError(true); // Set error state if no name is entered
       return;
     }
-    // ADD PUT REQUEST HERE
+    try {
+      await axios.post(
+        `http://localhost:5005/new_support/${profileID}`,
+        {
+          type: "First-Then",
+          text,
+          image,
+          date,
+          stepImages: [imageFirst, imageThen],
+          stepNames: [firstName, thenName],
+          stepTimes: null,
+          category,
+          isHorizontal: null,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      navigate(`/home/${profileID}`);
+    } catch (err) {
+      alert(err.response.data.error);
+    }
   };
 
   return (

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
+import React from "react";
+import { Card, Typography, CardContent, Button } from "@mui/material";
 import "../App.css";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import DropdownComponent from "../components/DropdownComponent";
 import { DatePicker } from "@mui/x-date-pickers";
 import VisualSupportImage from "./VisualSupportImage";

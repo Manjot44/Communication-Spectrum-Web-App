@@ -4,8 +4,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Navbar from '../components/Navbar';
 import WeeklyCalendarComponent from '../components/WeeklyCalendarComponent'; // Import the new component
-import { useParams, Link, useNavigate } from "react-router-dom";
-import dayjs from 'dayjs';
+import { useParams } from "react-router-dom";
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 

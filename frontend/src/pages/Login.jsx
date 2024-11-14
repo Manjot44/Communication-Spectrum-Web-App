@@ -40,7 +40,11 @@ function Login({ setTokenFunc }) {
         await setTokenFunc(response.data.token);
         navigate("/UserManage");
       } catch (err) {
-        alert(err.response.data.error);
+        const errorMessage =
+          err.response && err.response.data && err.response.data.error
+            ? err.response.data.error
+            : "An error occurred. Please try again.";
+        alert(errorMessage);
       }
     } else if (email === "" || password === "") {
       alert("Please fill in all fields");
