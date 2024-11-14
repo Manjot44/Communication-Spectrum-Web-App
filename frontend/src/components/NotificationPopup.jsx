@@ -3,35 +3,36 @@ import { Box, Typography, Fade, Paper } from "@mui/material";
 
 const NotificationPopup = ({ message, duration = 5000, onClose }) => {
   const [visible, setVisible] = useState(true);
-  const [progress, setProgress] = useState(100); // Start with 100% progress
+  const [progress, setProgress] = useState(100);
 
   useEffect(() => {
-    const intervalTime = 50; // Frequency of updates (in ms)
-    const decrement = (100 / duration) * intervalTime; // Amount to decrease per interval
+    const intervalTime = 50;
+    const decrement = (100 / duration) * intervalTime;
 
     const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = Math.max(prev - decrement, 0);
-        return newProgress;
-      });
+      setProgress((prev) => Math.max(prev - decrement, 0));
     }, intervalTime);
 
-    // Set timeout to hide the notification after duration
     const timer = setTimeout(() => {
       setVisible(false);
       if (onClose) onClose();
     }, duration);
 
-    // Clean up intervals and timeout on unmount
     return () => {
       clearTimeout(timer);
       clearInterval(progressInterval);
     };
   }, [duration, onClose]);
 
+  const handleClose = () => {
+    setVisible(false);
+    if (onClose) onClose();
+  };
+
   return (
     <Fade in={visible} timeout={600}>
       <Paper
+        onClick={handleClose}
         elevation={3}
         sx={{
           position: "fixed",
@@ -46,22 +47,22 @@ const NotificationPopup = ({ message, duration = 5000, onClose }) => {
           textAlign: "center",
           boxShadow: 3,
           overflow: "hidden",
+          cursor: "pointer",
         }}
       >
         <Typography variant="body1" sx={{ fontFamily: "Poppins" }}>
           {message}
         </Typography>
 
-        {/* Progress bar */}
         <Box
           sx={{
             position: "absolute",
             bottom: 0,
             left: 0,
             height: "4px",
-            width: `${progress}%`, // Set width to the progress percentage
+            width: `${progress}%`,
             bgcolor: "white",
-            transition: "width 50ms linear", // Smooth transition for each decrement
+            transition: "width 50ms linear",
           }}
         />
       </Paper>
