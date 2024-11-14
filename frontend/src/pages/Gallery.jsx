@@ -11,6 +11,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import NotificationPopup from "../components/NotificationPopup";
 import { useNotification } from "../services/notificationService";
 import ConfirmationModal from "../components/ConfirmationModal";
+import LoadingOverlay from "../components/LoadingOverlay"; // Import the new LoadingOverlay component
 import { removeBackground } from "@imgly/background-removal";
 
 function Gallery({ token }) {
@@ -22,10 +23,11 @@ function Gallery({ token }) {
   const [images, setImages] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageToDelete, setImageToDelete] = useState(null);
-  const [imageToEdit, setImageToEdit] = useState(null); // State to track image for background removal
+  const [imageToEdit, setImageToEdit] = useState(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isRemoveBackgroundModalOpen, setIsRemoveBackgroundModalOpen] =
     useState(false);
+  const [isRemovingBackground, setIsRemovingBackground] = useState(false); // New loading state
 
   const { notify, showNotification, notificationMessage } = useNotification();
 
@@ -113,12 +115,11 @@ function Gallery({ token }) {
 
   // Remove background from image
   const handleRemoveBackground = async () => {
-    const imageToProcess = images.find((img) => img.img_id === imageToEdit);
     setIsRemoveBackgroundModalOpen(false);
+    setIsRemovingBackground(true); // Start loading
 
+    const imageToProcess = images.find((img) => img.img_id === imageToEdit);
     if (!imageToProcess) return;
-
-    notify("Image queued for background removal.");
 
     try {
       const base64Response = await fetch(imageToProcess.url);
@@ -153,6 +154,8 @@ function Gallery({ token }) {
     } catch (error) {
       console.error("Failed to remove background:", error);
       notify("Failed to remove background from image.");
+    } finally {
+      setIsRemovingBackground(false); // Stop loading
     }
   };
 
@@ -220,7 +223,7 @@ function Gallery({ token }) {
                     onDelete={() => confirmDeleteImage(image.img_id)}
                     onRemoveBackground={() =>
                       confirmRemoveBackground(image.img_id)
-                    } // Ask for confirmation
+                    }
                     onClick={() => setSelectedImage(image.url)}
                     hasOptions={true}
                   />
@@ -228,6 +231,11 @@ function Gallery({ token }) {
             </Grid>
           </div>
         </div>
+
+        {/* Loading Overlay for Background Removal */}
+        {isRemovingBackground && (
+          <LoadingOverlay message="Removing background..." />
+        )}
 
         {/* Enlarged Image Overlay */}
         {selectedImage && (
@@ -268,7 +276,7 @@ function Gallery({ token }) {
           </div>
         )}
 
-        {/* Confirmation Modal for Deletion */}
+        {/* Confirmation Modals */}
         <ConfirmationModal
           open={isConfirmModalOpen}
           onClose={() => setIsConfirmModalOpen(false)}
@@ -277,7 +285,6 @@ function Gallery({ token }) {
           description="This action cannot be undone."
         />
 
-        {/* Confirmation Modal for Background Removal */}
         <ConfirmationModal
           open={isRemoveBackgroundModalOpen}
           onClose={() => setIsRemoveBackgroundModalOpen(false)}
