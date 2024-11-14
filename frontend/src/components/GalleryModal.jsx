@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
@@ -25,6 +25,7 @@ function GalleryModal ({ open, onClose, onSelectImage }) {
 	const { profileID } = useParams();
 	const [images, setImages] = useState(null);
 	const { notify } = useNotification();
+	const notifyRef = useRef(notify);
 	const { token } = useContext(AuthContext); // Access token from context
 
 	// Fetch images
@@ -40,13 +41,12 @@ function GalleryModal ({ open, onClose, onSelectImage }) {
           }
         );
         setImages(response.data.images);
-				console.log(images);
       } catch (err) {
-        notify("Failed to fetch images.");
+        notifyRef.current("Failed to fetch images.");
       }
     };
     fetchImages();
-  }, [profileID, token, open, notify, images]);
+  }, [profileID, token]);
 
 	return (
 		<>
