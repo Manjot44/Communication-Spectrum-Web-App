@@ -26,6 +26,9 @@ import {
   update_user_profile,
   new_support,
   get_client_support,
+  getUserSettings,
+  updateUserSettings,
+  changeUserPassword,
 } from "./service";
 
 const app = express();
@@ -204,15 +207,8 @@ app.get(
   "/admin/auth/get_user_settings",
   catchErrors(
     authed(async (req, res, email) => {
-      const result = await pool.query(
-        'SELECT full_name, email, dob, location, postcode, profession, is_subbed FROM "Professionals" WHERE email = $1',
-        [email]
-      );
-      if (result.rows.length === 0) {
-        throw new InputError("Professional not found.");
-      }
-      console.log(result.rows[0]);
-      return res.json(result.rows[0]);
+      const settings = await getUserSettings(email);
+      return res.json(settings);
     })
   )
 );
@@ -222,13 +218,7 @@ app.put(
   catchErrors(
     authed(async (req, res, email) => {
       const { full_name, dob, location, postcode, profession, is_subbed } = req.body;
-      const queryText = `
-        UPDATE "Professionals"
-        SET full_name = $2, dob = $3, location = $4, postcode = $5, profession = $6, is_subbed = $7
-        WHERE email = $1;
-      `;
-      const values = [email, full_name, dob, location, postcode, profession, is_subbed];
-      await pool.query(queryText, values);
+      await updateUserSettings(email, full_name, dob, location, postcode, profession, is_subbed);
       return res.json({ message: "Settings updated successfully" });
     })
   )
@@ -239,29 +229,7 @@ app.put(
   catchErrors(
     authed(async (req, res, email) => {
       const { currentPassword, newPassword } = req.body;
-
-      // Get the current hashed password from the database
-      const result = await pool.query(
-        'SELECT password FROM "Professionals" WHERE email = $1',
-        [email]
-      );
-      if (result.rows.length === 0) {
-        throw new InputError("User not found.");
-      }
-
-      // Verify current password
-      const isPasswordValid = await bcrypt.compare(currentPassword, result.rows[0].password);
-      if (!isPasswordValid) {
-        throw new InputError("Current password is incorrect.");
-      }
-
-      // Hash new password and update
-      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-      await pool.query(
-        'UPDATE "Professionals" SET password = $1 WHERE email = $2',
-        [hashedNewPassword, email]
-      );
-
+      await changeUserPassword(email, currentPassword, newPassword);
       return res.json({ message: "Password updated successfully" });
     })
   )
