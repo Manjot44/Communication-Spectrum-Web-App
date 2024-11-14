@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Button, Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import UserProfileCircles from "../components/UserProfileCircles";
 import ConfirmationModal from "../components/ConfirmationModal";
 import ShareModal from "./ShareModal";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
 function UserProfileContainer({ token }) {
-  const navigate = useNavigate();
   const [profiles, setProfiles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
@@ -50,25 +47,23 @@ function UserProfileContainer({ token }) {
 
   return (
     <>
-      <div
-        className="d-flex justify-content-center"
-        style={{ display: "flex" }}
-      >
-        <div style={{ width: "85%" }}>
+      <Box display="flex" justifyContent="center" mt={3}>
+        <Box sx={{ width: "85%" }}>
           <Grid container spacing={2}>
             {profiles.map((profile) => (
-              <UserProfileCircles
-                key={profile.user_id}
-                profileName={profile.name}
-                profilePicture={profile.profile_pic}
-                profileID={profile.user_id}
-                onDelete={() => handleDelete(profile.user_id)}
-                onShare={() => setIsShareModalOpen(true)}
-              />
+              <Grid item xs={12} sm={6} md={4} key={profile.user_id}>
+                <UserProfileCircles
+                  profileName={profile.name}
+                  profilePicture={profile.profile_pic}
+                  profileID={profile.user_id}
+                  onDelete={() => handleDelete(profile.user_id)}
+                  onShare={() => setIsShareModalOpen(true)}
+                />
+              </Grid>
             ))}
           </Grid>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       <ConfirmationModal
         open={isConfirmModalOpen}

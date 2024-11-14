@@ -78,9 +78,9 @@ function UserProfileList({ token }) {
                 borderRadius: "12px",
                 mb: 2,
                 overflow: "hidden",
-                transition: "box-shadow 0.3s ease-in-out", // Smooth transition for shadow effect
+                transition: "box-shadow 0.3s ease-in-out",
                 "&:hover": {
-                  boxShadow: "0px 4px 15px rgba(0, 112, 255, 0.5)", // Blue glow effect on hover
+                  boxShadow: "0px 4px 15px rgba(0, 112, 255, 0.5)",
                 },
               }}
             >
