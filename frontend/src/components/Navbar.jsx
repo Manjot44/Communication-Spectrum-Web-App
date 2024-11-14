@@ -25,12 +25,6 @@ const Navbar = ({ profileID }) => {
         <Link to={`/sharedtemplates/${profileID}`} className="nav-item">
           Templates
         </Link>
-        <Link to={`/learn/${profileID}`} className="nav-item">
-          Learn
-        </Link>
-        <Link to={`/categories/${profileID}`} className="nav-item">
-          Categories
-        </Link>
         <Link to={`/settings/${profileID}`} className="nav-item">
           My Settings
         </Link>
