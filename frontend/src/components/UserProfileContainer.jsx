@@ -9,6 +9,7 @@ function UserProfileContainer({ token }) {
   const [profiles, setProfiles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [userNameToDelete, setUserNameToDelete] = useState(""); // Store the profile name
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
@@ -20,9 +21,30 @@ function UserProfileContainer({ token }) {
       .catch((error) => console.error("Error fetching profiles:", error));
   }, [token]);
 
-  const handleDelete = (userId) => {
+  const handleDelete = (userId, userName) => {
     setUserIdToDelete(userId);
+    setUserNameToDelete(userName); // Set the profile name for the modal message
     setIsConfirmModalOpen(true);
+  };
+
+  const confirmDeleteProfile = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:5005/admin/delete_user/${userIdToDelete}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      setProfiles(
+        profiles.filter((profile) => profile.user_id !== userIdToDelete)
+      );
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+    } finally {
+      setIsConfirmModalOpen(false);
+      setUserIdToDelete(null);
+      setUserNameToDelete("");
+    }
   };
 
   return (
@@ -52,7 +74,7 @@ function UserProfileContainer({ token }) {
                 profileName={profile.name}
                 profilePicture={profile.profile_pic}
                 profileID={profile.user_id}
-                onDelete={() => handleDelete(profile.user_id)}
+                onDelete={() => handleDelete(profile.user_id, profile.name)} // Pass name to handleDelete
                 onShare={() => setIsShareModalOpen(true)}
               />
             </Grid>
@@ -63,10 +85,8 @@ function UserProfileContainer({ token }) {
       <ConfirmationModal
         open={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => {
-          // Confirm delete action
-        }}
-        message="Are you sure you want to delete this profile?"
+        onConfirm={confirmDeleteProfile}
+        message={`Are you sure you want to delete ${userNameToDelete}'s profile?`}
         description="This action cannot be undone. The profile will be permanently deleted."
       />
 

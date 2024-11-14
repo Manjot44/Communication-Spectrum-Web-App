@@ -7,7 +7,6 @@ import {
   ListItem,
   ListItemText,
   IconButton,
-  Divider,
   Box,
   ListItemAvatar,
   Paper,
@@ -22,6 +21,7 @@ function UserProfileList({ token }) {
   const [profiles, setProfiles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [userNameToDelete, setUserNameToDelete] = useState(""); // Store the profile name
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -34,8 +34,9 @@ function UserProfileList({ token }) {
       .catch((error) => console.error("Error fetching profiles:", error));
   }, [token]);
 
-  const handleDelete = (userId) => {
+  const handleDelete = (userId, userName) => {
     setUserIdToDelete(userId);
+    setUserNameToDelete(userName); // Set the profile name for the modal message
     setIsConfirmModalOpen(true);
   };
 
@@ -55,10 +56,9 @@ function UserProfileList({ token }) {
     } finally {
       setIsConfirmModalOpen(false);
       setUserIdToDelete(null);
+      setUserNameToDelete("");
     }
   };
-
-  const handleShare = () => setIsShareModalOpen(true);
 
   return (
     <>
@@ -117,12 +117,15 @@ function UserProfileList({ token }) {
                     Enter Profile
                   </Button>
                   <IconButton
-                    onClick={() => handleDelete(profile.user_id)}
+                    onClick={() => handleDelete(profile.user_id, profile.name)} // Pass name to handleDelete
                     color="error"
                   >
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton onClick={handleShare} color="primary">
+                  <IconButton
+                    onClick={() => setIsShareModalOpen(true)}
+                    color="primary"
+                  >
                     <IosShareIcon />
                   </IconButton>
                 </Box>
@@ -136,7 +139,7 @@ function UserProfileList({ token }) {
         open={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={confirmDeleteProfile}
-        message="Are you sure you want to delete this profile?"
+        message={`Are you sure you want to delete ${userNameToDelete}'s profile?`}
         description="This action cannot be undone."
       />
 
