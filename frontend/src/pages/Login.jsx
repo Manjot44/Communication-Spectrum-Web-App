@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 
 // Image assets
 // Logos
-import Logo from "../assets/mycomm.png";
+import Logo from "../assets/Mycommsproblue.png";
 import Apple from "../assets/apple.png";
 import Facebook from "../assets/Facebook.png";
 import Google from "../assets/Google.png";
