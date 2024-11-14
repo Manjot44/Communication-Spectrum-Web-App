@@ -39,7 +39,7 @@ manjot	manjot	$2b$10$yj.bS.y91e8YcZjvX8/12eCPAbg6HLWW7F2VAcsRez49JRMfj5sve	Austr
 --
 
 COPY public."SupportUsers" (user_id, name, dob, postcode, snapshot, comm_env, interests, profile_pic) FROM stdin;
-3	sonta	2024-01-01	1111	Visual Supports	2	3	\\x7b7d
+5	sonta	2024-01-01	1113	Spoken Language	3	3	\\x7b7d
 \.
 
 
@@ -64,7 +64,7 @@ COPY public."Supports" (support_id, type, title, title_img, date, step_img, step
 --
 
 COPY public."hasClient" (prof_id, user_id) FROM stdin;
-manjot	3
+manjot	5
 \.
 
 
@@ -87,7 +87,7 @@ SELECT pg_catalog.setval('public."Images_img_id_seq"', 1, false);
 -- Name: SupportUsers_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public."SupportUsers_user_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."SupportUsers_user_id_seq"', 5, true);
 
 
 --

@@ -13,7 +13,7 @@ function UserProfileCircles({
   onShare,
 }) {
   const navigate = useNavigate();
-
+  console.log("Profile picture URL:", profilePicture);
   const handleUser = () => {
     navigate(`/home/${profileID}`);
   };

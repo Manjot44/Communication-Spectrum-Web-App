@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Grid, Box } from "@mui/material";
 import UserProfileCircles from "../components/UserProfileCircles";
@@ -9,8 +9,11 @@ function UserProfileContainer({ token }) {
   const [profiles, setProfiles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
-  const [userNameToDelete, setUserNameToDelete] = useState(""); // Store the profile name
+  const [userNameToDelete, setUserNameToDelete] = useState(""); 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  // Store references to Blob URLs to manage their cleanup
+  const blobUrls = useRef([]);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -19,17 +22,17 @@ function UserProfileContainer({ token }) {
           headers: { Authorization: token },
         });
 
-        console.log("Response data:", response.data);
         const clients = response.data.clients.map((client) => {
-           // Check if the profile_pic exists and has a data property
           if (client.profile_pic && client.profile_pic.data) {
             const byteArray = new Uint8Array(client.profile_pic.data);
             const blob = new Blob([byteArray], { type: "image/jpeg" });
-            client.profile_pic_url = URL.createObjectURL(blob);
-            console.log("Blob URL created for profile:", client.profile_pic_url);
+            const url = URL.createObjectURL(blob);
+            client.profile_pic_url = url;
+            console.log("Blob URL created for profile:", client.profile_pic_url); // Log Blob URL
           }
           return client;
         });
+
         setProfiles(clients);
       } catch (error) {
         console.error("Error fetching profiles:", error);
@@ -38,19 +41,16 @@ function UserProfileContainer({ token }) {
 
     fetchProfiles();
 
-    // Cleanup function to revoke Blob URLs when the component is unmounted or updated
+    // Cleanup function to revoke Blob URLs when the component unmounts
     return () => {
-      profiles.forEach((profile) => {
-        if (profile.profile_pic_url) {
-          URL.revokeObjectURL(profile.profile_pic_url);
-        }
-      });
+      blobUrls.current.forEach((url) => URL.revokeObjectURL(url));
+      blobUrls.current = []; // Clear the references
     };
   }, [token]);
 
   const handleDelete = (userId, userName) => {
     setUserIdToDelete(userId);
-    setUserNameToDelete(userName); // Set the profile name for the modal message
+    setUserNameToDelete(userName);
     setIsConfirmModalOpen(true);
   };
 
@@ -101,7 +101,7 @@ function UserProfileContainer({ token }) {
                 profileName={profile.name}
                 profilePicture={profile.profile_pic_url}
                 profileID={profile.user_id}
-                onDelete={() => handleDelete(profile.user_id, profile.name)} // Pass name to handleDelete
+                onDelete={() => handleDelete(profile.user_id, profile.name)}
                 onShare={() => setIsShareModalOpen(true)}
               />
             </Grid>
