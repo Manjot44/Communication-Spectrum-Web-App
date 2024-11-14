@@ -6,7 +6,6 @@ import axios from "axios";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useNotification } from "../services/notificationService";
-import RecentSupportsBox from "../components/RecentSupportsBox";
 import RecentSupports from "../components/RecentSupports";
 
 function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
@@ -71,7 +70,7 @@ function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
       }
     };
     fetchImages();
-  }, [profileID, token, open, notify]);
+  }, [profileID, token, notify]);
 
   if (!images) return <LoadingSpinner />;
 

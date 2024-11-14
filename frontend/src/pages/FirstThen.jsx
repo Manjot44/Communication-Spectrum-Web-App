@@ -27,6 +27,8 @@ function FirstThen({ token, setTokenFunc }) {
   const [image, setImage] = useState(state.data.image);
   const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
   const [imageThen, setImageThen] = useState(state.data.imageThen);
+  const [firstName, setFirstname] = useState(state.data.firstName);
+  const [thenName, setThenName] = useState(state.data.thenName);
 
   const handleCreate = async () => {
     if (text.trim() === "") {
