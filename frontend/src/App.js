@@ -20,6 +20,9 @@ import Supports from "./pages/Supports.jsx";
 import SharedTemplates from "./pages/SharedTemplates.jsx";
 import ViewSupport from "./pages/ViewSupport.jsx";
 import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
+import MySettings from "./pages/MySettings";
+import MySettingsFromUserManage from "./pages/MySettingsFromUserManage.jsx";
+import { Support } from "@mui/icons-material";
 import { AuthProvider } from "./components/AuthContext.jsx";
 
 // ProtectedRoute component to handle route protection
@@ -238,6 +241,28 @@ function App() {
                 />
               }
             />
+          <Route
+            path="/settings/:profileID"
+            element={
+              <ProtectedRoute
+                element={MySettings}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute
+                element={MySettingsFromUserManage}
+                isAuth={isAuth}
+                token={token}
+                setTokenFunc={updateToken}
+              />
+            }
+          />
           </Routes>
         </BrowserRouter>
       </LocalizationProvider>

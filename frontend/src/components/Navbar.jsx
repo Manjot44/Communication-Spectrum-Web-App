@@ -31,6 +31,9 @@ const Navbar = ({ profileID }) => {
         <Link to={`/categories/${profileID}`} className="nav-item">
           Categories
         </Link>
+        <Link to={`/settings/${profileID}`} className="nav-item">
+          My Settings
+        </Link>
       </div>
       <div className="profile-switch">
         <Link to="/UserManage">

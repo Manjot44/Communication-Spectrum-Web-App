@@ -4,6 +4,7 @@ import cors from "cors";
 import { InputError, AccessError } from "./error.js";
 import pkg from "pg";
 import config from "./config.js";
+
 import {
   getEmailFromAuthorization,
   login,
@@ -23,9 +24,11 @@ import {
   update_user_profile,
   new_support,
   get_client_support,
+  getUserSettings,
+  updateUserSettings,
+  changeUserPassword,
   update_image,
 } from "./service.js";
-
 
 const app = express();
 
@@ -196,6 +199,38 @@ app.delete(
       const { user_id } = req.params;
       await delete_user(email, user_id); // Delete user function
       return res.json({ message: "Profile deleted successfully" });
+    })
+  )
+);
+
+app.get(
+  "/admin/auth/get_user_settings",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const settings = await getUserSettings(email);
+      return res.json(settings);
+    })
+  )
+);
+
+app.put(
+  "/admin/auth/update_user_settings",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { full_name, dob, location, postcode, profession, is_subbed } = req.body;
+      await updateUserSettings(email, full_name, dob, location, postcode, profession, is_subbed);
+      return res.json({ message: "Settings updated successfully" });
+    })
+  )
+);
+
+app.put(
+  "/admin/auth/change_password",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { currentPassword, newPassword } = req.body;
+      await changeUserPassword(email, currentPassword, newPassword);
+      return res.json({ message: "Password updated successfully" });
     })
   )
 );

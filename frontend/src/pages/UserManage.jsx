@@ -19,6 +19,10 @@ function UserManage({ token, setTokenFunc }) {
     navigate("/");
   };
 
+
+  const goToSettings = () => {
+    navigate("/settings");
+
   const toggleView = () => {
     setIsAnimating(true);
     setTimeout(() => {
@@ -33,6 +37,13 @@ function UserManage({ token, setTokenFunc }) {
 
   return (
     <>
+
+      <link
+        href="https://fonts.googleapis.com/css?family=Poppins"
+        rel="stylesheet"
+      ></link>
+      <div className="d-flex justify-content-between align-items-center">
+
       <Box
         display="flex"
         justifyContent="space-between"
@@ -44,13 +55,19 @@ function UserManage({ token, setTokenFunc }) {
           alt="MyComms Logo"
           style={{ maxWidth: "15%", height: "auto" }}
         />
-        <Button style={{ width: "10%" }} onClick={logOut}>
-          LOG OUT
-        </Button>
-      </Box>
 
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-        <Typography variant="h3" className="login-text">
+        <div>
+          <Button style={{ marginRight: "20px" }} onClick={goToSettings}>
+            My Settings
+          </Button>
+          <Button style={{ width: "10%" }} onClick={logOut}>
+            LOG OUT
+          </Button>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <h1 className="login-text" style={{ marginTop: "15vh" }}>
+
           Select User Profile
         </Typography>
       </Box>
