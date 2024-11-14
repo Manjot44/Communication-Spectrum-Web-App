@@ -10,7 +10,8 @@ import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import NotificationPopup from "../components/NotificationPopup";
 import { useNotification } from "../services/notificationService";
-import ConfirmationModal from "../components/ConfirmationModal"; // Import the ConfirmationModal
+import ConfirmationModal from "../components/ConfirmationModal";
+import { removeBackground } from "@imgly/background-removal";
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -20,8 +21,11 @@ function Gallery({ token }) {
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imageToDelete, setImageToDelete] = useState(null); // State to store the image to delete
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to control confirm modal
+  const [imageToDelete, setImageToDelete] = useState(null);
+  const [imageToEdit, setImageToEdit] = useState(null); // State to track image for background removal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isRemoveBackgroundModalOpen, setIsRemoveBackgroundModalOpen] =
+    useState(false);
 
   const { notify, showNotification, notificationMessage } = useNotification();
 
@@ -101,6 +105,57 @@ function Gallery({ token }) {
     }
   };
 
+  // Handle background removal confirmation
+  const confirmRemoveBackground = (img_id) => {
+    setImageToEdit(img_id);
+    setIsRemoveBackgroundModalOpen(true);
+  };
+
+  // Remove background from image
+  const handleRemoveBackground = async () => {
+    const imageToProcess = images.find((img) => img.img_id === imageToEdit);
+    setIsRemoveBackgroundModalOpen(false);
+
+    if (!imageToProcess) return;
+
+    notify("Image queued for background removal.");
+
+    try {
+      const base64Response = await fetch(imageToProcess.url);
+      const blob = await base64Response.blob();
+
+      const processedBlob = await removeBackground(blob, {
+        output: { format: "image/png" },
+      });
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const updatedImage = reader.result;
+
+        await axios.put(
+          `http://localhost:5005/update_image/${imageToEdit}`,
+          { image: updatedImage },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        setImages((prevImages) =>
+          prevImages.map((img) =>
+            img.img_id === imageToEdit ? { ...img, url: updatedImage } : img
+          )
+        );
+        notify("Background removed successfully!");
+      };
+      reader.readAsDataURL(processedBlob);
+    } catch (error) {
+      console.error("Failed to remove background:", error);
+      notify("Failed to remove background from image.");
+    }
+  };
+
   const closeModal = () => setSelectedImage(null);
 
   if (!images) return <LoadingSpinner />;
@@ -162,7 +217,10 @@ function Gallery({ token }) {
                   <GalleryPhotoComponent
                     key={image.img_id}
                     image={image.url}
-                    onDelete={() => confirmDeleteImage(image.img_id)} // Use confirmDeleteImage instead of deleteImage
+                    onDelete={() => confirmDeleteImage(image.img_id)}
+                    onRemoveBackground={() =>
+                      confirmRemoveBackground(image.img_id)
+                    } // Ask for confirmation
                     onClick={() => setSelectedImage(image.url)}
                     hasOptions={true}
                   />
@@ -216,7 +274,16 @@ function Gallery({ token }) {
           onClose={() => setIsConfirmModalOpen(false)}
           onConfirm={deleteImage}
           message="Are you sure you want to delete this image?"
-          description={"This action cannot be undone."}
+          description="This action cannot be undone."
+        />
+
+        {/* Confirmation Modal for Background Removal */}
+        <ConfirmationModal
+          open={isRemoveBackgroundModalOpen}
+          onClose={() => setIsRemoveBackgroundModalOpen(false)}
+          onConfirm={handleRemoveBackground}
+          message="Remove background from this image?"
+          description="This will modify the image permanently."
         />
 
         {/* Notification Popup */}

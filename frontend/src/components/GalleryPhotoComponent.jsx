@@ -1,14 +1,14 @@
 import React from "react";
 import { Card, CardActions, IconButton, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
 function GalleryPhotoComponent({
   image,
   onDelete,
   onRemoveBackground,
   onClick,
-  hasOptions
+  hasOptions,
 }) {
   return (
     <Card
@@ -53,7 +53,7 @@ function GalleryPhotoComponent({
         />
       </Box>
 
-      {/* Non-clickable Action Buttons */}
+      {/* Action Buttons */}
       {hasOptions && (
         <CardActions sx={{ display: "flex", justifyContent: "center" }}>
           <IconButton
@@ -67,13 +67,14 @@ function GalleryPhotoComponent({
           </IconButton>
 
           <IconButton
-            aria-label="zoom-in"
+            aria-label="remove background"
             onClick={(e) => {
               e.stopPropagation();
+              console.log("Magic wand icon clicked");
               onRemoveBackground();
             }}
           >
-            <ZoomInIcon />
+            <AutoFixHighIcon />
           </IconButton>
         </CardActions>
       )}

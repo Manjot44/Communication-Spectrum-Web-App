@@ -413,6 +413,37 @@ export const delete_image = async (email, img_id) => {
   });
 };
 
+export const update_image = async (email, img_id, newImage) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      // Check if the user has access to update this image
+      const checkAccessQuery = `
+        SELECT 1
+        FROM "ProfUserImageAccess" AS access
+        INNER JOIN "Images" AS img ON access.img_id = img.img_id
+        WHERE access.img_id = $1 AND access.prof_id = $2;
+      `;
+      const accessResult = await pool.query(checkAccessQuery, [img_id, email]);
+
+      if (accessResult.rows.length > 0) {
+        // Update the image URL in the Images table
+        const updateImageQuery = `
+          UPDATE "Images"
+          SET url = $1
+          WHERE img_id = $2;
+        `;
+        await pool.query(updateImageQuery, [newImage, img_id]);
+
+        resolve();
+      } else {
+        reject(new AccessError("You do not have access to update this image"));
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 /***************************************************************
                       Supports Functions
 ***************************************************************/
