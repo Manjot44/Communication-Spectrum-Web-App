@@ -15,7 +15,7 @@ services:
     image: "redis:alpine"
     ports:
       - "6379:6379"
-  app:
+  backend:
     build: ./backend
     ports: 
       - "5005:5005"
@@ -30,4 +30,4 @@ services:
     environment:
       - REACT_APP_BACKEND_URL=http://localhost:5005
     depends_on:
-     - app
+     - backend

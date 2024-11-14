@@ -1,11 +1,11 @@
 # FROM baseImage:tag - this specifies the base image and its version
-FROM node:14
+FROM node:22
 # WORKDIR /the/workdir/path - path to use as the working directory
-WORKDIR /app
+WORKDIR /backend
 # Copy package.json files
 COPY ./package*.json .
 # RUN is used to run commands inside the container. Here we want to install all required modules from package.json before we actually run our program
-RUN npm install
+RUN npm ci
 # Copy files or folders from source (on your laptop) to the dest path (in the image)
 COPY . .
 # EXPOSE is used to specify all ports in the container that we will need

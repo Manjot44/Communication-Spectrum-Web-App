@@ -2,12 +2,13 @@
   "name": "express-backend",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "test": "jest test/*",
-    "lint": "eslint src/*.js",
-    "start": "node -r esm src/server.js",
-    "dev": "npm run lint && nodemon -r esm src/server.js"
+    "lint": "eslint --config /backend/eslint.config.js src/*.js",
+    "dev": "node src/server.js",
+    "start": "npm run lint && nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +17,6 @@
     "bcrypt": "^5.1.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.6",
@@ -26,16 +26,18 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.1",
+    "@eslint/js": "^9.14.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^26.6.1",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
-    "eslint": "^7.12.1",
+    "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "globals": "^15.12.0",
     "jest": "^26.6.0"
   }
 }

@@ -1,10 +1,10 @@
 # Dockerfile for React frontend
 # Taken from Docker Primer
-FROM node:14
+FROM node:22
 
-WORKDIR /app
+WORKDIR /frontend
 COPY ./package*.json .
-RUN npm install
+RUN npm ci
 COPY . .
 
 EXPOSE 3000

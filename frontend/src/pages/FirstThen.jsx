@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -16,9 +16,16 @@ import ChoiceBoardStep from '../components/TaskStep';
 import axios from "axios";
 
 function FirstThen({ token, setTokenFunc }) {
-  const { profileID } = useParams();
   const navigate = useNavigate();
-  const [text, setText] = useState("");
+  const { profileID } = useParams();
+  const { state } = useLocation();
+  const [text, setText] = useState(state.text);
+  const [image, setImage] = useState(state.image);
+  const [imageFirst, setImageFirst] = useState(state.imageFirst);
+  const [imageThen, setImageThen] = useState(state.imageThen);
+  const [firstName, setFirstname] = useState(state.firstName);
+  const [thenName, setThenName] = useState(state.thenName);
+  const [category, setCategory] = useState(state.category);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
