@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 
 // Image assets
 // Logos
-import Logo from "../assets/mycomm.png";
+import Logo from "../assets/Mycommsproblue.png";
 import Apple from "../assets/apple.png";
 import Facebook from "../assets/Facebook.png";
 import Google from "../assets/Google.png";
@@ -106,28 +106,6 @@ function Login({ setTokenFunc }) {
               Dont have an account? <b>Register here</b>
             </a>
           </p>
-          <p style={{ fontFamily: "Poppins" }}>Or log in with socials</p>
-
-          <div
-            className="d-flex justify-content-around mx-auto"
-            style={{ width: "75%" }}
-          >
-            <img
-              src={Apple}
-              alt="apple logo"
-              className="login-alternate-signin"
-            />
-            <img
-              src={Google}
-              alt="google logo"
-              className="login-alternate-signin"
-            />
-            <img
-              src={Facebook}
-              alt="facebook logo"
-              className="login-alternate-signin"
-            />
-          </div>
         </div>
       </div>
     </>
