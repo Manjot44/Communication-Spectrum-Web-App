@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { Grid, Typography, Button, IconButton, Box, Card } from "@mui/material";
+import { Grid, Typography, Box, Card } from "@mui/material";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "../App.css";
@@ -11,9 +11,8 @@ import RecentSupports from "../components/RecentSupports";
 function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
 	const { profileID } = useParams();
 	const [supportData, setSupportData] = useState([]);
-	const [profileData, setProfileData] = useState([]);
 	const [images, setImages] = useState(null);
-	const { notify, showNotification, notificationMessage } = useNotification();
+	const { notify } = useNotification();
   const { state } = useLocation(); // Comes from TemplateChoice.jsx
   const navigate = useNavigate();
 
@@ -25,16 +24,6 @@ function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
 	useEffect(() => {
     const fetchClient = async () => {
       try {
-        const profileResponse = await axios.get(
-          `http://localhost:5005/get_client/${profileID}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        setProfileData(profileResponse.data.client);
-
         const supportResponse = await axios.get(
           `http://localhost:5005/get_client_support/${profileID}`,
           {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Typography, TextField, Avatar, Button } from "@mui/material";
+import { Card, TextField, Avatar, Button } from "@mui/material";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
 import "../App.css";
 

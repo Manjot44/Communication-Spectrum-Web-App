@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography, Button, IconButton, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "../App.css";
@@ -12,31 +12,40 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
 
 function SharedTemplates ({ token, setTokenFunc }) {
 	const { profileID } = useParams();
 	const [supportData, setSupportData] = useState(null);
 	const [profileData, setProfileData] = useState(null);
 	const [images, setImages] = useState(null);
-	const { notify, showNotification, notificationMessage } = useNotification();
+  const [selectedCategories, setSelectedCategories] = useState([]);
+	const { notify } = useNotification();
 
-	// Booleans for the Categories
-	const [selfCare, setSelfCare] = useState(false);
-	const [routine, setRoutine] = useState(false);
-	const [school, setSchool] = useState(false);
-	const [work, setWork] = useState(false);
-	const [fun, setFun] = useState(false);
-	const [emotion, setEmotion] = useState(false);
-	const [belief, setBelief] = useState(false);
-	const [health, setHealth] = useState(false);
-	const [transport, setTransport] = useState(false);
-	const [event, setEvent] = useState(false);
-	const [place, setPlace] = useState(false);
-	const [other, setOther] = useState(false);
+  const noSupportMessage =
+    selectedCategories.length > 0
+      ? `${
+          profileData?.name || "This profile"
+        } has no supports in the selected categories. Create some!`
+      : `${
+          profileData?.name || "This profile"
+        } has no recent supports. Create some!`;
+
+  const handleCategoryChange = (category, isSelected) => {
+    setSelectedCategories((prevSelected) =>
+      isSelected
+        ? [...prevSelected, category]
+        : prevSelected.filter((item) => item !== category)
+    );
+  };
+
+  // Filtered support data based on selected categories
+  const filteredSupportData = supportData
+    ? supportData.filter(
+        (support) =>
+          selectedCategories.length === 0 ||
+          selectedCategories.includes(support.category)
+      )
+    : null;
 
 	useEffect(() => {
     const fetchClient = async () => {
@@ -86,7 +95,7 @@ function SharedTemplates ({ token, setTokenFunc }) {
       }
     };
     fetchImages();
-  }, [profileID, token, open, notify]);
+  }, [profileID, token, notify]);
 
   if (!images) return <LoadingSpinner />;
 
@@ -134,19 +143,8 @@ function SharedTemplates ({ token, setTokenFunc }) {
 					</AccordionSummary>
 					<AccordionDetails>
 						<Typography>
-							<CategorySelectCheckboxes 
-								setSelfCare={(e) => setSelfCare(e.target.checked)}
-								setRoutine={(e) => setRoutine(e.target.checked)}
-								setSchool={(e) => setSchool(e.target.checked)}
-								setWork={(e) => setWork(e.target.checked)}
-								setFun={(e) => setFun(e.target.checked)}
-								setEmotion={(e) => setEmotion(e.target.checked)}
-								setBelief={(e) => setBelief(e.target.checked)}
-								setHealth={(e) => setHealth(e.target.checked)}
-								setTransport={(e) => setTransport(e.target.checked)}
-								setEvent={(e) => setEvent(e.target.checked)}
-								setPlace={(e) => setPlace(e.target.checked)}
-								setOther={(e) => setOther(e.target.checked)}
+							<CategorySelectCheckboxes
+                handleCategoryChange={handleCategoryChange}
 							/>
 						</Typography>
 					</AccordionDetails>
@@ -154,9 +152,10 @@ function SharedTemplates ({ token, setTokenFunc }) {
 				<br/>
 				<RecentSupportsBox
 					profileData={profileData}
-					supportData={supportData}
+					supportData={filteredSupportData}
 					token={token}
 					setSupportData={setSupportData}
+          noSupportMessage={noSupportMessage}
 				/>
 				<br />
       </div>
