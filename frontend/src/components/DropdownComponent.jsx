@@ -4,7 +4,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import '../App.css'
 
-const DropdownComponent = ({ id, label, value, onChange, options, width }) => {
+const DropdownComponent = ({ id, label, value, onChange, options, width, disabled }) => {
   return (
     <>
       <FormControl style={{ width: `${width}` }}>
@@ -15,6 +15,7 @@ const DropdownComponent = ({ id, label, value, onChange, options, width }) => {
           value={value}
           label={label}
           onChange={onChange}
+          disabled={disabled}
         >
         {options.map((option, index) => (
           <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
