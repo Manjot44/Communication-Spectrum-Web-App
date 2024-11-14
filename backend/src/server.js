@@ -31,7 +31,7 @@ const { Pool } = pkg;
 export const pool = new Pool(config);
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.raw({ type: "application/octet-stream", limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
 const catchErrors = (fn) => async (req, res) => {
@@ -207,7 +207,9 @@ app.get(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      return res.json({ images: await get_images(email, profileID) });
+      const images = await get_images(email, profileID);
+      res.set("Content-Type", "application/octet-stream");
+      res.send(images);
     })
   )
 );
@@ -217,7 +219,7 @@ app.post(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      const { image } = req.body;
+      const image = req.body;
       await add_image(email, profileID, image);
       return res.json({});
     })
@@ -235,6 +237,21 @@ app.delete(
   )
 );
 
+<<<<<<< Updated upstream
+=======
+app.put(
+  "/update_image/:img_id",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { img_id } = req.params;
+      const image = req.body;
+      await update_image(email, img_id, image);
+      return res.json({ message: "Image updated successfully" });
+    })
+  )
+);
+
+>>>>>>> Stashed changes
 /***************************************************************
                       Supports Functions
 ***************************************************************/

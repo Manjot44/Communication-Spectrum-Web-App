@@ -47,7 +47,17 @@ function Home({ token }) {
   const [supportData, setSupportData] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [blobUrl, setBlobUrl] = useState(null); // State to store the Blob URL
 
+  // Cleanup Blob URL on update or component unmount
+  useEffect(() => {
+    return () => {
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl); // Clean up Blob URL
+      }
+    };
+  }, [blobUrl])
+  
   useEffect(() => {
     const fetchClient = async () => {
       try {
@@ -82,26 +92,35 @@ function Home({ token }) {
     setOpenEditModal(true);
   };
 
-  const handleProfilePictureUpload = (base64Image) => {
-    setNewProfilePic(base64Image);
+  const handleProfilePictureUpload = (binaryData) => {
+    setNewProfilePic(binaryData);
   };
 
   const handleUpload = async () => {
     try {
       await axios.put(
         `http://localhost:5005/admin/update_user_profilepicture/${profileID}`,
-        {
-          profilePicture: newProfilePic,
-        },
+        newProfilePic, // Send binary data directly
         {
           headers: {
             Authorization: token,
+            'Content-Type': 'application/octet-stream',
           },
         }
       );
+
+      // Revoke the previous Blob URL if it exists
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+
+      // Create a new Blob URL and update the profile picture with it
+      const newBlobUrl = URL.createObjectURL(new Blob([newProfilePic]));
+      setBlobUrl(newBlobUrl);
+
       setProfileData((prevData) => ({
         ...prevData,
-        profile_pic: newProfilePic,
+        profile_pic: newBlobUrl,
       }));
       setNotificationMessage("Profile picture updated successfully!");
       setShowNotification(true);

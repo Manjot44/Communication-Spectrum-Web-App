@@ -19,11 +19,12 @@ function AddPhotoModal({ open, handleClose, handleProfilePictureUpload, handleUp
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      handleProfilePictureUpload(reader.result);  // Set the base64 image
+      const binaryData = new Uint8Array(reader.result); // Convert ArrayBuffer to Uint8Array
+      handleProfilePictureUpload(binaryData); // Pass binary data to the parent handler
     };
 
     if (file) {
-      reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     }
   };
 

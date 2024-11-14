@@ -23,25 +23,36 @@ function EditProfilePictureModal({
   token,
   setProfileData,
 }) {
-  const [profilePicture, setProfilePicture] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isCropperOpen, setIsCropperOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showNotification, setShowNotification] = useState(false); // State for notification visibility
   const [notificationMessage, setNotificationMessage] = useState(""); // State for notification message
+  const [blobUrl, setBlobUrl] = useState(null); // State to store Blob URL for cleanup
 
-  // Convert image to base64 and open cropper
+  // Cleanup Blob URL whenever it changes or component unmounts
+  useEffect(() => {
+    return () => {
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+    };
+  }, [blobUrl]);
+
+  // Convert image to binary data and open cropper
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setSelectedImage(reader.result); // Set the selected image as base64
+      const binaryData = new Uint8Array(reader.result); // Convert ArrayBuffer to Uint8Array
+      setSelectedImage(binaryData); // Set binary data as the selected image
       setIsCropperOpen(true); // Open the cropper modal
     };
 
     if (file) {
-      reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     }
   };
 
@@ -62,17 +73,25 @@ function EditProfilePictureModal({
     try {
       await axios.post(
         `http://localhost:5005/admin/update_user_profilepicture/${profileID}`,
-        { profilePicture }, // base64 cropped image
+        profilePicture, // Send binary data directly
         {
           headers: {
             Authorization: token,
+            'Content-Type': 'application/octet-stream', // Specify binary content type
           },
         }
       );
+      
+      // Revoke previous Blob URL and create a new one
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+      const newBlobUrl = URL.createObjectURL(new Blob([profilePicture]));
+      setBlobUrl(newBlobUrl);
 
       setProfileData((prevData) => ({
         ...prevData,
-        profile_pic: profilePicture,
+        profile_pic: URL.createObjectURL(new Blob([profilePicture])), // Create a Blob URL for display
       }));
 
       setNotificationMessage("Profile picture updated successfully!"); // Set notification message
