@@ -77,6 +77,8 @@ function Gallery({ token }) {
         notify("An error occurred while adding the image.");
       }
     }
+    setImage("");
+    console.log("Image Added")
   };
 
   // Open confirmation modal before deleting
