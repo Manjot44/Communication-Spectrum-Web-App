@@ -106,7 +106,6 @@ function Login({ setTokenFunc }) {
               Dont have an account? <b>Register here</b>
             </a>
           </p>
-          <p style={{ fontFamily: "Poppins" }}>Or log in with socials</p>
         </div>
       </div>
     </>
