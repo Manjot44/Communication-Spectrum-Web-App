@@ -5,6 +5,8 @@ import { Button, IconButton, Grid } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UserProfileCircles from "../components/UserProfileCircles";
 import ConfirmationModal from "../components/ConfirmationModal"; // Import the ConfirmationModal
+import IosShareIcon from '@mui/icons-material/IosShare';
+import ShareModal from "./ShareModal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
@@ -13,6 +15,7 @@ function UserProfileContainer({ token }) {
   const [profiles, setProfileData] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State to control confirm modal
   const [userIdToDelete, setUserIdToDelete] = useState(null); // State to store the user ID for deletion
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch the profiles when the component mounts
@@ -79,21 +82,40 @@ function UserProfileContainer({ token }) {
             {profiles &&
               profiles.map((profile) => (
                 <div
-                  style={{ display: "flex", alignItems: "center" }}
+                  style={{ display: "flex", alignItems: "center", marginRight: '35px' }}
                   key={profile.user_id}
                 >
-                  <UserProfileCircles
-                    profileName={profile.name}
-                    profilePicture={profile.profile_pic}
-                    profileID={profile.user_id}
-                  />
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDelete(profile.user_id)} // Trigger custom delete modal
-                    style={{ marginLeft: "10px", color: "red" }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  
+                  <Grid container spacing={0}>
+                    <Grid item>
+                      <UserProfileCircles
+                        profileName={profile.name}
+                        profilePicture={profile.profile_pic}
+                        profileID={profile.user_id}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Grid container direction="column">
+                        <Grid item>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => handleDelete(profile.user_id)} // Trigger custom delete modal
+                            style={{ color: "red" }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Grid>
+                        <Grid item>
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => setIsShareModalOpen(true)} // Trigger custom delete modal
+                          >
+                            <IosShareIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </div>
               ))}
             <Button onClick={handleAddUser} className="add-user-button">
@@ -110,6 +132,15 @@ function UserProfileContainer({ token }) {
         onConfirm={confirmDeleteProfile} // Confirm delete action
         message="Are you sure you want to delete this profile?"
         description="This action cannot be undone. The profile will be permanently deleted."
+      />
+
+      <ShareModal
+        open={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)} // Close modal on cancel
+        message="Share User Profile"
+        description="Select Professional Accounts to Share to"
+        token={token}
+        profileType={'Pro'}
       />
     </>
   );

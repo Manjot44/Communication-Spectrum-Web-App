@@ -3,6 +3,8 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import ProfileBox from "./ProfileBox";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
+import ProfessionalBox from "./ProfessionalBox.jsx";
 
 const modalStyle = {
   position: "absolute",
@@ -18,13 +20,14 @@ const modalStyle = {
   textAlign: "center",
 };
 
-function ShareModal({ open, onClose, onConfirm, message, description, token }) {
+function ShareModal({ open, onClose, onConfirm, message, description, token, profileType }) {
   const [profiles, setProfileData] = useState([]);
   const [selectedProfileIds, setSelectedProfileIds] = useState([]);
 
   useEffect(() => {
     // Fetch the profiles when the component mounts
-    axios
+    if (profileType == 'User') {
+      axios
       .get("http://localhost:5005/get_clients", {
         headers: {
           Authorization: token,
@@ -39,7 +42,14 @@ function ShareModal({ open, onClose, onConfirm, message, description, token }) {
           error.response ? error.response.data : error.message
         );
       });
+    } else if (profileType == 'Pro') {
+      console.log("Insert Profile type over here")
+    }
   }, [token]);
+
+  useEffect(() => {
+    console.log("hi")
+  })
 
   // Handle checkbox toggle
   const handleCheckboxToggle = (profileID) => {
@@ -64,6 +74,26 @@ function ShareModal({ open, onClose, onConfirm, message, description, token }) {
 		console.log(selectedProfileIds);
   };
 
+  const renderProfileComponents = () => {
+    switch (profileType) {
+      case 'User':
+        return profiles.map((profile) => (
+          <ProfileBox
+            key={profile.user_id}
+            profileName={profile.name}
+            profilePicture={profile.profile_pic}
+            profileID={profile.user_id}
+            checked={selectedProfileIds.includes(profile.user_id)}
+            onChange={() => handleCheckboxToggle(profile.user_id)}
+          />
+        ));
+      case 'Pro':
+        return <ProfessionalBox profileName={"Mushfiqur Rahman"}/>;
+      default:
+        return <Typography>No profile type selected</Typography>;
+    }
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -79,7 +109,7 @@ function ShareModal({ open, onClose, onConfirm, message, description, token }) {
         )}
         <br />
         <Grid container spacing={2} sx={{ overflowY: 'scroll', height: "70%" }}>
-          {profiles &&
+          {/* {profiles &&
             profiles.map((profile) => (
               <ProfileBox
                 key={profile.user_id}
@@ -89,7 +119,10 @@ function ShareModal({ open, onClose, onConfirm, message, description, token }) {
                 checked={selectedProfileIds.includes(profile.user_id)}
                 onChange={() => handleCheckboxToggle(profile.user_id)}
               />
-            ))}
+          ))}
+
+          <ProfessionalBox/> */}
+          {renderProfileComponents(profileType)}
         </Grid>
 
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
