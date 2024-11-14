@@ -4,7 +4,6 @@ import { Grid, Box } from "@mui/material";
 import UserProfileCircles from "../components/UserProfileCircles";
 import ConfirmationModal from "../components/ConfirmationModal";
 import ShareModal from "./ShareModal";
-import "../App.css";
 
 function UserProfileContainer({ token }) {
   const [profiles, setProfiles] = useState([]);
@@ -26,49 +25,47 @@ function UserProfileContainer({ token }) {
     setIsConfirmModalOpen(true);
   };
 
-  const confirmDeleteProfile = async () => {
-    try {
-      await axios.delete(
-        `http://localhost:5005/admin/delete_user/${userIdToDelete}`,
-        {
-          headers: { Authorization: token },
-        }
-      );
-      setProfiles(
-        profiles.filter((profile) => profile.user_id !== userIdToDelete)
-      );
-    } catch (error) {
-      console.error("Error deleting profile:", error);
-    } finally {
-      setIsConfirmModalOpen(false);
-      setUserIdToDelete(null);
-    }
-  };
-
   return (
     <>
-      <Box display="flex" justifyContent="center" mt={3}>
-        <Box sx={{ width: "85%" }}>
-          <Grid container spacing={2}>
-            {profiles.map((profile) => (
-              <Grid item xs={12} sm={6} md={4} key={profile.user_id}>
-                <UserProfileCircles
-                  profileName={profile.name}
-                  profilePicture={profile.profile_pic}
-                  profileID={profile.user_id}
-                  onDelete={() => handleDelete(profile.user_id)}
-                  onShare={() => setIsShareModalOpen(true)}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        sx={{
+          maxWidth: "90%",
+          margin: "0 auto",
+          mt: 4,
+          padding: 2,
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            maxWidth: "1000px",
+          }}
+        >
+          {profiles.map((profile) => (
+            <Grid item key={profile.user_id} xs={12} sm={6} md={4} lg={3}>
+              <UserProfileCircles
+                profileName={profile.name}
+                profilePicture={profile.profile_pic}
+                profileID={profile.user_id}
+                onDelete={() => handleDelete(profile.user_id)}
+                onShare={() => setIsShareModalOpen(true)}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </Box>
 
       <ConfirmationModal
         open={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={confirmDeleteProfile}
+        onConfirm={() => {
+          // Confirm delete action
+        }}
         message="Are you sure you want to delete this profile?"
         description="This action cannot be undone. The profile will be permanently deleted."
       />

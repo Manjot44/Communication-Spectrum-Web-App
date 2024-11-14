@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { IconButton, Grid, Box, Typography } from "@mui/material";
+import { IconButton, Box, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import "../App.css";
@@ -19,49 +19,87 @@ function UserProfileCircles({
   };
 
   return (
-    <Grid item xs={12} sm={4} md={3} lg={2}>
+    <Box
+      onClick={handleUser}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        cursor: "pointer",
+        padding: 2,
+        borderRadius: "12px",
+        backgroundColor: "#f9f9f9",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        width: "200px",
+        height: "270px",
+        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          transform: "scale(1.05)",
+          boxShadow: "0 8px 16px rgba(0, 112, 255, 0.5)",
+        },
+        position: "relative",
+      }}
+    >
+      {/* Profile Picture */}
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        onClick={handleUser}
+        component="img"
+        src={profilePicture}
+        alt=""
+        sx={{
+          width: "80%",
+          height: "auto",
+          borderRadius: "50%",
+          marginBottom: "12px",
+          border: "2px solid #ddd",
+        }}
+      />
+
+      {/* Profile Name */}
+      <Typography
+        variant="body1"
+        sx={{
+          fontWeight: "bold",
+          fontFamily: "Poppins",
+          color: "#333",
+          textAlign: "center",
+          marginBottom: "auto",
+        }}
       >
-        <img
-          src={profilePicture}
-          alt=""
-          className="user-profile-image"
-          style={{ cursor: "pointer" }}
-        />
-        <Typography
-          variant="body1"
-          sx={{ fontFamily: "Poppins", mt: 1, fontWeight: 500 }}
+        {profileName}
+      </Typography>
+
+      {/* Action Buttons */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          justifyContent: "center",
+          mt: "auto",
+          paddingTop: "8px",
+        }}
+      >
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          color="error"
+          size="small"
         >
-          {profileName}
-        </Typography>
-        <Box display="flex" justifyContent="center" mt={1}>
-          <IconButton
-            aria-label="delete"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete();
-            }}
-            color="error"
-          >
-            <DeleteIcon />
-          </IconButton>
-          <IconButton
-            aria-label="share"
-            onClick={(e) => {
-              e.stopPropagation();
-              onShare();
-            }}
-            color="primary"
-          >
-            <IosShareIcon />
-          </IconButton>
-        </Box>
+          <DeleteIcon />
+        </IconButton>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onShare();
+          }}
+          color="primary"
+          size="small"
+        >
+          <IosShareIcon />
+        </IconButton>
       </Box>
-    </Grid>
+    </Box>
   );
 }
 

@@ -50,7 +50,7 @@ function UserManage({ token, setTokenFunc }) {
       </Box>
 
       <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-        <Typography variant="h4" className="login-text">
+        <Typography variant="h3" className="login-text">
           Select User Profile
         </Typography>
       </Box>
