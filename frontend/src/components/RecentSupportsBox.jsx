@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Grid, Typography, Card } from "@mui/material";
+import React, { useState, useMemo } from "react";
+import { Grid, Typography, Card, TextField } from "@mui/material";
 import RecentSupports from "../components/RecentSupports.jsx";
 import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
@@ -13,10 +13,11 @@ function RecentSupportsBox({
   token,
   setSupportData,
   title,
-  noSupportMessage, // Add the noSupportMessage prop
+  noSupportMessage,
 }) {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { profileID } = useParams();
 
@@ -43,6 +44,23 @@ function RecentSupportsBox({
     }
   };
 
+  const filteredSupports = useMemo(() => {
+    if (!supportData) return [];
+    if (!searchQuery) return supportData;
+    const lowerCaseQuery = searchQuery.toLowerCase();
+
+    return supportData.filter((support) => {
+      const titleMatches = support.title
+        ? support.title.toLowerCase().includes(lowerCaseQuery)
+        : false;
+      const tagsMatch =
+        support.tags &&
+        support.tags.some((tag) => tag.toLowerCase().includes(lowerCaseQuery));
+
+      return titleMatches || tagsMatch;
+    });
+  }, [supportData, searchQuery]);
+
   if (!profileData || !supportData) {
     return <LoadingSpinner message={loadingMessage} />;
   }
@@ -65,6 +83,19 @@ function RecentSupportsBox({
         >
           <b>{title}</b>
         </Typography>
+
+        {/* Search Input */}
+        <TextField
+          placeholder="Search visual supports"
+          variant="outlined"
+          fullWidth
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            marginBottom: "20px",
+          }}
+        />
+
         <div
           style={{
             overflowY: "auto",
@@ -72,17 +103,17 @@ function RecentSupportsBox({
             padding: "15px",
           }}
         >
-          {supportData.length === 0 ? ( // Check if there are no supports
+          {filteredSupports.length === 0 ? (
             <Typography
               variant="body1"
               align="center"
               style={{ marginTop: "20px", color: "#666" }}
             >
-              {noSupportMessage} {/* Display the specific message here */}
+              {noSupportMessage}
             </Typography>
           ) : (
             <Grid container spacing={2} alignItems="stretch">
-              {supportData.map((support) => (
+              {filteredSupports.map((support) => (
                 <Grid item key={support.support_id} xs={12} sm={6} md={4}>
                   <RecentSupports
                     profileData={support}
