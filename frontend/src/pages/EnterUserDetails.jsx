@@ -88,18 +88,23 @@ function EnterUserDetails({ token, setTokenFunc }) {
 
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSelectedImage(reader.result); // Store the original image for cropping
-      setIsCropperOpen(true); // Open the cropper modal
-    };
     if (file) {
-      reader.readAsDataURL(file);
+      const objectUrl = URL.createObjectURL(file); // Create an Object URL for Blob
+      setSelectedImage(objectUrl); // Set Object URL for cropper
+      setIsCropperOpen(true);
+  
+      // Revoke Object URL after cropping to prevent memory leaks
+      return () => URL.revokeObjectURL(objectUrl);
     }
   };
-
-  const handleCropComplete = (croppedImage) => {
-    setProfilePicture(croppedImage); // Set the cropped image as profile picture
+  
+  const handleCropComplete = (croppedBlob) => {
+    // Read the cropped Blob as an ArrayBuffer for binary storage
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePicture(reader.result); // Store ArrayBuffer
+    };
+    reader.readAsArrayBuffer(croppedBlob);
   };
 
   const createUserProfile = async () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import ImageCropperModal from "../components/ImageCropperModal"; // Import the ImageCropperModal component

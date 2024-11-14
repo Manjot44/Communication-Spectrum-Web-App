@@ -13,12 +13,39 @@ function UserProfileContainer({ token }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5005/get_clients", {
-        headers: { Authorization: token },
-      })
-      .then((response) => setProfiles(response.data.clients))
-      .catch((error) => console.error("Error fetching profiles:", error));
+    const fetchProfiles = async () => {
+      try {
+        const response = await axios.get("http://localhost:5005/get_clients", {
+          headers: { Authorization: token },
+        });
+
+        console.log("Response data:", response.data);
+        const clients = response.data.clients.map((client) => {
+           // Check if the profile_pic exists and has a data property
+          if (client.profile_pic && client.profile_pic.data) {
+            const byteArray = new Uint8Array(client.profile_pic.data);
+            const blob = new Blob([byteArray], { type: "image/jpeg" });
+            client.profile_pic_url = URL.createObjectURL(blob);
+            console.log("Blob URL created for profile:", client.profile_pic_url);
+          }
+          return client;
+        });
+        setProfiles(clients);
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+      }
+    };
+
+    fetchProfiles();
+
+    // Cleanup function to revoke Blob URLs when the component is unmounted or updated
+    return () => {
+      profiles.forEach((profile) => {
+        if (profile.profile_pic_url) {
+          URL.revokeObjectURL(profile.profile_pic_url);
+        }
+      });
+    };
   }, [token]);
 
   const handleDelete = (userId, userName) => {
@@ -72,7 +99,7 @@ function UserProfileContainer({ token }) {
             <Grid item key={profile.user_id} xs={12} sm={6} md={4} lg={3}>
               <UserProfileCircles
                 profileName={profile.name}
-                profilePicture={profile.profile_pic}
+                profilePicture={profile.profile_pic_url}
                 profileID={profile.user_id}
                 onDelete={() => handleDelete(profile.user_id, profile.name)} // Pass name to handleDelete
                 onShare={() => setIsShareModalOpen(true)}

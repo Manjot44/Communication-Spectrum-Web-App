@@ -29,7 +29,7 @@ create table "SupportUsers" (
     snapshot    text,
     comm_env    text,
     interests   text,
-    profile_pic text,
+    profile_pic bytea,
     primary key (user_id)
 );
 
@@ -37,9 +37,9 @@ create table "Supports" (
     support_id  serial not null unique,
     type        text,
     title       text,
-    title_img   text,
+    title_img   bytea,
     date        date,
-    step_img    text[],
+    step_img    bytea[],
     step_names  text[],
     step_times  text[],
     category    text,
@@ -50,7 +50,7 @@ create table "Supports" (
 
 create table "Images" (
     img_id      serial not null unique,
-    url         text,
+    url         bytea,
     primary key (img_id)
 );
 

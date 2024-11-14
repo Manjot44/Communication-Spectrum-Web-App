@@ -48,16 +48,13 @@ const ImageCropperModal = ({
   // Finalize cropping when the "Done" button is clicked
   const finalizeCrop = async () => {
     if (croppedAreaPixels) {
-      const croppedImage = await getCroppedImg(
-        originalImage,
-        croppedAreaPixels
-      );
-      onCropComplete(croppedImage);
+      const croppedBlob = await getCroppedImg(originalImage, croppedAreaPixels);
+      onCropComplete(croppedBlob); // Pass the Blob to the parent component
       setLastCropArea({ crop, zoom });
       onClose();
     }
   };
-
+  
   // Revert to the original image and reset cropping coordinates
   const handleRevertCrop = () => {
     onCropComplete(originalImage);
