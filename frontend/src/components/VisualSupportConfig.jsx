@@ -2,7 +2,7 @@ export const getVisualSupportConfig = (type, profileID) => {
   const configs = {
     "Task Analysis": { 
       title: "Create New Task Analyses",
-      scratch: `/stepsupport/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/stepsupport/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
       type: "Task Analysis",
@@ -15,21 +15,21 @@ export const getVisualSupportConfig = (type, profileID) => {
     },
     "Daily Schedule": { 
       title: "Create New Daily Schedule",
-      scratch: `/dailyschedules/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/dailyschedules/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
 			type: "Daily Schedule"
     },
     "Weekly Calendar": { 
       title: "Create New Weekly Calendar",
-      scratch: `/weeklycalendars/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/weeklycalendars/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
 			type: "Weekly Calendar"
     },
     "Social Story": { 
       title: "Create New Social Story",
-      scratch: `/stepsupport/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/stepsupport/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
       type: "Social Story",
@@ -42,7 +42,7 @@ export const getVisualSupportConfig = (type, profileID) => {
     },
     "Environmental Support": { 
       title: "Create New Environment Support",
-      scratch: `/stepsupport/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/stepsupport/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
       type: "Environmental Support",
@@ -55,7 +55,7 @@ export const getVisualSupportConfig = (type, profileID) => {
     },
     "Choice Board": { 
       title: "Create New Choice Board",
-      scratch: `/stepsupport/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/stepsupport/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
       type: "Choice Board",
@@ -68,7 +68,7 @@ export const getVisualSupportConfig = (type, profileID) => {
     },
     "First-Then": { 
       title: "Create New First-Then",
-      scratch: `/firstthen/${profileID}`,
+      scratch: `/FromScratch/${profileID}`,
       temp: `/firstthen/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
       type: `First-Then`
