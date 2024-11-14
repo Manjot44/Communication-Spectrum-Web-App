@@ -31,7 +31,7 @@ const LoadingOverlay = ({ initialMessage = "Removing background" }) => {
     }, 3000);
 
     return () => clearInterval(messageInterval);
-  }, []);
+  });
 
   useEffect(() => {
     const dotsInterval = setInterval(() => {

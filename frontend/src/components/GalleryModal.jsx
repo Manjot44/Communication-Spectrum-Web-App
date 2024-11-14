@@ -24,7 +24,7 @@ const modalStyle = {
 function GalleryModal ({ open, onClose, onSelectImage }) {
 	const { profileID } = useParams();
 	const [images, setImages] = useState(null);
-	const { notify, showNotification, notificationMessage } = useNotification();
+	const { notify } = useNotification();
 	const { token } = useContext(AuthContext); // Access token from context
 
 	// Fetch images
@@ -46,7 +46,7 @@ function GalleryModal ({ open, onClose, onSelectImage }) {
       }
     };
     fetchImages();
-  }, [profileID, token, open, notify]);
+  }, [profileID, token, open, notify, images]);
 
 	return (
 		<>

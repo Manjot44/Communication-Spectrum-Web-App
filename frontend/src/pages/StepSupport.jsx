@@ -181,9 +181,9 @@ function StepSupport({ token }) {
                     setNameError={setNameError}
                     toggleComponentType={toggleComponentType}
                     addStep={addStep}
-                    defaultText={data.defaultText}
-                    errorMsg={data.errorMsg}
-                    addMsg={data.addMsg}
+                    defaultText={state.state.defaultText}
+                    errorMsg={state.state.errorMsg}
+                    addMsg={state.state.addMsg}
                     reactToPrintFn={reactToPrintFn}
                   />
                   <Grid container spacing={2} style={{ padding: "2%" }}>
@@ -208,7 +208,7 @@ function StepSupport({ token }) {
                       >
                         <LoadTaskSteps
                           steps={steps}
-                          title={data.stepTitle}
+                          title={state.state.stepTitle}
                           stepImages={stepImages}
                           stepNames={stepNames}
                           stepTimes={stepTimes}
@@ -219,8 +219,8 @@ function StepSupport({ token }) {
                           updateStepTime={updateStepTime}
                           deleteStepImageChange={deleteStepImageChange}
                           showCancel={true}
-                          showTime={data.showTime}
-                          label={data.label}
+                          showTime={state.state.showTime}
+                          label={state.state.label}
                         />
                       </div>
                     </Grid>

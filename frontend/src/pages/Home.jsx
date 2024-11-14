@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Grid,
   Typography,
-  Button,
-  TextField,
   Modal,
   Box,
-  Card,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
 import EnterUserDetails from "../pages/EnterUserDetails";
 import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
 import SupportSnapshot from "../components/SupportSnapshot.jsx";
-import RecentSupports from "../components/RecentSupports.jsx";
 import RecentSupportsBox from "../components/RecentSupportsBox.jsx";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
@@ -111,10 +107,6 @@ function Home({ token }) {
     } finally {
       setOpenEditModal(false);
     }
-  };
-
-  const handleEditDetailsClick = () => {
-    setOpenEditDetailsModal(true);
   };
 
   // New function to handle saving profile changes

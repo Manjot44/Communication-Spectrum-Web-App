@@ -3,18 +3,12 @@ import Navbar from "../components/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Typography, CardContent, Button } from "@mui/material";
 import "../App.css";
-import axios from "axios";
-import dayjs from "dayjs";
-import SelectDateCategoryComponent from "../components/SelectDateCategoryComponent.jsx";
-import LoadTaskSteps from "../components/LoadTaskSteps.jsx";
-import TaskHeader from "../components/Taskheader.jsx";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import Grid from "@mui/material/Grid2"
-import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid2";
 import { getVisualSupportConfig } from '../components/VisualSupportConfig.jsx';
 
-function ViewSupport({}) {
+function ViewSupport({ token }) {
 	const { profileID } = useParams();
 	const navigate = useNavigate();
 	const [isHorizontal, setIsHorizontal] = useState(false);
