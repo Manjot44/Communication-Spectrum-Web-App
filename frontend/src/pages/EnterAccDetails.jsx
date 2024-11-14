@@ -46,7 +46,7 @@ function EnterAccDetails({ token, setTokenFunc }) {
         dob: dayjs(response.data.dob),
       });
     } catch (error) {
-      alert(err.response.data.error);
+      alert(error.response.data.error);
     }
   };
 
