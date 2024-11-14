@@ -4,7 +4,7 @@ import '../App.css';
 
 // Image assets
 // Logos
-import Logo from "../assets/mycomms_white.png";
+import Logo from "../assets/mycommspro.png";
 
 const Navbar = ({ profileID }) => {
   return (
