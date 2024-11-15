@@ -7,6 +7,8 @@ import {
 import VisualSupportImage from './VisualSupportImage';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function ChoiceBoardStepHorizontal ({ 
   image,
@@ -22,7 +24,11 @@ function ChoiceBoardStepHorizontal ({
   setTime,
   label,
   fontColour,
-  stepColour
+  stepColour,
+  totalSteps,      // Pass the total number of steps as a prop
+  onMoveLeft,      // Handler for moving left
+  onMoveRight,
+  count
 }) {
   const handleTimeChange = (e) => {
     let input = e.target.value;
@@ -40,6 +46,16 @@ function ChoiceBoardStepHorizontal ({
     <>
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12} style={{ color: `${fontColour}`, backgroundColor: `${stepColour}`, display: 'flex', fontWeight: 'bold', height: '50px', width: '550px', justifyContent: 'center', alignItems: 'center', position: 'relative', borderRadius: '15px 15px 0 0' }}>
+          {count > 0 && (
+            <IconButton  sx={{ position: 'absolute', left: 8, color: 'white' }}>
+              <ArrowBackIcon />
+            </IconButton>
+          )}
+          {count < totalSteps - 1 && (
+            <IconButton  sx={{ position: 'absolute', left: 32, color: 'white' }}>
+              <ArrowForwardIcon />
+            </IconButton>
+          )}
           {index}
           {showCancel && (
             <IconButton
