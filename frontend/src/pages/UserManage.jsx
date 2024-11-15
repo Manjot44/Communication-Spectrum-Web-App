@@ -5,7 +5,7 @@ import ListIcon from "@mui/icons-material/List";
 import GridOnIcon from "@mui/icons-material/GridOn";
 import UserProfileContainer from "../components/UserProfileContainer";
 import UserProfileList from "../components/UserProfileList";
-import Logo from "../assets/mycomm.png";
+import Logo from "../assets/Mycommsproblue.png";
 import "../App.css";
 
 function UserManage({ token, setTokenFunc }) {
