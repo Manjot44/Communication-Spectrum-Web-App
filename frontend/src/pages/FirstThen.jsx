@@ -6,6 +6,10 @@ import {
   Card,
   Typography,
   CardContent,
+  Button,
+  Box,
+  Modal,
+  TextField
 } from "@mui/material";
 import dayjs from 'dayjs';
 import '../App.css';
@@ -19,7 +23,7 @@ function FirstThen({ token, setTokenFunc }) {
   const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
-  const [text, setText] = useState(state.text);
+  const [text, setText] = useState(state.data.text);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
@@ -29,6 +33,14 @@ function FirstThen({ token, setTokenFunc }) {
   const [imageThen, setImageThen] = useState(state.data.imageThen);
   const [firstName, setFirstname] = useState(state.data.firstName);
   const [thenName, setThenName] = useState(state.data.thenName);
+  const [stepColour, setStepColour] = useState('#000CA4');
+  const [fontColour, setFontColour] = useState('white');
+  const [colourModal, setColourModal] = useState(false);
+
+  // Toggle colour change Modal
+  const toggleColourModal = () => {
+    setColourModal((prev) => !prev);
+  };
 
   const handleCreate = async () => {
     if (text.trim() === "") {
@@ -91,6 +103,10 @@ function FirstThen({ token, setTokenFunc }) {
                   gutterBottom
                   style={{
                     margin: "10px",
+                    fontFamily: "Poppins",
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                 >
                 <EditTitleComponent
@@ -103,6 +119,7 @@ function FirstThen({ token, setTokenFunc }) {
                   defaultText="Insert First-Then Support Name"
                   errorMsg="Please enter a name for this First-Then visual support"
                 />
+                <Button onClick={toggleColourModal}>Customise Colour</Button>
                 </Typography>
                 <div 
                     class="d-flex justify-content-center align-items-center"  
@@ -123,6 +140,8 @@ function FirstThen({ token, setTokenFunc }) {
                         setImage={(imageFirst) => setImageFirst(imageFirst)}
                         label="First Step"
                         showCancel={false}
+                        fontColour={fontColour}
+                        stepColour={stepColour}
                       />
                       <Arrow style={{ width: '20px' }}/>
                       <ChoiceBoardStep
@@ -132,7 +151,53 @@ function FirstThen({ token, setTokenFunc }) {
                         setImage={(imageThen) => setImageThen(imageThen)}
                         label="Then Step"
                         showCancel={false}
+                        fontColour={fontColour}
+                        stepColour={stepColour}
                       />
+                      <Modal
+                        open={colourModal}
+                        onClose={toggleColourModal}
+                        aria-labelledby="modal-title"
+                        aria-describedby="modal-description"
+                      >
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: 300,
+                            bgcolor: "background.paper",
+                            boxShadow: 24,
+                            p: 4,
+                          }}
+                        >
+                          <Typography id="modal-title" variant="h6" component="h2">
+                            <b>Edit Font and Box Colours</b>
+                          </Typography>
+                          <Typography id="modal-description" sx={{ mt: 2 }}>
+                            Box Colour
+                          </Typography>
+                          <TextField
+                            type="color"
+                            onChange={(e) => setStepColour(e.target.value)}
+                            fullWidth
+                            sx={{ mt: 1 }}
+                          />
+                          <Typography id="modal-description" sx={{ mt: 2 }}>
+                            Text colour
+                          </Typography>
+                          <TextField
+                            type="color"
+                            onChange={(e) => setFontColour(e.target.value)}
+                            fullWidth
+                            sx={{ mt: 1 }}
+                          />
+                          <Typography id="modal-description" sx={{ mt: 2 }}>
+                          </Typography>
+                          <Button onClick={toggleColourModal}>Close</Button>
+                        </Box>
+                      </Modal>
                     </Grid>
                   </div>
                 </div>

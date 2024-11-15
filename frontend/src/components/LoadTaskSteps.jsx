@@ -17,7 +17,9 @@ function LoadTaskSteps({
   deleteStepImageChange,
   showCancel,
   showTime,
-  label
+  label,
+  fontColour,
+  stepColour
 }) {
   return (
     <>
@@ -37,6 +39,8 @@ function LoadTaskSteps({
             showCancel={showCancel}
             showTime={showTime}
             label={label}
+            fontColour={fontColour}
+            stepColour={stepColour}
           />
         ) : (
           <TaskStep
@@ -53,6 +57,8 @@ function LoadTaskSteps({
             label={label}
             showCancel={showCancel}
             showTime={showTime}
+            fontColour={fontColour}
+            stepColour={stepColour}
           />
         )
       )}

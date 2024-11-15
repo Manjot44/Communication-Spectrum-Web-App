@@ -20,7 +20,9 @@ function ChoiceBoardStepHorizontal ({
   showTime,
   stepTime,
   setTime,
-  label
+  label,
+  fontColour,
+  stepColour
 }) {
   const handleTimeChange = (e) => {
     let input = e.target.value;
@@ -37,7 +39,7 @@ function ChoiceBoardStepHorizontal ({
   return (
     <>
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
-        <Grid item xs={12} style={{ color: 'white', backgroundColor: '#000CA4', display: 'flex', fontWeight: 'bold', height: '50px', width: '550px', justifyContent: 'center', alignItems: 'center', position: 'relative', borderRadius: '15px 15px 0 0' }}>
+        <Grid item xs={12} style={{ color: `${fontColour}`, backgroundColor: `${stepColour}`, display: 'flex', fontWeight: 'bold', height: '50px', width: '550px', justifyContent: 'center', alignItems: 'center', position: 'relative', borderRadius: '15px 15px 0 0' }}>
           {index}
           {showCancel && (
             <IconButton
@@ -54,7 +56,7 @@ function ChoiceBoardStepHorizontal ({
           {/* Inside Grid */}
           <Grid container spacing={0}>
             <Grid item xs={12} md={9} style={{ backgroundColor: 'white' }}>
-              <Box sx={{ height: '230px', width: '350px' }} style={{ padding: '0 15px', alignItems: "center", justifyContent: "center", borderRadius: '0 0 0 15px', borderBottom: '1px solid #000CA4', borderLeft: '1px solid #000CA4' }}>
+              <Box sx={{ height: '230px', width: '350px' }} style={{ padding: '0 15px', alignItems: "center", justifyContent: "center", borderRadius: '0 0 0 15px', borderBottom: `1px solid ${stepColour}`, borderLeft: `1px solid ${stepColour}` }}>
                   <br/>
                   <TextField
                     label={label}
@@ -86,7 +88,7 @@ function ChoiceBoardStepHorizontal ({
               </Box>
             </Grid>
             <Grid item xs={12} md={3} style={{ backgroundColor: 'white' }}>
-              <Box sx={{ height: '230px', width: '200px' }} style={{ padding: '0 5px', borderRadius: '0 0 15px 0', borderBottom: '1px solid #000CA4', borderRight: '1px solid #000CA4' }}>
+              <Box sx={{ height: '230px', width: '200px' }} style={{ padding: '0 5px', borderRadius: '0 0 15px 0', borderBottom: `1px solid ${stepColour}`, borderRight: `1px solid ${stepColour}` }}>
                 <br />
                 <VisualSupportImage uniqueID={index} imgHeight="65%" image={image} setImage={setImage} deleteImage={deleteImage}/>
                 <br />

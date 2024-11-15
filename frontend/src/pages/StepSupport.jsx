@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Grid, Card, Typography, CardContent } from "@mui/material";
+import { Grid, Card, Typography, CardContent, Modal, Box, TextField, Button } from "@mui/material";
 import "../App.css";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -48,6 +48,9 @@ function StepSupport({ token }) {
   const [date, setDate] = useState(dayjs());
   const [isHorizontal, setIsHorizontal] = useState(false);
   const [nameError, setNameError] = useState(false);
+  const [stepColour, setStepColour] = useState('#000CA4');
+  const [fontColour, setFontColour] = useState('white');
+  const [colourModal, setColourModal] = useState(false);
 
   // Set loading to false once component is mounted
   useEffect(() => {
@@ -57,6 +60,11 @@ function StepSupport({ token }) {
   // Toggle between horizontal and vertical step display
   const toggleComponentType = () => {
     setIsHorizontal((prev) => !prev);
+  };
+
+  // Toggle colour change Modal
+  const toggleColourModal = () => {
+    setColourModal((prev) => !prev);
   };
 
   // Add a new step to the task analysis
@@ -185,6 +193,7 @@ function StepSupport({ token }) {
                     errorMsg={state.state?.errorMsg}
                     addMsg={state.state?.addMsg}
                     reactToPrintFn={reactToPrintFn}
+                    setColourModal={toggleColourModal}
                   />
                   <Grid container spacing={2} style={{ padding: "2%" }}>
                     <Grid
@@ -221,7 +230,53 @@ function StepSupport({ token }) {
                           showCancel={true}
                           showTime={state.state?.showTime}
                           label={state.state?.label}
+                          fontColour={fontColour}
+                          stepColour={stepColour}
                         />
+                        <Modal
+                          open={colourModal}
+                          onClose={toggleColourModal}
+                          aria-labelledby="modal-title"
+                          aria-describedby="modal-description"
+                        >
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              width: 300,
+                              bgcolor: "background.paper",
+                              boxShadow: 24,
+                              p: 4,
+                            }}
+                          >
+                            <Typography id="modal-title" variant="h6" component="h2">
+                              <b>Edit Font and Box Colours</b>
+                            </Typography>
+                            <Typography id="modal-description" sx={{ mt: 2 }}>
+                              Box Colour
+                            </Typography>
+                            <TextField
+                              type="color"
+                              onChange={(e) => setStepColour(e.target.value)}
+                              fullWidth
+                              sx={{ mt: 1 }}
+                            />
+                            <Typography id="modal-description" sx={{ mt: 2 }}>
+                              Text colour
+                            </Typography>
+                            <TextField
+                              type="color"
+                              onChange={(e) => setFontColour(e.target.value)}
+                              fullWidth
+                              sx={{ mt: 1 }}
+                            />
+                            <Typography id="modal-description" sx={{ mt: 2 }}>
+                            </Typography>
+                            <Button onClick={toggleColourModal}>Close</Button>
+                          </Box>
+                        </Modal>
                       </div>
                     </Grid>
                   </Grid>
