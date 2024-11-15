@@ -5,6 +5,8 @@ import { TextField, Typography } from "@mui/material";
 import VisualSupportImage from './VisualSupportImage';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function ChoiceBoardStep ({ 
   image,
@@ -20,7 +22,11 @@ function ChoiceBoardStep ({
   stepTime,
   setTime,
   fontColour,
-  stepColour
+  stepColour,
+  totalSteps,      // Pass the total number of steps as a prop
+  onMoveLeft,      // Handler for moving left
+  onMoveRight,
+  count
 }) {
   const handleTimeChange = (e) => {
     let input = e.target.value;
@@ -39,6 +45,16 @@ function ChoiceBoardStep ({
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12}>
           <Box sx={{ height: '50px', width: '350px', color: `${fontColour}`, display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center', alignItems: 'center', backgroundColor: `${stepColour}`, borderRadius: '15px 15px 0 0', position: 'relative', border: `1px solid ${stepColour}` }}>
+            {count > 0 && (
+              <IconButton onClick={() => onMoveLeft(count)} sx={{ position: 'absolute', left: 8, color: 'white' }}>
+                <ArrowBackIcon className="remove-step"/>
+              </IconButton>
+            )}
+            {count < totalSteps - 1 && (
+              <IconButton onClick={() => onMoveRight(count)} sx={{ position: 'absolute', left: 32, color: 'white' }}>
+                <ArrowForwardIcon className="remove-step"/>
+              </IconButton>
+            )}
             <Typography
               variant="h6"
               align="center"

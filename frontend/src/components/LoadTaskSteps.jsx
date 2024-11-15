@@ -19,7 +19,10 @@ function LoadTaskSteps({
   showTime,
   label,
   fontColour,
-  stepColour
+  stepColour,
+  totalSteps,
+  onMoveLeft,
+  onMoveRight
 }) {
   return (
     <>
@@ -41,6 +44,10 @@ function LoadTaskSteps({
             label={label}
             fontColour={fontColour}
             stepColour={stepColour}
+            count={index}
+            totalSteps={totalSteps}
+            onMoveLeft={onMoveLeft(index)}
+            onMoveRight={onMoveRight(index)}
           />
         ) : (
           <TaskStep
@@ -59,6 +66,10 @@ function LoadTaskSteps({
             showTime={showTime}
             fontColour={fontColour}
             stepColour={stepColour}
+            count={index}
+            totalSteps={totalSteps}
+            onMoveLeft={onMoveLeft}
+            onMoveRight={onMoveRight}
           />
         )
       )}

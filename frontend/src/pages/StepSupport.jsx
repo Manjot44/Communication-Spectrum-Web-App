@@ -113,6 +113,54 @@ function StepSupport({ token }) {
     setStepImages(updatedImages);
   };
 
+  // Move step to the left (swap with the previous step)
+  const onMoveLeft = (index) => {
+    // Do nothing if it's the first step
+    if (index === 0) return;
+
+    // Swap the current step with the previous one
+    const newSteps = [...steps];
+    const newStepImages = [...stepImages];
+    const newStepNames = [...stepNames];
+    const newStepTimes = [...stepTimes];
+
+    // Swap step data with the previous step
+    [newSteps[index - 1], newSteps[index]] = [newSteps[index], newSteps[index - 1]];
+    [newStepImages[index - 1], newStepImages[index]] = [newStepImages[index], newStepImages[index - 1]];
+    [newStepNames[index - 1], newStepNames[index]] = [newStepNames[index], newStepNames[index - 1]];
+    [newStepTimes[index - 1], newStepTimes[index]] = [newStepTimes[index], newStepTimes[index - 1]];
+
+    // Update state with the reordered arrays
+    setSteps(newSteps);
+    setStepImages(newStepImages);
+    setStepNames(newStepNames);
+    setStepTimes(newStepTimes);
+  };
+
+  // Move step to the right (swap with the next step)
+  const onMoveRight = (index) => {
+    // Do nothing if it's the last step
+    if (index === steps.length - 1) return;
+
+    // Swap the current step with the next one
+    const newSteps = [...steps];
+    const newStepImages = [...stepImages];
+    const newStepNames = [...stepNames];
+    const newStepTimes = [...stepTimes];
+
+    // Swap step data with the next step
+    [newSteps[index + 1], newSteps[index]] = [newSteps[index], newSteps[index + 1]];
+    [newStepImages[index + 1], newStepImages[index]] = [newStepImages[index], newStepImages[index + 1]];
+    [newStepNames[index + 1], newStepNames[index]] = [newStepNames[index], newStepNames[index + 1]];
+    [newStepTimes[index + 1], newStepTimes[index]] = [newStepTimes[index], newStepTimes[index + 1]];
+
+    // Update state with the reordered arrays
+    setSteps(newSteps);
+    setStepImages(newStepImages);
+    setStepNames(newStepNames);
+    setStepTimes(newStepTimes);
+  };
+
   // Create a new visual support
   const handleCreate = async () => {
     if (text.trim() === "") {
@@ -233,6 +281,9 @@ function StepSupport({ token }) {
                           label={state.state?.label}
                           fontColour={fontColour}
                           stepColour={stepColour}
+                          totalSteps={steps.length}
+                          onMoveLeft={onMoveLeft}
+                          onMoveRight={onMoveRight}
                         />
                         <ChangeColourModal
                           open={colourModal}
