@@ -18,6 +18,7 @@ import SelectDateCategoryComponent from '../components/SelectDateCategoryCompone
 import EditTitleComponent from '../components/EditTitleComponent';
 import ChoiceBoardStep from '../components/TaskStep';
 import axios from "axios";
+import ChangeColourModal from '../components/ChangeColourModal';
 
 function FirstThen({ token, setTokenFunc }) {
   const navigate = useNavigate();
@@ -154,50 +155,12 @@ function FirstThen({ token, setTokenFunc }) {
                         fontColour={fontColour}
                         stepColour={stepColour}
                       />
-                      <Modal
+                      <ChangeColourModal
                         open={colourModal}
                         onClose={toggleColourModal}
-                        aria-labelledby="modal-title"
-                        aria-describedby="modal-description"
-                      >
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            width: 300,
-                            bgcolor: "background.paper",
-                            boxShadow: 24,
-                            p: 4,
-                          }}
-                        >
-                          <Typography id="modal-title" variant="h6" component="h2">
-                            <b>Edit Font and Box Colours</b>
-                          </Typography>
-                          <Typography id="modal-description" sx={{ mt: 2 }}>
-                            Box Colour
-                          </Typography>
-                          <TextField
-                            type="color"
-                            onChange={(e) => setStepColour(e.target.value)}
-                            fullWidth
-                            sx={{ mt: 1 }}
-                          />
-                          <Typography id="modal-description" sx={{ mt: 2 }}>
-                            Text colour
-                          </Typography>
-                          <TextField
-                            type="color"
-                            onChange={(e) => setFontColour(e.target.value)}
-                            fullWidth
-                            sx={{ mt: 1 }}
-                          />
-                          <Typography id="modal-description" sx={{ mt: 2 }}>
-                          </Typography>
-                          <Button onClick={toggleColourModal}>Close</Button>
-                        </Box>
-                      </Modal>
+                        setStepColour={setStepColour}
+                        setFontColour={setFontColour}
+                      />
                     </Grid>
                   </div>
                 </div>
