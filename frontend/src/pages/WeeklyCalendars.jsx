@@ -170,14 +170,13 @@ function WeeklyCalendars({ token, setTokenFunc }) {
         `}
       </style>
       <Navbar profileID={profileID} />
-      <br />
-      {endDate && (
-        <Typography variant="h6" align="center" gutterBottom>
-          Week ending on {endDate.format('DD/MM/YYYY')}
-        </Typography>
-      )}
-      <br />
       <div className="page-wrapper-style" style={{ padding: "0 1%" }}>
+        <br />
+        {endDate && (
+          <Typography variant="h4" align="center" gutterBottom>
+            <b>Week ending on {endDate.format('DD/MM/YYYY')}</b>
+          </Typography>
+        )}
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponent
@@ -199,10 +198,6 @@ function WeeklyCalendars({ token, setTokenFunc }) {
               error={nameError}
               helperText={nameError ? "Please enter a name for this visual support" : ""}
             /> */}
-            <FormControlLabel
-              control={<Switch checked={layout === 'horizontal'} onChange={handleToggleLayout} />}
-              label="Toggle Layout"
-            />
             <Card
               className="task-analyses-create-options"
               style={{ height: "87vh" }}
@@ -226,6 +221,10 @@ function WeeklyCalendars({ token, setTokenFunc }) {
                     errorMsg={"Please enter a name for this weekly calendar"}
                     addMsg={state.state?.addMsg}
                     reactToPrintFn={reactToPrintFn}
+                  />
+                  <FormControlLabel
+                    control={<Switch checked={layout === 'horizontal'} onChange={handleToggleLayout} />}
+                    label="Toggle Layout"
                   />
                   <Grid container spacing={2} style={{ padding: "2%" }}>
                     <Grid
