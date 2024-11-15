@@ -13,7 +13,7 @@ import { useReactToPrint } from "react-to-print";
 
 function StepSupport({ token }) {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { state } = useLocation();
   const { profileID } = useParams();
   const [loading, setLoading] = useState(true); // Add loading state
 

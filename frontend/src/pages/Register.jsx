@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TextFieldComponent from "../components/TextFieldComponent";
 import "../App.css";
-import Logo from "../assets/mycomm.png";
+import Logo from "../assets/Mycommsproblue.png";
 
 function Register({ setTokenFunc }) {
   const [name, setName] = React.useState("");
