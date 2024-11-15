@@ -14,7 +14,8 @@ function TaskHeader({
   defaultText,
   errorMsg,
   addMsg,
-  reactToPrintFn
+  reactToPrintFn,
+  setColourModal
 }) {
   return (
     <Typography
@@ -39,6 +40,7 @@ function TaskHeader({
         errorMsg={errorMsg}
       />
       <Button onClick={reactToPrintFn}>Print to PDF</Button>
+      <Button onClick={setColourModal}>Customise Colour</Button>
       <Button onClick={toggleComponentType}>Toggle Visual Style</Button>
       <Button onClick={addStep}>{addMsg}</Button>
     </Typography>

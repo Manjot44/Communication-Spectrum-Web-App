@@ -18,7 +18,9 @@ function ChoiceBoardStep ({
   showCancel,
   showTime,
   stepTime,
-  setTime
+  setTime,
+  fontColour,
+  stepColour
 }) {
   const handleTimeChange = (e) => {
     let input = e.target.value;
@@ -36,7 +38,7 @@ function ChoiceBoardStep ({
     <>
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12}>
-          <Box sx={{ height: '50px', width: '350px', color: 'white', display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000CA4', borderRadius: '15px 15px 0 0', position: 'relative', border: '1px solid #000CA4' }}>
+          <Box sx={{ height: '50px', width: '350px', color: `${fontColour}`, display: 'flex', fontFamily: 'Poppins', fontWeight: 'bold', justifyContent: 'center', alignItems: 'center', backgroundColor: `${stepColour}`, borderRadius: '15px 15px 0 0', position: 'relative', border: `1px solid ${stepColour}` }}>
             <Typography
               variant="h6"
               align="center"
@@ -58,12 +60,12 @@ function ChoiceBoardStep ({
           </Box>
         </Grid>
         <Grid item xs={12} >
-          <Box style={{ backgroundColor: 'white', width: '350px', height: '350px', padding: '15px', borderTop: '1px solid #000CA4', borderLeft: '1px solid #000CA4', borderRight: '1px solid #000CA4' }}>
+          <Box style={{ backgroundColor: 'white', width: '350px', height: '350px', padding: '15px', borderTop: `1px solid ${stepColour}`, borderLeft: `1px solid ${stepColour}`, borderRight: `1px solid ${stepColour}` }}>
             <VisualSupportImage uniqueID={index} imgHeight="95%" image={image} setImage={setImage} deleteImage={deleteImage}/>
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: showTime ? '175px':'100px' , width: '350px', color: 'black', fontFamily: 'Poppins', fontWeight: 'bold', backgroundColor: 'white', padding: '0 15px', borderRadius: '0 0 15px 15px', borderBottom: '1px solid #000CA4', borderLeft: '1px solid #000CA4', borderRight: '1px solid #000CA4' }}>
+          <Box sx={{ height: showTime ? '175px':'100px' , width: '350px', color: 'black', fontFamily: 'Poppins', fontWeight: 'bold', backgroundColor: 'white', padding: '0 15px', borderRadius: '0 0 15px 15px', borderBottom: `1px solid ${stepColour}`, borderLeft: `1px solid ${stepColour}`, borderRight: `1px solid ${stepColour}` }}>
             <TextField
               label={label}
               variant="outlined"

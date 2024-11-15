@@ -6,6 +6,10 @@ import {
   Card,
   Typography,
   CardContent,
+  Button,
+  Box,
+  Modal,
+  TextField
 } from "@mui/material";
 import dayjs from 'dayjs';
 import '../App.css';
@@ -14,12 +18,13 @@ import SelectDateCategoryComponent from '../components/SelectDateCategoryCompone
 import EditTitleComponent from '../components/EditTitleComponent';
 import ChoiceBoardStep from '../components/TaskStep';
 import axios from "axios";
+import ChangeColourModal from '../components/ChangeColourModal';
 
 function FirstThen({ token, setTokenFunc }) {
   const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
-  const [text, setText] = useState(state.text);
+  const [text, setText] = useState(state.data.text);
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(dayjs());
   const [nameError, setNameError] = useState(false);
@@ -29,6 +34,14 @@ function FirstThen({ token, setTokenFunc }) {
   const [imageThen, setImageThen] = useState(state.data.imageThen);
   const [firstName, setFirstname] = useState(state.data.firstName);
   const [thenName, setThenName] = useState(state.data.thenName);
+  const [stepColour, setStepColour] = useState('#000CA4');
+  const [fontColour, setFontColour] = useState('white');
+  const [colourModal, setColourModal] = useState(false);
+
+  // Toggle colour change Modal
+  const toggleColourModal = () => {
+    setColourModal((prev) => !prev);
+  };
 
   const handleCreate = async () => {
     if (text.trim() === "") {
@@ -91,6 +104,10 @@ function FirstThen({ token, setTokenFunc }) {
                   gutterBottom
                   style={{
                     margin: "10px",
+                    fontFamily: "Poppins",
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                 >
                 <EditTitleComponent
@@ -103,6 +120,7 @@ function FirstThen({ token, setTokenFunc }) {
                   defaultText="Insert First-Then Support Name"
                   errorMsg="Please enter a name for this First-Then visual support"
                 />
+                <Button onClick={toggleColourModal}>Customise Colour</Button>
                 </Typography>
                 <div 
                     class="d-flex justify-content-center align-items-center"  
@@ -123,6 +141,8 @@ function FirstThen({ token, setTokenFunc }) {
                         setImage={(imageFirst) => setImageFirst(imageFirst)}
                         label="First Step"
                         showCancel={false}
+                        fontColour={fontColour}
+                        stepColour={stepColour}
                       />
                       <Arrow style={{ width: '20px' }}/>
                       <ChoiceBoardStep
@@ -132,6 +152,14 @@ function FirstThen({ token, setTokenFunc }) {
                         setImage={(imageThen) => setImageThen(imageThen)}
                         label="Then Step"
                         showCancel={false}
+                        fontColour={fontColour}
+                        stepColour={stepColour}
+                      />
+                      <ChangeColourModal
+                        open={colourModal}
+                        onClose={toggleColourModal}
+                        setStepColour={setStepColour}
+                        setFontColour={setFontColour}
                       />
                     </Grid>
                   </div>
