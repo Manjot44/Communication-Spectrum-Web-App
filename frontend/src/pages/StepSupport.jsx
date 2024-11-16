@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Grid, Card, Typography, CardContent, Modal, Box, TextField, Button } from "@mui/material";
+import { Grid, Card, Typography, CardContent } from "@mui/material";
 import "../App.css";
 import axios from "axios";
 import dayjs from "dayjs";
