@@ -34,7 +34,7 @@ function SelectDateCategoryComponentCreate({
           }}          
         >
           <Typography
-            variant="h5"
+            variant="h8"
             component="div"
             style={{ fontFamily: "Poppins" }}
           >
@@ -51,7 +51,7 @@ function SelectDateCategoryComponentCreate({
           <br />
           <br />
           <Typography
-            variant="h5"
+            variant="h8"
             component="div"
             style={{ fontFamily: "Poppins" }}
           >
@@ -67,7 +67,7 @@ function SelectDateCategoryComponentCreate({
           />
           <br />
           <Typography
-            variant="h5"
+            variant="h8"
             component="div"
             style={{ fontFamily: "Poppins" }}
           >
@@ -113,8 +113,6 @@ function SelectDateCategoryComponentCreate({
             />
           </div>
 
-          <br />
-          <br />
           <Button
             variant="contained"
             style={{

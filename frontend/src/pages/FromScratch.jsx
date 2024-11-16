@@ -228,7 +228,7 @@ function FromScratch({ token }) {
             />
           </Grid>
           <Grid item xs={12} md={9}>
-            <Card className="task-analyses-create-options" style={{ height: "82vh" }}>
+            <Card className="task-analyses-create-options" style={{ height: "80vh" }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: "Poppins" }}>
                   <TaskHeaderScratch

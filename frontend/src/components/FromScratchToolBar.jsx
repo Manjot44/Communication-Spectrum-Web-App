@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -10,7 +10,7 @@ function FromScratchToolBar({ addBox, addElementImage, handleButtonClick, fileIn
         flexDirection: "row", // Horizontal layout
         alignItems: "center", // Vertically center the content
         justifyContent: "space-evenly", // Evenly space buttons
-        height: "6vh", // Set toolbar height
+        height: "8vh", // Set toolbar height
         backgroundColor: "white", // Optional: Set background color
         boxShadow: "0px 2px 4px rgba(0,0,0,0.1)", // Optional: Add a shadow
         padding: "0 16px", // Add horizontal padding
@@ -50,7 +50,7 @@ function FromScratchToolBar({ addBox, addElementImage, handleButtonClick, fileIn
         startIcon={<AddIcon />}
         onClick={handleButtonClick}
       >
-        Add Picture
+        Add Image
         <input
           type="file"
           ref={fileInputRef}
