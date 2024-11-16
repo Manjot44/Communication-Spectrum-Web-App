@@ -47,13 +47,13 @@ function ChoiceBoardStepHorizontal ({
       <Grid container direction="column" spacing={0} style={{ margin: '5px' }}>
         <Grid item xs={12} style={{ color: `${fontColour}`, backgroundColor: `${stepColour}`, display: 'flex', fontWeight: 'bold', height: '50px', width: '550px', justifyContent: 'center', alignItems: 'center', position: 'relative', borderRadius: '15px 15px 0 0' }}>
           {count > 0 && (
-            <IconButton  sx={{ position: 'absolute', left: 8, color: 'white' }}>
-              <ArrowBackIcon />
+            <IconButton onClick={() => onMoveLeft(count)} sx={{ position: 'absolute', left: 8, color: 'white' }}>
+              <ArrowBackIcon className="remove-step"/>
             </IconButton>
           )}
           {count < totalSteps - 1 && (
-            <IconButton  sx={{ position: 'absolute', left: 32, color: 'white' }}>
-              <ArrowForwardIcon />
+            <IconButton onClick={() => onMoveRight(count)} sx={{ position: 'absolute', left: 32, color: 'white' }}>
+              <ArrowForwardIcon className="remove-step"/>
             </IconButton>
           )}
           {index}

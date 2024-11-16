@@ -46,8 +46,8 @@ function LoadTaskSteps({
             stepColour={stepColour}
             count={index}
             totalSteps={totalSteps}
-            onMoveLeft={onMoveLeft(index)}
-            onMoveRight={onMoveRight(index)}
+            onMoveLeft={onMoveLeft}
+            onMoveRight={onMoveRight}
           />
         ) : (
           <TaskStep
