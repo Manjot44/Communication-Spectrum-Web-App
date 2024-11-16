@@ -53,7 +53,7 @@ function UserManage({ token, setTokenFunc }) {
           <Button style={{ marginRight: "20px" }} onClick={goToSettings}>
             My Settings
           </Button>
-          <Button style={{ width: "15%" }} onClick={logOut}>
+          <Button onClick={logOut}>
             LOG OUT
           </Button>
         </div>
