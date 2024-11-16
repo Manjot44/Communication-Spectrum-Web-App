@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Grid, Card, Typography, CardContent, Button, Box, TextField, Modal } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
+import { Grid, Card, Typography, CardContent, Button, Box, TextField, Modal, Grid2 } from "@mui/material";
 import Navbar from "../components/Navbar.jsx";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -25,7 +25,7 @@ function FromScratch({ token }) {
   const [boxes, setBoxes] = useState([]);
   const [elementsImages, setElementsImages] = useState([]);
   const fileInputRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedElement, setSelectedElement] = useState();
 
   // Add a new text box at a default position
@@ -127,33 +127,45 @@ function FromScratch({ token }) {
 
   // Function that triggers on an onClick event and opens the modal
   const handleOpenModal = (box) => {
+    console.log(boxes);
     setSelectedElement(box.id);
     setIsModalOpen(true); // Open the modal
   };
 
   // Function to close the modal
-  const handleCloseModal = () => {
+  const handleCloseModal = (box) => {
+    console.log(boxes);
     setIsModalOpen(false);
   };
   
 
   const handleResizingStart = (box) => {
     setSelectedElement(box.id)
+    console.log(boxes);
     setBoxes((prevBoxes) =>
       prevBoxes.map((box) =>
         box.id === selectedElement ? { ...box, isResizing: true } : box
       )
     );
+    console.log(boxes);
   };
 
-  const handleResizingStop = (box) => {
-    setSelectedElement(box.id)
+  const handleResizingStop = () => {
+    // setSelectedElement(null)
+    console.log(">>>> handleResizingStop before");
+    console.log(boxes);
     setBoxes((prevBoxes) =>
       prevBoxes.map((box) =>
         box.id === selectedElement ? { ...box, isResizing: false } : box
       )
     );
+    console.log(">>>> handleResizingStop after");
+    console.log(boxes);
   };
+
+  useEffect (() => {
+    console.log(`>>>boxes update ${boxes}`);
+  }, [boxes]);
 
   // Create a new visual support
   // const handleCreate = async () => {
@@ -288,6 +300,11 @@ function FromScratch({ token }) {
                           }}
                           onClick={() => toggleEditMode(box.id)}
                         >
+                          {/* <div
+                            style={{ backgroundColor: 'red' }}
+                          >
+                            dsfhdkshfdskjh
+                          </div> */}
                           <ResizableBox
                             width={box.width}
                             height={box.height}
@@ -295,10 +312,10 @@ function FromScratch({ token }) {
                             maxConstraints={[500, 500]}
                             onResizeStart={() => handleResizingStart(box)}
                             onResizeStop={(e, { size }) => {
-                              handleResizingStop(box);
+                              handleResizingStop();
                               updateBoxSize(box.id, size.width, size.height);
                             }}
-                            onClick={() => handleOpenModal(box)}
+                            // style={{ backgroundColor: 'blue' }}
                           >
                             {
                               box.type !== 'image' ? (
@@ -334,6 +351,32 @@ function FromScratch({ token }) {
                               )
                             }
                           </ResizableBox>
+                          <Grid2 container spacing={1}>
+                            <Grid2 item xs={6}>
+                              <div
+                                style={{ 
+                                  backgroundColor: 'grey',
+                                  height: '10px',
+                                  width: '10px'
+                                }}
+                                onClick={() => handleOpenModal(box)}
+                              >
+                              </div>
+
+                            </Grid2>
+                            <Grid2 item xs={6}>
+                              <div
+                                style={{ 
+                                  backgroundColor: 'orange',
+                                  height: '10px',
+                                  width: '10px'
+                                }}
+                                onClick={() => handleResizingStop()}
+                              >
+                              </div>
+
+                            </Grid2>
+                          </Grid2>
                         </Box>
                       </Draggable>
                     ))}
