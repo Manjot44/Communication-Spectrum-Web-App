@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Grid, Card, Typography, CardContent, Button, Box, TextField, Modal } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
+import { Grid, Card, Typography, CardContent, Button, Box, TextField, Modal, Grid2 } from "@mui/material";
 import Navbar from "../components/Navbar.jsx";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -10,6 +10,9 @@ import { useReactToPrint } from "react-to-print";
 import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
+import FromScratchToolBar from "../components/FromScratchToolBar.jsx";
+import EditIcon from '@mui/icons-material/Edit';
+
 
 function FromScratch({ token }) {
   const navigate = useNavigate();
@@ -25,7 +28,7 @@ function FromScratch({ token }) {
   const [boxes, setBoxes] = useState([]);
   const [elementsImages, setElementsImages] = useState([]);
   const fileInputRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedElement, setSelectedElement] = useState();
 
   // Add a new text box at a default position
@@ -127,33 +130,51 @@ function FromScratch({ token }) {
 
   // Function that triggers on an onClick event and opens the modal
   const handleOpenModal = (box) => {
+    console.log(boxes);
     setSelectedElement(box.id);
     setIsModalOpen(true); // Open the modal
   };
 
   // Function to close the modal
-  const handleCloseModal = () => {
+  const handleCloseModal = (box) => {
+    console.log(boxes);
     setIsModalOpen(false);
   };
   
 
   const handleResizingStart = (box) => {
     setSelectedElement(box.id)
+    console.log(boxes);
     setBoxes((prevBoxes) =>
       prevBoxes.map((box) =>
         box.id === selectedElement ? { ...box, isResizing: true } : box
       )
     );
+    console.log(boxes);
   };
 
-  const handleResizingStop = (box) => {
-    setSelectedElement(box.id)
+  const handleResizingStop = () => {
+    // setSelectedElement(null)
+    setBoxes((prevBoxes) =>
+      prevBoxes.map((box) => ({
+        ...box,
+        isResizing: false,
+      }))
+    );
+  
+  };
+
+  const handleResizing = (id, width, height) => {
     setBoxes((prevBoxes) =>
       prevBoxes.map((box) =>
-        box.id === selectedElement ? { ...box, isResizing: false } : box
+        box.id === id ? { ...box, width, height } : box
       )
     );
   };
+  
+  useEffect (() => {
+    console.log(`>>>boxes update ${boxes}`);
+  }, [boxes]);
 
   // Create a new visual support
   // const handleCreate = async () => {
@@ -209,14 +230,14 @@ function FromScratch({ token }) {
             />
           </Grid>
           <Grid item xs={12} md={9}>
-            <Card className="task-analyses-create-options" style={{ height: "87vh" }}>
+            <Card className="task-analyses-create-options" style={{ height: "80vh" }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: "Poppins" }}>
                   <TaskHeaderScratch
                     text={text}
                     setText={setText}
                     isEditing={isEditing}
-                    setIsEditing={setIsEditing}
+                    
                     nameError={nameError}
                     setNameError={setNameError}
                     defaultText="Insert Task Name"
@@ -268,7 +289,6 @@ function FromScratch({ token }) {
                         <Button onClick={handleCloseModal}>Close</Button>
                       </Box>
                     </Modal>
-
                     {boxes.map((box) => (
                       <Draggable
                         key={box.id}
@@ -288,17 +308,24 @@ function FromScratch({ token }) {
                           }}
                           onClick={() => toggleEditMode(box.id)}
                         >
+                          {/* <div
+                            style={{ backgroundColor: 'red' }}
+                          >
+                            dsfhdkshfdskjh
+                          </div> */}
                           <ResizableBox
                             width={box.width}
                             height={box.height}
                             minConstraints={[100, 100]}
                             maxConstraints={[500, 500]}
                             onResizeStart={() => handleResizingStart(box)}
+                            // onResize={(e, { size }) => handleResizing(box.id, size.width, size.height)}
                             onResizeStop={(e, { size }) => {
-                              handleResizingStop(box);
+                              handleResizingStop();
                               updateBoxSize(box.id, size.width, size.height);
                             }}
-                            onClick={() => handleOpenModal(box)}
+                            // onResizeStop={() => handleResizingStop()}
+                            // style={{ backgroundColor: 'blue' }}
                           >
                             {
                               box.type !== 'image' ? (
@@ -334,13 +361,34 @@ function FromScratch({ token }) {
                               )
                             }
                           </ResizableBox>
+                          <Grid2 container spacing={1}>
+                              <EditIcon
+                                style={{ 
+                                  border: '1px solid #808080',
+                                  borderRadius: '3px',
+                                  height: '13px',
+                                  width: '13px'
+                                }}
+                                onClick={() => handleOpenModal(box)}
+                                sx={{ color: 'grey' }}
+                              />
+                          </Grid2>
                         </Box>
                       </Draggable>
                     ))}
+                    
                   </Box>
                 </Typography>
               </CardContent>
             </Card>
+            <FromScratchToolBar
+              addBox={addBox}
+              addElementImage={addElementImage}
+              handleButtonClick={handleButtonClick}
+              fileInputRef={fileInputRef}
+            >
+            </FromScratchToolBar>
+
           </Grid>
         </Grid>
       </div>

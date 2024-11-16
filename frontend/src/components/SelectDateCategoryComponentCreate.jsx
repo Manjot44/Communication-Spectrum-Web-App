@@ -25,7 +25,7 @@ function SelectDateCategoryComponentCreate({
 }) {
   return (
     <>
-      <Card className="task-analyses-create-options" style={{ height: "87vh" }}>
+      <Card className="task-analyses-create-options" style={{ height: "88vh" }}>
         <CardContent
           style={{
             height: "100%",      // Ensures the container takes the full height of the Card
@@ -34,7 +34,7 @@ function SelectDateCategoryComponentCreate({
           }}          
         >
           <Typography
-            variant="h5"
+            variant="h8"
             component="div"
             style={{ fontFamily: "Poppins" }}
           >
@@ -51,7 +51,7 @@ function SelectDateCategoryComponentCreate({
           <br />
           <br />
           <Typography
-            variant="h5"
+            variant="h8"
             component="div"
             style={{ fontFamily: "Poppins" }}
           >
@@ -67,7 +67,7 @@ function SelectDateCategoryComponentCreate({
           />
           <br />
           <Typography
-            variant="h5"
+            variant="h8"
             component="div"
             style={{ fontFamily: "Poppins" }}
           >
@@ -113,7 +113,6 @@ function SelectDateCategoryComponentCreate({
             />
           </div>
 
-          <br />
           <Button
             variant="contained"
             style={{
@@ -125,67 +124,6 @@ function SelectDateCategoryComponentCreate({
           >
             Create Visual Support
           </Button>
-          <br />
-          <br />
-          {/* <ScratchElementImage></ScratchElementImage> */}
-          <Button 
-            variant="contained" 
-            color="primary" 
-            startIcon={<AddIcon />} 
-            onClick={() => addBox('title')}
-            sx={{ marginBottom: 2 }}
-            >
-            Add Title
-          </Button>
-          <br />
-          <Button 
-            variant="contained" 
-            color="primary" 
-            startIcon={<AddIcon />} 
-            onClick={() => addBox('body')}
-            sx={{ marginBottom: 2 }}
-            >
-            Add Text
-          </Button>
-          <br />
-          <Button 
-            variant="contained" 
-            color="primary" 
-            startIcon={<AddIcon />} 
-            onClick={addBox}
-            sx={{ marginBottom: 2 }}
-          >
-            Add Box
-          </Button>
-          <br />
-          <Button 
-            variant="contained" 
-            color="primary" 
-            startIcon={<AddIcon />} 
-            onClick={handleButtonClick}
-            sx={{ marginBottom: 2 }}
-          >
-            Add Picture
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={addElementImage}
-              accept="image/*"
-            />
-          </Button>
-          <br />
-          <Button 
-            variant="contained" 
-            color="primary" 
-            startIcon={<AddIcon />} 
-            onClick={addBox}
-            sx={{ marginBottom: 2 }}
-          >
-            Add Timer
-          </Button>
-
-          <br />
         </CardContent>
       </Card>
 
