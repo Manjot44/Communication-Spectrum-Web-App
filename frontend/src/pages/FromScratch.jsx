@@ -10,6 +10,7 @@ import { useReactToPrint } from "react-to-print";
 import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
+import FromScratchToolBar from "../components/FromScratchToolBar.jsx";
 
 function FromScratch({ token }) {
   const navigate = useNavigate();
@@ -152,17 +153,23 @@ function FromScratch({ token }) {
 
   const handleResizingStop = () => {
     // setSelectedElement(null)
-    console.log(">>>> handleResizingStop before");
-    console.log(boxes);
     setBoxes((prevBoxes) =>
-      prevBoxes.map((box) =>
-        box.id === selectedElement ? { ...box, isResizing: false } : box
-      )
+      prevBoxes.map((box) => ({
+        ...box,
+        isResizing: false,
+      }))
     );
-    console.log(">>>> handleResizingStop after");
-    console.log(boxes);
+  
   };
 
+  const handleResizing = (id, width, height) => {
+    setBoxes((prevBoxes) =>
+      prevBoxes.map((box) =>
+        box.id === id ? { ...box, width, height } : box
+      )
+    );
+  };
+  
   useEffect (() => {
     console.log(`>>>boxes update ${boxes}`);
   }, [boxes]);
@@ -221,14 +228,14 @@ function FromScratch({ token }) {
             />
           </Grid>
           <Grid item xs={12} md={9}>
-            <Card className="task-analyses-create-options" style={{ height: "87vh" }}>
+            <Card className="task-analyses-create-options" style={{ height: "82vh" }}>
               <CardContent>
                 <Typography variant="h5" component="div" style={{ fontFamily: "Poppins" }}>
                   <TaskHeaderScratch
                     text={text}
                     setText={setText}
                     isEditing={isEditing}
-                    setIsEditing={setIsEditing}
+                    
                     nameError={nameError}
                     setNameError={setNameError}
                     defaultText="Insert Task Name"
@@ -280,7 +287,6 @@ function FromScratch({ token }) {
                         <Button onClick={handleCloseModal}>Close</Button>
                       </Box>
                     </Modal>
-
                     {boxes.map((box) => (
                       <Draggable
                         key={box.id}
@@ -311,10 +317,12 @@ function FromScratch({ token }) {
                             minConstraints={[100, 100]}
                             maxConstraints={[500, 500]}
                             onResizeStart={() => handleResizingStart(box)}
+                            // onResize={(e, { size }) => handleResizing(box.id, size.width, size.height)}
                             onResizeStop={(e, { size }) => {
                               handleResizingStop();
                               updateBoxSize(box.id, size.width, size.height);
                             }}
+                            // onResizeStop={() => handleResizingStop()}
                             // style={{ backgroundColor: 'blue' }}
                           >
                             {
@@ -380,10 +388,19 @@ function FromScratch({ token }) {
                         </Box>
                       </Draggable>
                     ))}
+                    
                   </Box>
                 </Typography>
               </CardContent>
             </Card>
+            <FromScratchToolBar
+              addBox={addBox}
+              addElementImage={addElementImage}
+              handleButtonClick={handleButtonClick}
+              fileInputRef={fileInputRef}
+            >
+            </FromScratchToolBar>
+
           </Grid>
         </Grid>
       </div>
