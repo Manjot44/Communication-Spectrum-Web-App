@@ -11,6 +11,8 @@ import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 import FromScratchToolBar from "../components/FromScratchToolBar.jsx";
+import EditIcon from '@mui/icons-material/Edit';
+
 
 function FromScratch({ token }) {
   const navigate = useNavigate();
@@ -360,30 +362,16 @@ function FromScratch({ token }) {
                             }
                           </ResizableBox>
                           <Grid2 container spacing={1}>
-                            <Grid2 item xs={6}>
-                              <div
+                              <EditIcon
                                 style={{ 
-                                  backgroundColor: 'grey',
-                                  height: '10px',
-                                  width: '10px'
+                                  border: '1px solid #808080',
+                                  borderRadius: '3px',
+                                  height: '13px',
+                                  width: '13px'
                                 }}
                                 onClick={() => handleOpenModal(box)}
-                              >
-                              </div>
-
-                            </Grid2>
-                            <Grid2 item xs={6}>
-                              <div
-                                style={{ 
-                                  backgroundColor: 'orange',
-                                  height: '10px',
-                                  width: '10px'
-                                }}
-                                onClick={() => handleResizingStop()}
-                              >
-                              </div>
-
-                            </Grid2>
+                                sx={{ color: 'grey' }}
+                              />
                           </Grid2>
                         </Box>
                       </Draggable>
