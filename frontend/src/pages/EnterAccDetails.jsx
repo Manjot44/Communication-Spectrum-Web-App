@@ -7,7 +7,6 @@ import "../App.css";
 import TextFieldComponent from "../components/TextFieldComponent";
 import SelectDOBComponent from "../components/SelectDOBComponent";
 import DropdownComponent from "../components/DropdownComponent";
-import SubscribeComponent from "../components/SubscribeComponent";
 import NotificationPopup from "../components/NotificationPopup";
 import { useNotification } from "../services/notificationService";
 import { DarkBlueButton, LoginText, LoginFormBox, LoginBackground, LoginStack } from "../Wrappers.jsx";
@@ -169,11 +168,6 @@ function EnterAccDetails({ token, setTokenFunc }) {
                 { value: "Other", label: "Other" },
               ]}
               width="75%"
-            />
-            <SubscribeComponent
-              checked={isSubscribed}
-              onChange={(e) => setSubscribe(e.target.checked)}
-              label="Subscribe to MyComms Newsletter"
             />
             <DarkBlueButton onClick={handleCreateButton} variant="contained">
               Create Account Profile

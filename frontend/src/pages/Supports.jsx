@@ -135,9 +135,8 @@ function Supports({ token }) {
             expandIcon={<ArrowDownwardIcon />}
             aria-controls="panel1-content"
             id="panel2-header"
-            style={{ border: "none" }}
           >
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
               <b>Filter by Category</b>
             </Typography>
           </AccordionSummary>

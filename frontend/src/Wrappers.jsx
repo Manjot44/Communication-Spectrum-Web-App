@@ -43,7 +43,7 @@ export const Title = styled(Typography)({
   fontFamily: "Poppins", 
 	color: "#000CA4",
   textAlign: 'center',
-  marginBottom: '16px'
+  marginBottom: '16px',
 });
 
 export const SnapShotStyleCard = styled(Card)({
@@ -105,7 +105,8 @@ export const LoginStack = styled(Stack)({
 export const LeftArrow = styled(IconButton)({
   position: 'absolute',
   left: 1,
-  color: 'white'
+  color: 'white',
+  fontFamily: 'Poppins'
 });
 
 export const LeftArrowIcon = styled(ArrowBackIcon)({
@@ -119,7 +120,8 @@ export const LeftArrowIcon = styled(ArrowBackIcon)({
 export const RightArrow = styled(IconButton)({
   position: 'absolute',
   left: 25,
-  color: 'white'
+  color: 'white',
+  fontFamily: 'Poppins'
 });
 
 export const RightArrowIcon = styled(ArrowForwardIcon)({
@@ -138,7 +140,8 @@ export const StepIndex = styled(Typography)({
 export const DeleteButton = styled(IconButton)({
   position: 'absolute',
   right: 8,
-  color: 'white'
+  color: 'white',
+  fontFamily: 'Poppins'
 });
 
 export const CrossIcon = styled(CancelIcon)({
@@ -226,7 +229,8 @@ export const SaveButton = styled(Button)({
   marginBottom: "20px",
   backgroundColor: "#000CA4",
   "&:hover": { backgroundColor: "#3333cc" },
-  width: '100%'
+  width: '100%',
+  fontFamily: 'Poppins'
 });
 
 // MySettingsFromUserManage
@@ -248,6 +252,7 @@ export const AddSupport = styled(Button)({
   position: "absolute",
   right: 0,
   backgroundColor: "#ff7c33",
+  fontFamily: 'Poppins'
 });
 
 export const SharedAccordion = styled(Accordion)({
@@ -323,7 +328,8 @@ export const BlueColour = styled('div')({
 export const ButtonsBox = styled(Box)({
   display: "flex",
   justifyContent: "space-around",
-  marginTop: 10
+  marginTop: 10,
+  fontFamily: 'Poppins'
 });
 
 // FromScratch
@@ -338,7 +344,6 @@ export const FromScratchToolBox = styled(Box)({
   padding: "0 16px",                        // Add horizontal padding
   overflowX: "auto",                        // Allow horizontal scrolling if content overflows
 });
-
 
 //NavBar
 export const NavBar = styled('div')({
@@ -370,6 +375,7 @@ export const SwitchProfileButton = styled(Button)({
   backgroundColor: '#00c89c',
   color: 'white',
   padding: '8px 12px',
+  fontFamily: 'Poppins',
   border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
@@ -433,7 +439,8 @@ export const RecentSupportEditBox = styled(Box)({
 
 export const RecentSupprtTitle = styled(Typography)({
   fontSize: "1.2rem",
-  textAlign: "center"
+  textAlign: "center",
+  fontFamily: 'Poppins'
 });
 
 export const RecentSupportButton = styled(IconButton)({
@@ -446,7 +453,8 @@ export const RecentSupportButton = styled(IconButton)({
 export const NoSupportsTypography = styled(Typography)({
   marginTop: "20px",
   color: "#666",
-  textAlign: 'center'
+  textAlign: 'center',
+  fontFamily: 'Poppins'
 });
 
 // Left hand Menu in Editing Visual Support Pages
@@ -523,4 +531,8 @@ export const UserProfileCircleButtonBox = styled(Box)({
   justifyContent: "center",
   marginTop: "auto",
   paddingTop: "8px",
+});
+
+export const PoppinsButton = styled(Button)({
+  fontFamily: 'Poppins'
 });

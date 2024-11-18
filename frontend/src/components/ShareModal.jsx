@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import ProfileBox from "./ProfileBox";
 import ProfessionalBox from "./ProfessionalBox.jsx";
-import { ShareModalBox } from "../Wrappers.jsx";
+import { ShareModalBox, PoppinsButton } from "../Wrappers.jsx";
 
 function ShareModal({ open, onClose, onConfirm, message, description, token, profileType }) {
   const [profiles, setProfileData] = useState([]);
@@ -82,13 +82,13 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
   return (
     <Modal open={open} onClose={onClose}>
       <ShareModalBox>
-        <Typography variant="h4" component="h2" gutterBottom>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ fontFamily: 'Poppins' }}>
           <b>{message || "Are you sure you want to proceed?"}</b>
         </Typography>
 
         {/* Render description if provided */}
         {description && (
-          <Typography variant="body1" color="textSecondary" sx={{ mt: 1 }}>
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 1, fontFamily: 'Poppins' }}>
             <b>{description}</b>
           </Typography>
         )}
@@ -101,35 +101,35 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
 
         {/* List of buttons at the bottom of the modal */}
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
-					<Button
+					<PoppinsButton
             variant="contained"
             color="success"
             onClick={onConfirm}
             sx={{ width: "150px" }}
           >
             Share
-          </Button>
-					<Button
+          </PoppinsButton>
+					<PoppinsButton
             variant="contained"
             onClick={handleSelectAll}
             sx={{ width: "150px" }}
           >
             Select All
-          </Button>
-          <Button
+          </PoppinsButton>
+          <PoppinsButton
             variant="contained"
             onClick={handleDeselectAll}
             sx={{ width: "150px" }}
           >
             Deselect All
-          </Button>
-          <Button 
-            variant="outlined" 
-            onClick={onClose} 
+          </PoppinsButton>
+          <PoppinsButton 
+            variant="outlined"
+            onClick={onClose}
             sx={{ width: "150px" }}
           >
             Cancel
-          </Button>
+          </PoppinsButton>
         </Box>
       </ShareModalBox>
     </Modal>

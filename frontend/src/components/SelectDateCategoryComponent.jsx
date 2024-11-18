@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, CardContent, Stack } from "@mui/material";
+import { Typography, CardContent, Stack, Checkbox } from "@mui/material";
 import "../App.css";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
@@ -7,6 +7,8 @@ import DropdownComponent from "../components/DropdownComponent";
 import { DatePicker } from "@mui/x-date-pickers";
 import VisualSupportImage from "./VisualSupportImage";
 import { LeftMenuCard, CreateSupportButton } from "../Wrappers";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 function SelectDateCategoryComponent({
   date,
@@ -16,6 +18,7 @@ function SelectDateCategoryComponent({
   handleCreate,
   image,
   setImage,
+  setIsPublic
 }) {
   return (
     <>
@@ -87,6 +90,15 @@ function SelectDateCategoryComponent({
               ]}
               width="100%"
             />
+
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Make Visual Support Public"
+                onChange={setIsPublic}
+              />
+            </FormGroup>
+
             <CreateSupportButton variant="contained" onClick={handleCreate}>
               Create Visual Support
             </CreateSupportButton>

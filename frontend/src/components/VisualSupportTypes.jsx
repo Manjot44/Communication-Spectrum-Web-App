@@ -40,7 +40,7 @@ const ButtonText = styled(Typography)({
   textAlign: 'center',
   fontFamily: "Poppins",
   color: "#6B4BEF",
-  width: '80px'
+  width: '100px'
 });
 
 function VisualSupportTypes({ profileID }) {
@@ -99,7 +99,7 @@ function VisualSupportTypes({ profileID }) {
             <CircularButton variant="contained" onClick={() => navigateToTemplate("Environmental Support")}>
               <Warning fontSize="large" />
             </CircularButton>
-            <ButtonText>
+            <ButtonText sx={{ width: '120px' }}>
               Environmental Supports
             </ButtonText>
           </Grid>

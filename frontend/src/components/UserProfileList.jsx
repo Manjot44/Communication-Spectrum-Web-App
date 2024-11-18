@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Avatar,
-  Button,
   List,
   ListItem,
   ListItemText,
@@ -62,7 +61,12 @@ function UserProfileList({ token }) {
 
   return (
     <>
-      <Box display="flex" justifyContent="center" alignItems="center" mt={3}>
+      <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        mt={3}
+      >
         <List
           sx={{
             width: "60%",
@@ -74,6 +78,7 @@ function UserProfileList({ token }) {
             <Paper
               key={profile.user_id}
               elevation={2}
+              onClick={() => navigate(`/home/${profile.user_id}`)}
               sx={{
                 borderRadius: "12px",
                 mb: 2,
@@ -108,14 +113,6 @@ function UserProfileList({ token }) {
                   }}
                 />
                 <Box display="flex" alignItems="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ mr: 1 }}
-                    onClick={() => navigate(`/home/${profile.user_id}`)}
-                  >
-                    Enter Profile
-                  </Button>
                   <IconButton
                     onClick={() => handleDelete(profile.user_id, profile.name)} // Pass name to handleDelete
                     color="error"

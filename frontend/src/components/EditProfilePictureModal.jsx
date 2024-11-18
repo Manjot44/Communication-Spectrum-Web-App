@@ -89,7 +89,7 @@ function EditProfilePictureModal({
         aria-describedby="modal-modal-description"
       >
         <ModalBox>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontFamily: 'Poppins' }}>
             Upload a new Profile Picture
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>

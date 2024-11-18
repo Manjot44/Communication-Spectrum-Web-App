@@ -112,12 +112,31 @@ function TaskStepHorizontal ({
               }}>
                 <br/>
                 {/* Box with Description of each Step/Option */}
-                <DescriptionBox 
+                {/* <DescriptionBox 
                   label={label}
                   variant="outlined"
                   defaultValue={stepNames[count]}
                   onChange={(e) => updateStepName(e.target.value)}
-                />
+                /> */}
+                {showTime ? (
+                  <DescriptionBox
+                    // id="standard-multiline-flexible"
+                    label={label}
+                    variant="outlined"
+                    defaultValue={stepNames[count]}
+                    onChange={(e) => updateStepName(e.target.value)}
+                  />
+                ) : (
+                  <DescriptionBox 
+                    id="outlined-multiline-static"
+                    label={label}
+                    // variant="outlined"
+                    multiline
+                    rows={4}
+                    defaultValue={stepNames[count]}
+                    onChange={(e) => updateStepName(e.target.value)}
+                  />
+                )}
                 {/* Timer Box (Only for Task Analysis)*/}
                 {showTime && (
                   <DescriptionBox 

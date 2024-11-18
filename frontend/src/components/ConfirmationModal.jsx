@@ -14,7 +14,7 @@ function ConfirmationModal({ open, onClose, onConfirm, message, description }) {
           <Typography
             variant="body2"
             color="textSecondary"
-            sx={{ textAlign: "center" }}
+            sx={{ textAlign: "center", fontFamily: 'Poppins' }}
           >
             {description}
           </Typography>
@@ -25,14 +25,14 @@ function ConfirmationModal({ open, onClose, onConfirm, message, description }) {
             variant="contained"
             color="error"
             onClick={onConfirm}
-            sx={{ width: "100px" }}
+            sx={{ width: "100px", fontFamily: 'Poppins' }}
           >
             Yes
           </Button>
           <Button 
             variant="outlined" 
             onClick={onClose} 
-            sx={{ width: "100px" }}
+            sx={{ width: "100px", fontFamily: 'Poppins' }}
           >
             Cancel
           </Button>

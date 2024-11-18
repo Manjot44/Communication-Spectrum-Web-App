@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 import GridOnIcon from "@mui/icons-material/GridOn";
 import UserProfileContainer from "../components/UserProfileContainer";
 import UserProfileList from "../components/UserProfileList";
 import Logo from "../assets/Mycommsproblue.png";
 import "../App.css";
-import { UserManageHeader, Title, UserManageOptions } from "../Wrappers";
+import { UserManageHeader, Title, UserManageOptions, PoppinsButton } from "../Wrappers";
 
 function UserManage({ token, setTokenFunc }) {
   const navigate = useNavigate();
@@ -54,12 +54,12 @@ function UserManage({ token, setTokenFunc }) {
           style={{ maxWidth: "15%", height: "auto" }}
         />
         <div>
-          <Button style={{ marginRight: "20px" }} onClick={goToSettings}>
+          <PoppinsButton style={{ marginRight: "20px" }} onClick={goToSettings}>
             My Settings
-          </Button>
-          <Button onClick={logOut}>
+          </PoppinsButton>
+          <PoppinsButton onClick={logOut}>
             LOG OUT
-          </Button>
+          </PoppinsButton>
         </div>
       </UserManageHeader>
       <Title variant="h3">
@@ -68,17 +68,17 @@ function UserManage({ token, setTokenFunc }) {
 
       {/* Add new user button and the grid view buttons */}
       <UserManageOptions>
-        <Button
+        <PoppinsButton
           onClick={toggleView}
           variant="contained"
           color="primary"
           startIcon={isListView ? <GridOnIcon /> : <ListIcon />}
         >
           {isListView ? "Grid View" : "List View"}
-        </Button>
-        <Button onClick={handleAddUser} variant="contained" color="secondary">
+        </PoppinsButton>
+        <PoppinsButton onClick={handleAddUser} variant="contained" color="secondary">
           + Create New User
-        </Button>
+        </PoppinsButton>
       </UserManageOptions>
 
       {/* Box displaying all user profiles */}
