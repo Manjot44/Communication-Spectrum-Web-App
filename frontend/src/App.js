@@ -23,7 +23,6 @@ import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
 import MySettings from "./pages/MySettings";
 import FromScratch from "./pages/FromScratch";
 import MySettingsFromUserManage from "./pages/MySettingsFromUserManage.jsx";
-import { Support } from "@mui/icons-material";
 import { AuthProvider } from "./components/AuthContext.jsx";
 
 // ProtectedRoute component to handle route protection

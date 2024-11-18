@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Grid, Card, Typography, CardContent, Button } from "@mui/material";
+import { Button } from "@mui/material";
 
 function ScratchElementImage() {
   const fileInputRef = useRef(null);
