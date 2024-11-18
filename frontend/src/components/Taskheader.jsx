@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Button } from '@mui/material';
+import { Typography } from '@mui/material';
 import EditTitleComponent from './EditTitleComponent';
 import { styled } from "@mui/system";
 import "../App.css";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import ProfileBox from "./ProfileBox";
@@ -124,8 +124,8 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
             Deselect All
           </PoppinsButton>
           <PoppinsButton 
-            variant="outlined" 
-            onClick={onClose} 
+            variant="outlined"
+            onClick={onClose}
             sx={{ width: "150px" }}
           >
             Cancel

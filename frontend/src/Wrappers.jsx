@@ -44,7 +44,6 @@ export const Title = styled(Typography)({
 	color: "#000CA4",
   textAlign: 'center',
   marginBottom: '16px',
-  fontFamily: 'Poppins'
 });
 
 export const SnapShotStyleCard = styled(Card)({

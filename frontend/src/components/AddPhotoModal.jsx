@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Typography } from '@mui/material';
+import { Modal, Typography } from '@mui/material';
 import { ModalBox } from '../Wrappers';
 import { PoppinsButton } from '../Wrappers';
 
