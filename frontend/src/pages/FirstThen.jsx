@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import Navbar from "../components/Navbar";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Grid,
-  Card,
-  Typography,
   CardContent,
   Button,
-  Box,
-  Modal,
-  TextField
 } from "@mui/material";
 import dayjs from 'dayjs';
 import '../App.css';
 import Arrow from '../components/Arrow';
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
 import EditTitleComponent from '../components/EditTitleComponent';
-import ChoiceBoardStep from '../components/TaskStep';
+import TaskStep from '../components/TaskStep';
 import axios from "axios";
 import ChangeColourModal from '../components/ChangeColourModal';
+import { StepSupportWrapper, FirstThenCard, PrintBox, Centred, FirstThenMenu } from '../Wrappers.jsx';
+
+export const firstThenContext = createContext(null);
 
 function FirstThen({ token, setTokenFunc }) {
   const navigate = useNavigate();
@@ -43,6 +41,7 @@ function FirstThen({ token, setTokenFunc }) {
     setColourModal((prev) => !prev);
   };
 
+  // API Request to save Visual Support
   const handleCreate = async () => {
     if (text.trim() === "") {
       setNameError(true); // Set error state if no name is entered
@@ -56,8 +55,8 @@ function FirstThen({ token, setTokenFunc }) {
           text,
           image,
           date,
-          stepImages: [imageFirst, imageThen],
-          stepNames: [firstName, thenName],
+          stepImages: [imageFirst[0], imageThen[0]],
+          stepNames: [firstName[0], thenName[0]],
           stepTimes: null,
           category,
           isHorizontal: null,
@@ -76,13 +75,9 @@ function FirstThen({ token, setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
       <Navbar profileID={profileID}/>
       <br />
-      <div className="page-wrapper-style" style={{ padding: '0 1%' }}>
+      <StepSupportWrapper>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponent
@@ -97,78 +92,79 @@ function FirstThen({ token, setTokenFunc }) {
           </Grid>
           {/* First-Then Section */}
           <Grid item xs={12} md={9}>
-            <Card className="task-analyses-create-options" style={{ backgroundColor: 'white', height: '87vh' }}>
+            <FirstThenCard>
               <CardContent>
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  style={{
-                    margin: "10px",
-                    fontFamily: "Poppins",
-                    color: "black",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                <EditTitleComponent
-                  text={text}
-                  changeText={setText}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                  nameError={nameError}
-                  setNameError={setNameError}
-                  defaultText="Insert First-Then Support Name"
-                  errorMsg="Please enter a name for this First-Then visual support"
-                />
-                <Button onClick={toggleColourModal}>Customise Colour</Button>
-                </Typography>
-                <div 
-                    class="d-flex justify-content-center align-items-center"  
-                  >
-                  <div>
-                    <Grid
-                      class="d-flex justify-content-center align-items-center" 
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        height: "75vh",
-                      }}
-                    >
-                      <ChoiceBoardStep
-                        image={imageFirst}
+                {/* Title and Colour Customise Menu Buttons */}
+                <FirstThenMenu variant="h6" gutterBottom>
+                  <EditTitleComponent
+                    text={text}
+                    changeText={setText}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    nameError={nameError}
+                    setNameError={setNameError}
+                    defaultText="Insert First-Then Support Name"
+                    errorMsg="Please enter a name for this First-Then visual support"
+                  />
+                  <Button onClick={toggleColourModal}>Customise Colour</Button>
+                </FirstThenMenu>
+                <Centred>
+                  <PrintBox>
+                    {/* First Box */}
+                    <firstThenContext.Provider value={{
+                      stepImages: imageFirst,
+                      stepNames: firstName,
+                      fontColour,
+                      stepColour,
+                      showCancel: false,
+                      label: "First Step",
+                      totalSteps: 0,
+                    }}>
+                      <TaskStep
+                        key={0}
                         index="First"
-                        setName={(newName) => setFirstname(newName)}
-                        setImage={(imageFirst) => setImageFirst(imageFirst)}
-                        label="First Step"
-                        showCancel={false}
-                        fontColour={fontColour}
-                        stepColour={stepColour}
+                        updateStepName={(newName) => setFirstname([newName])}
+                        updateStepImage={(imageFirst) => setImageFirst([imageFirst])}
+                        firstThen={true}
+                        count={0}
+                        id={0}
                       />
-                      <Arrow style={{ width: '20px' }}/>
-                      <ChoiceBoardStep
-                        image={imageThen}
+                    </firstThenContext.Provider>
+                    <Arrow style={{ width: '20px' }}/>
+                    {/* Then Box */}
+                    <firstThenContext.Provider value={{
+                      stepImages: imageThen,
+                      stepNames: thenName,
+                      fontColour,
+                      stepColour,
+                      showCancel: false,
+                      label: "Then Step",
+                      totalSteps: 0,
+                    }}>
+                      <TaskStep
+                        key={1}
                         index="Then"
-                        setName={(newName) => setThenName(newName)}
-                        setImage={(imageThen) => setImageThen(imageThen)}
-                        label="Then Step"
-                        showCancel={false}
-                        fontColour={fontColour}
-                        stepColour={stepColour}
+                        updateStepName={(newName) => setThenName([newName])}
+                        updateStepImage={(imageThen) => setImageThen([imageThen])}
+                        firstThen={true}
+                        count={0}
+                        id={1}
                       />
-                      <ChangeColourModal
-                        open={colourModal}
-                        onClose={toggleColourModal}
-                        setStepColour={setStepColour}
-                        setFontColour={setFontColour}
-                      />
-                    </Grid>
-                  </div>
-                </div>
+                    </firstThenContext.Provider>
+                    {/* Modal that pops up when you click on customise colour */}
+                    <ChangeColourModal
+                      open={colourModal}
+                      onClose={toggleColourModal}
+                      setStepColour={setStepColour}
+                      setFontColour={setFontColour}
+                    />
+                  </PrintBox>
+                </Centred>
               </CardContent>
-            </Card>
+            </FirstThenCard>
           </Grid>
         </Grid>
-      </div>
+      </StepSupportWrapper>
     </>
   );
 }

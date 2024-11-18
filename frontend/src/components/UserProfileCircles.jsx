@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { IconButton, Box, Typography } from "@mui/material";
+import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import "../App.css";
+import { UserProfileCircleOuter, UserProfileCircle, UserProfileName, UserProfileCircleButtonBox } from "../Wrappers";
 
 function UserProfileCircles({
   profileName,
@@ -19,65 +20,21 @@ function UserProfileCircles({
   };
 
   return (
-    <Box
-      onClick={handleUser}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        cursor: "pointer",
-        padding: 2,
-        borderRadius: "12px",
-        backgroundColor: "#f9f9f9",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        width: "200px",
-        height: "270px",
-        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-        "&:hover": {
-          transform: "scale(1.05)",
-          boxShadow: "0 8px 16px rgba(0, 112, 255, 0.5)",
-        },
-        position: "relative",
-      }}
-    >
+    <UserProfileCircleOuter onClick={handleUser} sx={{ padding: 2 }}>
       {/* Profile Picture */}
-      <Box
+      <UserProfileCircle 
         component="img"
         src={profilePicture}
         alt=""
-        sx={{
-          width: "80%",
-          height: "auto",
-          borderRadius: "50%",
-          marginBottom: "12px",
-          border: "2px solid #ddd",
-        }}
       />
 
       {/* Profile Name */}
-      <Typography
-        variant="body1"
-        sx={{
-          fontWeight: "bold",
-          fontFamily: "Poppins",
-          color: "#333",
-          textAlign: "center",
-          marginBottom: "auto",
-        }}
-      >
+      <UserProfileName variant="body1">
         {profileName}
-      </Typography>
+      </UserProfileName>
 
       {/* Action Buttons */}
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          justifyContent: "center",
-          mt: "auto",
-          paddingTop: "8px",
-        }}
-      >
+      <UserProfileCircleButtonBox>
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
@@ -98,8 +55,8 @@ function UserProfileCircles({
         >
           <IosShareIcon />
         </IconButton>
-      </Box>
-    </Box>
+      </UserProfileCircleButtonBox>
+    </UserProfileCircleOuter>
   );
 }
 

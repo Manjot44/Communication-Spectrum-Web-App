@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import Button from "@mui/material/Button";
 import TextFieldComponent from "../components/TextFieldComponent";
 import DropdownComponent from "../components/DropdownComponent";
 import SelectDOBComponent from "../components/SelectDOBComponent";
@@ -11,6 +10,7 @@ import ImageCropperModal from "../components/ImageCropperModal";
 import { useNotification } from "../services/notificationService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
+import { DarkBlueButton, LoginText, LoginFormBox, LoginBackground, LoginStack } from "../Wrappers.jsx";
 
 function EnterUserDetails({ token, setTokenFunc }) {
   const [name, setName] = useState("");
@@ -28,6 +28,8 @@ function EnterUserDetails({ token, setTokenFunc }) {
   const { notify, showNotification, notificationMessage } = useNotification();
   const navigate = useNavigate();
 
+  /* Every User Profile Must Have a Name. 
+    Function triggered when Create User Profile button clicked */
   const handleNameChange = (event) => {
     const { value } = event.target;
     setName(value);
@@ -39,6 +41,8 @@ function EnterUserDetails({ token, setTokenFunc }) {
     }
   };
 
+  /* DOB must be in the past/present but not future. 
+    Function triggered when wrong date selected */
   const handleDobChange = (newDate) => {
     if (newDate.isAfter(dayjs())) {
       setDobError("Date of birth cannot be in the future.");
@@ -49,6 +53,8 @@ function EnterUserDetails({ token, setTokenFunc }) {
     }
   };
 
+  /* Postcode must be a 4 digit number
+    Function triggered when Box has been clicked away from */
   const handlePostcodeChange = (event) => {
     const { value } = event.target;
     if (/^\d{0,4}$/.test(value)) {
@@ -69,6 +75,8 @@ function EnterUserDetails({ token, setTokenFunc }) {
     }
   };
 
+  /* Following fields (name, dob..) must be filled to create account
+    Function triggered create user profile button clicked */
   const handleCreateButton = () => {
     if (
       name === "" ||
@@ -86,20 +94,22 @@ function EnterUserDetails({ token, setTokenFunc }) {
     }
   };
 
+  /* Function to store the profile picture added for the user profile */
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
       setSelectedImage(reader.result); // Store the original image for cropping
-      setIsCropperOpen(true); // Open the cropper modal
+      setIsCropperOpen(true);          // Open the cropper modal
     };
     if (file) {
       reader.readAsDataURL(file);
     }
   };
 
+  /* Function to help crop out images */
   const handleCropComplete = (croppedImage) => {
-    setProfilePicture(croppedImage); // Set the cropped image as profile picture
+    setProfilePicture(croppedImage);
   };
 
   const createUserProfile = async () => {
@@ -132,21 +142,13 @@ function EnterUserDetails({ token, setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
-      <div
-        id="background-container"
-        className="d-flex justify-content-center align-items-center login-background"
-      >
-        <div id="outside-box" className="mx-auto login-form">
-          <br />
-          <h4>
-            <b>Add New User</b>
-          </h4>
-
-          <div style={{ marginBottom: "20px" }}>
+      <LoginBackground>
+        <LoginFormBox>
+          <LoginStack spacing={2.5}>
+            <br />
+            <LoginText>
+              <b>Add New User</b>
+            </LoginText>
             <TextFieldComponent
               label="Name"
               value={name}
@@ -154,9 +156,6 @@ function EnterUserDetails({ token, setTokenFunc }) {
               error={!!nameError}
               helperText={nameError}
             />
-          </div>
-
-          <div className="mx-auto" style={{ marginBottom: "20px" }}>
             <SelectDOBComponent
               label="Date of Birth"
               value={dob}
@@ -165,9 +164,6 @@ function EnterUserDetails({ token, setTokenFunc }) {
               helperText={dobError}
               width="75%"
             />
-          </div>
-
-          <div style={{ marginBottom: "20px" }}>
             <TextFieldComponent
               label="Postcode"
               value={postcode}
@@ -175,9 +171,6 @@ function EnterUserDetails({ token, setTokenFunc }) {
               error={!!postcodeError}
               helperText={postcodeError}
             />
-          </div>
-
-          <div style={{ marginBottom: "20px" }}>
             <DropdownComponent
               id="communication-form"
               label="Communication Method"
@@ -199,62 +192,40 @@ function EnterUserDetails({ token, setTokenFunc }) {
               ]}
               width="75%"
             />
-          </div>
-
-          <div style={{ marginBottom: "20px" }}>
             <TextFieldComponent
               label="Interests"
               value={interests}
               onChange={(e) => setInterests(e.target.value)}
             />
-          </div>
-
-          <div style={{ marginBottom: "20px" }}>
             <TextFieldComponent
               label="Key Environments (e.g., home, school, workplaces)"
               value={environments}
               onChange={(e) => setEnvironments(e.target.value)}
             />
-          </div>
-
-          <div
-            className="form-group mx-auto"
-            style={{ marginBottom: "20px", width: "75%" }}
-          >
-            <label htmlFor="profilePicture">Profile Picture</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureUpload}
-              className="form-control"
-            />
-          </div>
-
-          <Button
-            onClick={handleCreateButton}
-            variant="contained"
-            style={{
-              backgroundColor: "#000CA4",
-              width: "75%",
-              borderRadius: "20px",
-              fontFamily: "Poppins",
-            }}
-          >
-            Create New User
-          </Button>
-          <br />
-          <br />
-          <p>
-            <a
-              className="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
-              href="/UserManage"
-              style={{ fontFamily: "Poppins" }}
-            >
-              <b>Go Back</b>
-            </a>
-          </p>
-        </div>
-      </div>
+            <div style={{ width: "75%" }}>
+              <label htmlFor="profilePicture">Profile Picture</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePictureUpload}
+                className="form-control"
+              />
+            </div>
+            <DarkBlueButton onClick={handleCreateButton} variant="contained">
+              Create User Profile
+            </DarkBlueButton>
+            <p>
+              <a
+                className="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                href="/UserManage"
+                style={{ fontFamily: "Poppins" }}
+              >
+                <b>Go Back</b>
+              </a>
+            </p>
+          </LoginStack>
+        </LoginFormBox>
+      </LoginBackground>
 
       {/* Notification Popup */}
       {showNotification && (

@@ -1,19 +1,29 @@
-import React from "react";
+import { React, useContext } from 'react';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import "../App.css";
+// import { context } from '../pages/StepSupport';
 
-function EditTitleComponent({ text, changeText, isEditing, setIsEditing, nameError, setNameError, defaultText, errorMsg }) {
+function EditTitleComponent({ 
+	text, 
+	changeText, 
+	isEditing, 
+	setIsEditing, 
+	nameError, 
+	setNameError, 
+	defaultText, 
+	errorMsg 
+}) {
 	// Handle text change for the task analysis name
-  const handleTextChange = (event) => {
+	const handleTextChange = (event) => {
 		changeText(event.target.value);
-    setNameError(false); // Reset error state when user types
-  };
+		setNameError(false); // Reset error state when user types
+	};
 
-  // Toggle editing state for task name
-  const toggleEditing = () => {
-    setIsEditing(!isEditing);
-  };
+	// Toggle editing state for task name
+	const toggleEditing = () => {
+		setIsEditing(!isEditing);
+	};
 
 	return (
 		<>

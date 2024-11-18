@@ -2,6 +2,36 @@ import React from "react";
 import { Card, CardActions, IconButton, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import { styled } from "@mui/material";
+
+const ImageCard = styled(Card)({
+  maxWidth: 345,
+  margin: "8px",
+  display: "inline-block",
+});
+
+const ClickableBox = styled(Box)({
+  position: "relative",
+  cursor: "pointer",
+});
+
+const OverlayBox = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: "#000",
+  opacity: 0,
+  transition: "opacity 0.3s",
+  "&:hover": { opacity: 0.2 },
+});
+
+const CardImage = styled('img')({
+  width: "100%",
+  height: "auto",
+  borderRadius: "8px 8px 0 0",
+});
 
 function GalleryPhotoComponent({
   image,
@@ -11,47 +41,12 @@ function GalleryPhotoComponent({
   hasOptions,
 }) {
   return (
-    <Card
-      sx={{
-        maxWidth: 345,
-        margin: "8px",
-        display: "inline-block",
-      }}
-    >
-      {/* Clickable Image Area */}
-      <Box
-        onClick={onClick}
-        sx={{
-          position: "relative",
-          cursor: "pointer",
-        }}
-      >
-        <img
-          src={image}
-          alt="Gallery"
-          style={{
-            width: "100%",
-            height: "auto",
-            borderRadius: "8px 8px 0 0",
-          }}
-        />
-
-        {/* Overlay Effect */}
-        <Box
-          className="overlay"
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "#000",
-            opacity: 0,
-            transition: "opacity 0.3s",
-            "&:hover": { opacity: 0.2 },
-          }}
-        />
-      </Box>
+    <ImageCard>
+      {/* Image + Overlay */}
+      <ClickableBox onClick={onClick}>
+        <CardImage src={image} alt="Gallery"/>
+        <OverlayBox/>
+      </ClickableBox>
 
       {/* Action Buttons */}
       {hasOptions && (
@@ -78,7 +73,7 @@ function GalleryPhotoComponent({
           </IconButton>
         </CardActions>
       )}
-    </Card>
+    </ImageCard>
   );
 }
 

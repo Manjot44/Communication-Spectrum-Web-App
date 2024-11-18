@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import {
-  Card,
   TextField,
   Avatar,
   Button,
   Box,
 } from "@mui/material";
+import { styled } from "@mui/system";
 import EditIcon from "@mui/icons-material/Edit";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
+import { SnapShotStyleCard, DarkBlueButton } from "../Wrappers";
 import "../App.css";
+
+const ButtonsBox = styled('div')({
+  display: "flex",
+  gap: "10px",
+  justifyContent: "center",
+  marginTop: "10px",
+});
 
 const avatarContainerStyle = {
   position: "relative",
@@ -55,6 +63,7 @@ const SupportSnapshot = ({
   const [interests, setInterests] = useState(profileData.interests || "");
   const [commEnv, setCommEnv] = useState(profileData.comm_env || "");
 
+  // Initial Values before editing are saved in case user cancels edits
   const [initialValues, setInitialValues] = useState({
     name: profileData.name || "",
     snapshot: profileData.snapshot || "",
@@ -62,6 +71,8 @@ const SupportSnapshot = ({
     commEnv: profileData.comm_env || "",
   });
 
+  // Function that toggles whether the user profile
+  // Snapshot is in edit mode or not
   const toggleEditing = () => {
     if (isEditing) {
       handleSaveProfile({ name, snapshot, interests, comm_env: commEnv });
@@ -71,6 +82,8 @@ const SupportSnapshot = ({
     setIsEditing(!isEditing);
   };
 
+  // The values of the user profiles details dont change
+  // if the cancel button is clicked, set to initial values
   const handleCancel = () => {
     setName(initialValues.name);
     setSnapshot(initialValues.snapshot);
@@ -81,28 +94,22 @@ const SupportSnapshot = ({
 
   return (
     <>
-      <Card
-        className="snapshot-style"
-        style={{
-          height: "700px",
-          fontFamily: "Poppins",
-          borderRadius: "15px",
-          color: "#000CA4",
-        }}
-      >
+      <SnapShotStyleCard>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          {/* User profile picture, darken when hovering mouse over image */}
           <Box sx={avatarContainerStyle} onClick={handleProfilePictureClick}>
             <Avatar alt={name} src={profileData.profile_pic} sx={avatarStyle} />
             <Box
               sx={{
                 ...overlayStyle,
-                "&:hover": { opacity: 1 }, // Show overlay on hover
+                "&:hover": { opacity: 1 },
               }}
             >
               <EditIcon />
             </Box>
           </Box>
-
+          
+          {/* User Profile Details, changes if its in edit mode or not */}
           {isEditing ? (
             <TextField
               value={name}
@@ -171,14 +178,8 @@ const SupportSnapshot = ({
           <h6>{commEnv}</h6>
         )}
 
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            justifyContent: "center",
-            marginTop: "10px",
-          }}
-        >
+        {/* Buttons at the bottom of the snapshot */}
+        <ButtonsBox>
           {isEditing ? (
             <>
               <Button
@@ -199,24 +200,19 @@ const SupportSnapshot = ({
               </Button>
             </>
           ) : (
-            <Button
-              variant="contained"
-              color="primary"
+            <DarkBlueButton 
+              variant="contained"  
               onClick={toggleEditing}
-              style={{
-                backgroundColor: "#000CA4",
-                width: "100%",
-                borderRadius: "20px",
-                fontFamily: "Poppins",
-              }}
+              sx={{ width: '100%' }}
             >
               Edit Profile
-            </Button>
+            </DarkBlueButton>
           )}
-        </div>
+        </ButtonsBox>
         <br />
-      </Card>
+      </SnapShotStyleCard>
 
+      {/* Modal that pops up when you click on the  */}
       <EditProfilePictureModal
         open={openEditModal}
         handleClose={() => setOpenEditModal(false)}
