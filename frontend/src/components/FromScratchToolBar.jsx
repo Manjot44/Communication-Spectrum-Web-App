@@ -24,14 +24,6 @@ function FromScratchToolBar({ addBox, addElementImage, handleButtonClick, fileIn
         Add Text
       </Button>
 
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-        onClick={addBox}
-      >
-        Add Box
-      </Button>
 
       <Button
         variant="contained"
@@ -55,7 +47,16 @@ function FromScratchToolBar({ addBox, addElementImage, handleButtonClick, fileIn
         startIcon={<AddIcon />}
         onClick={addBox}
       >
-        Add Timer
+        Add Box
+      </Button>
+
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={addBox}
+      >
+        Add Arrow
       </Button>
     </FromScratchToolBox>
   );
