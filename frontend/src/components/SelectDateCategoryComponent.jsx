@@ -1,11 +1,12 @@
 import React from "react";
-import { Card, Typography, CardContent, Button } from "@mui/material";
+import { Typography, CardContent, Stack } from "@mui/material";
 import "../App.css";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import DropdownComponent from "../components/DropdownComponent";
 import { DatePicker } from "@mui/x-date-pickers";
 import VisualSupportImage from "./VisualSupportImage";
+import { LeftMenuCard, CreateSupportButton } from "../Wrappers";
 
 function SelectDateCategoryComponent({
   date,
@@ -18,56 +19,44 @@ function SelectDateCategoryComponent({
 }) {
   return (
     <>
-      <Card className="task-analyses-create-options" style={{ height: "87vh" }}>
+      <LeftMenuCard>
         <CardContent>
-          <Typography
-            variant="h5"
-            component="div"
-            style={{ fontFamily: "Poppins" }}
-          >
-            <b>Select Date</b>
-          </Typography>
-          <br />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={date}
-              onChange={changeDate}
-              sx={{ width: "100%" }}
-            />
-          </LocalizationProvider>
-          <br />
-          <br />
-          <Typography
-            variant="h5"
-            component="div"
-            style={{ fontFamily: "Poppins" }}
-          >
-            <b>Select Thumbnail</b>
-          </Typography>
-          <br />
-          <VisualSupportImage
-            image={image}
-            setImage={setImage}
-            uniqueID={-1}
-            imgHeight={"35vh"}
-            deleteImage={() => setImage(null)}
-          />
-          <br />
-          <Typography
-            variant="h5"
-            component="div"
-            style={{ fontFamily: "Poppins" }}
-          >
-            <b>Select Category</b>
-          </Typography>
-          <div
-            className="d-flex align-items-center"
-            style={{
-              height: "75px",
-              backgroundColor: "white",
-              padding: "5px",
-            }}
-          >
+          <Stack spacing={1.5}>
+            <Typography
+              variant="h5"
+              style={{ fontFamily: "Poppins" }}
+            >
+              <b>Select Date</b>
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={date}
+                onChange={changeDate}
+                sx={{ width: "100%" }}
+              />
+            </LocalizationProvider>
+            <Typography
+              variant="h5"
+              style={{ fontFamily: "Poppins" }}
+            >
+              <b>Select Thumbnail</b>
+            </Typography>
+            <div>
+              <VisualSupportImage
+                image={image}
+                setImage={setImage}
+                uniqueID={-1}
+                imgHeight={"35vh"}
+                deleteImage={() => setImage(null)}
+              />
+            </div>
+            <Typography
+              variant="h5"
+              component="div"
+              style={{ fontFamily: "Poppins" }}
+            >
+              <b>Select Category</b>
+            </Typography>
             <DropdownComponent
               id="country-form"
               label="Select Category"
@@ -98,22 +87,12 @@ function SelectDateCategoryComponent({
               ]}
               width="100%"
             />
-          </div>
-
-          <br />
-          <Button
-            variant="contained"
-            style={{
-              width: "100%",
-              backgroundColor: "#26c3ba",
-              fontFamily: "Poppins",
-            }}
-            onClick={handleCreate}
-          >
-            Create Visual Support
-          </Button>
+            <CreateSupportButton variant="contained" onClick={handleCreate}>
+              Create Visual Support
+            </CreateSupportButton>
+          </Stack>
         </CardContent>
-      </Card>
+      </LeftMenuCard>
     </>
   );
 }

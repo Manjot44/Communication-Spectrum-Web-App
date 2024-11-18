@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography, Button, IconButton, Box } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import Navbar from "../components/Navbar";
 import GalleryPhotoComponent from "../components/GalleryPhotoComponent";
 import axios from "axios";
 import AddPhotoModal from "../components/AddPhotoModal";
-import CloseIcon from "@mui/icons-material/Close";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import NotificationPopup from "../components/NotificationPopup";
@@ -13,22 +12,25 @@ import { useNotification } from "../services/notificationService";
 import ConfirmationModal from "../components/ConfirmationModal";
 import LoadingOverlay from "../components/LoadingOverlay"; // Import the new LoadingOverlay component
 import { removeBackground } from "@imgly/background-removal";
+import { PageWrapperStyle, Title, GalleryBox, Centred, ImageOverlayOuter, ImageOverlayInner, CrossIcon, DeleteButton } from "../Wrappers.jsx";
 
 function Gallery({ token }) {
   const { profileID } = useParams();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  
+  // Main Data in the Gallery
   const [image, setImage] = useState("");
   const [images, setImages] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageToDelete, setImageToDelete] = useState(null);
   const [imageToEdit, setImageToEdit] = useState(null);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [isRemoveBackgroundModalOpen, setIsRemoveBackgroundModalOpen] =
-    useState(false);
-  const [isRemovingBackground, setIsRemovingBackground] = useState(false); // New loading state
 
+  // Functions that help with opening/closing various modals
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isRemoveBackgroundModalOpen, setIsRemoveBackgroundModalOpen] = useState(false);
+  const [isRemovingBackground, setIsRemovingBackground] = useState(false); 
   const { notify, showNotification, notificationMessage } = useNotification();
 
   // Fetch images
@@ -168,30 +170,14 @@ function Gallery({ token }) {
   return (
     <>
       <Navbar profileID={profileID} />
-      <div className="page-wrapper-style">
+      <PageWrapperStyle>
         <br />
-        <Box
-          sx={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: "Poppins",
-              color: "#000CA4",
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-            }}
-          >
+        <br />
+        {/* Main box where all the images in Gallery Load */}
+        <GalleryBox>
+          <Title variant="h3" align="center" gutterBottom sx={{ position: "absolute", transform: "translateX(-50%)", left: "50%" }}>
             <b>Photo Gallery</b>
-          </Typography>
+          </Title>
           <Button
             sx={{ ml: "auto", backgroundColor: "#ff7c33" }}
             onClick={handleOpen}
@@ -199,11 +185,9 @@ function Gallery({ token }) {
           >
             + Add Photo
           </Button>
-        </Box>
-
+        </GalleryBox>
         <br />
-        <br />
-
+        {/* Modal allowing user to upload image from computer to gallery */}
         <AddPhotoModal
           open={open}
           handleClose={handleClose}
@@ -211,11 +195,9 @@ function Gallery({ token }) {
           handleUpload={addImage}
         />
 
-        <div
-          className="d-flex justify-content-center"
-          style={{ display: "flex" }}
-        >
-          <div style={{ width: "85%" }}>
+        {/* Box where all the images within gallery loads
+            Pass through data from API request to GalleryPhotoComponent */}
+        <Centred>
             <Grid container spacing={2}>
               {images &&
                 images.map((image) => (
@@ -231,54 +213,34 @@ function Gallery({ token }) {
                   />
                 ))}
             </Grid>
-          </div>
-        </div>
+        </Centred>
 
         {/* Loading Overlay for Background Removal */}
         {isRemovingBackground && (
           <LoadingOverlay message="Removing background..." />
         )}
 
-        {/* Enlarged Image Overlay */}
+        {/* Enlarged Image Overlay 
+            Users can view images closer up, they also have the option to close this view*/}
         {selectedImage && (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 1000,
-            }}
-            onClick={closeModal}
-          >
-            <div style={{ position: "relative" }}>
+          <ImageOverlayOuter onClick={closeModal}>
+            <ImageOverlayInner>
               <img
                 src={selectedImage}
                 alt="Enlarged View"
                 style={{ maxHeight: "90vh", maxWidth: "90vw" }}
               />
-              <IconButton
-                onClick={closeModal}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  color: "white",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                }}
+              <DeleteButton 
+                onClick={closeModal} 
+                sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
               >
-                <CloseIcon />
-              </IconButton>
-            </div>
-          </div>
+                <CrossIcon />
+              </DeleteButton>
+            </ImageOverlayInner>
+          </ImageOverlayOuter>
         )}
 
-        {/* Confirmation Modals */}
+        {/* Delete Image Modal */}
         <ConfirmationModal
           open={isConfirmModalOpen}
           onClose={() => setIsConfirmModalOpen(false)}
@@ -287,6 +249,7 @@ function Gallery({ token }) {
           description="This action cannot be undone."
         />
 
+        {/* Remove background Modal */}
         <ConfirmationModal
           open={isRemoveBackgroundModalOpen}
           onClose={() => setIsRemoveBackgroundModalOpen(false)}
@@ -303,7 +266,7 @@ function Gallery({ token }) {
             onClose={() => notify("")}
           />
         )}
-      </div>
+      </PageWrapperStyle>
     </>
   );
 }

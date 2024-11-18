@@ -4,20 +4,7 @@ import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import ProfileBox from "./ProfileBox";
 import ProfessionalBox from "./ProfessionalBox.jsx";
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "63%",
-  height: "70%",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "8px",
-  textAlign: "center",
-};
+import { ShareModalBox } from "../Wrappers.jsx";
 
 function ShareModal({ open, onClose, onConfirm, message, description, token, profileType }) {
   const [profiles, setProfileData] = useState([]);
@@ -69,6 +56,9 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
 		console.log(selectedProfileIds);
   };
 
+  // Function to render the user profiles.
+  // Based off profileType variable, either load
+  // User profile or professional profiles
   const renderProfileComponents = () => {
     switch (profileType) {
       case 'User':
@@ -91,7 +81,7 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={modalStyle}>
+      <ShareModalBox>
         <Typography variant="h4" component="h2" gutterBottom>
           <b>{message || "Are you sure you want to proceed?"}</b>
         </Typography>
@@ -103,23 +93,13 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
           </Typography>
         )}
         <br />
-        <Grid container spacing={2} sx={{ overflowY: 'scroll', height: "70%" }}>
-          {/* {profiles &&
-            profiles.map((profile) => (
-              <ProfileBox
-                key={profile.user_id}
-                profileName={profile.name}
-                profilePicture={profile.profile_pic}
-                profileID={profile.user_id}
-                checked={selectedProfileIds.includes(profile.user_id)}
-                onChange={() => handleCheckboxToggle(profile.user_id)}
-              />
-          ))}
 
-          <ProfessionalBox/> */}
+        {/* Box that renders the profiles */}
+        <Grid container spacing={2} sx={{ overflowY: 'scroll', height: "70%" }}>
           {renderProfileComponents(profileType)}
         </Grid>
 
+        {/* List of buttons at the bottom of the modal */}
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
 					<Button
             variant="contained"
@@ -143,11 +123,15 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
           >
             Deselect All
           </Button>
-          <Button variant="outlined" onClick={onClose} sx={{ width: "150px" }}>
+          <Button 
+            variant="outlined" 
+            onClick={onClose} 
+            sx={{ width: "150px" }}
+          >
             Cancel
           </Button>
         </Box>
-      </Box>
+      </ShareModalBox>
     </Modal>
   );
 }

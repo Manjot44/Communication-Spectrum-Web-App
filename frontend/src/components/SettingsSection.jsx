@@ -30,6 +30,7 @@ const SettingsSection = ({ settings, handleChange, isEditing, isPasswordChange }
             value={settings.dob}
             onChange={handleChange("dob")}
             disabled={!isEditing}
+            width="75%"
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -47,6 +48,7 @@ const SettingsSection = ({ settings, handleChange, isEditing, isPasswordChange }
               { value: "United Kingdom", label: "United Kingdom" },
               { value: "Kazakhstan", label: "Kazakhstan" },
             ]}
+            width="75%"
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -75,6 +77,7 @@ const SettingsSection = ({ settings, handleChange, isEditing, isPasswordChange }
               { value: "Parent/Carer", label: "Parent/Carer" },
               { value: "Other", label: "Other" },
             ]}
+            width="75%"
           />
         </Grid>
       </>

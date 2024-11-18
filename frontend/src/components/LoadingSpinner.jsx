@@ -1,25 +1,24 @@
 import React from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
+import { styled } from "@mui/system";
+import { Title } from "../Wrappers";
+
+const LoadingSpinnerBox = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100vh",
+});
 
 const LoadingSpinner = ({ message = "Loading..." }) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-      }}
-    >
+    <LoadingSpinnerBox>
       <CircularProgress color="primary" />
-      <Typography
-        variant="h6"
-        sx={{ mt: 2, fontFamily: "Poppins", color: "#000CA4" }}
-      >
+      <Title>
         {message}
-      </Typography>
-    </Box>
+      </Title>
+    </LoadingSpinnerBox>
   );
 };
 
