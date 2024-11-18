@@ -2,7 +2,6 @@ import { React } from 'react';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import "../App.css";
-// import { context } from '../pages/StepSupport';
 
 function EditTitleComponent({ 
 	text, 
