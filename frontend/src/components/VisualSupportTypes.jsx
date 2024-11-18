@@ -36,37 +36,43 @@ function VisualSupportTypes({ profileID }) {
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Task Analysis")}>
               <Task fontSize="large" />
             </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Task Analyses</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Task</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Analyses</Typography>
           </Grid>
           <Grid item>
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Daily Schedule")}>
               <CalendarViewDay fontSize="large" />
             </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Daily Schedules</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Daily</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Schedules</Typography>
           </Grid>
           <Grid item>
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Weekly Calendar")}>
               <CalendarViewWeek fontSize="large" />
             </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Weekly Calendars</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Weekly</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Calendars</Typography>
           </Grid>
           <Grid item>
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Social Story")}>
               <Group fontSize="large" />
             </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Social Stories</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Social</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Stories</Typography>
           </Grid>
           <Grid item>
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Environmental Support")}>
               <Warning fontSize="large" />
             </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Environmental Supports</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Environmental</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Supports</Typography>
           </Grid>
           <Grid item>
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Choice Board")}>
               <CheckBox fontSize="large" />
             </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Choice Boards</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Choice</Typography>
+            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Boards</Typography>
           </Grid>
           <Grid item>
             <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("First-Then")}>
