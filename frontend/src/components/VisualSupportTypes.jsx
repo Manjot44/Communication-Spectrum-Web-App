@@ -15,10 +15,39 @@ import {
 import '../App.css'
 import { useNavigate } from "react-router-dom";
 import { getVisualSupportConfig } from './VisualSupportConfig.jsx';
+import { SnapshotStyleDiv } from '../Wrappers.jsx';
+import { styled } from "@mui/system";
+
+const CircularButton = styled(Button)({
+  backgroundColor: '#6b4bef',
+  border: '1px solid #6b4bef',
+  borderRadius: '50%',
+  width: '80px',
+  height: '80px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#fff',
+  margin: '0 auto',
+  transition: 'backgroundColor 0.3s',
+  "&:hover": {
+    backgroundColor: '#4f49c5',
+    border: '1px solid #000ca4',
+  },
+});
+
+const ButtonText = styled(Typography)({
+  textAlign: 'center',
+  fontFamily: "Poppins",
+  color: "#6B4BEF",
+  width: '80px'
+});
 
 function VisualSupportTypes({ profileID }) {
 	const navigate = useNavigate();
 
+  // Function that navigates to relevant page based off
+  // which visual support option hasbeen clicked
   const navigateToTemplate = (type) => {
     const config = getVisualSupportConfig(type, profileID);
     if (config) {
@@ -28,60 +57,70 @@ function VisualSupportTypes({ profileID }) {
 
   return (
 		<>
-			<div class="snapshot-style">
-        <h4 style={{ color: '#6B4BEF' }}><b>Create a New Visual Support</b></h4>
+      <SnapshotStyleDiv>
+        <h4 style={{ color: '#6B4BEF' }}>
+          <b>Create a New Visual Support</b>
+        </h4>
         <br />
         <Grid container spacing={2} justifyContent="space-around">
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Task Analysis")}>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("Task Analysis")}>
               <Task fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Task</Typography>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Analyses</Typography>
+            </CircularButton>
+            <ButtonText>
+              Task Analyses
+            </ButtonText>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Daily Schedule")}>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("Daily Schedule")}>
               <CalendarViewDay fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Daily</Typography>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Schedules</Typography>
+            </CircularButton>
+            <ButtonText>
+              Daily Schedules
+            </ButtonText>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Weekly Calendar")}>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("Weekly Calendar")}>
               <CalendarViewWeek fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Weekly</Typography>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Calendars</Typography>
+            </CircularButton>
+            <ButtonText>
+              Weekly Calendars
+            </ButtonText>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Social Story")}>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("Social Story")}>
               <Group fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Social</Typography>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Stories</Typography>
+            </CircularButton>
+            <ButtonText>
+              Social Stories
+            </ButtonText>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Environmental Support")}>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("Environmental Support")}>
               <Warning fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Environmental</Typography>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Supports</Typography>
+            </CircularButton>
+            <ButtonText>
+              Environmental Supports
+            </ButtonText>
           </Grid>
           <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("Choice Board")}>
-              <CheckBox fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Choice</Typography>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>Boards</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" class='circular-icon-style' onClick={() => navigateToTemplate("First-Then")}>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("Choice Board")}>
               <Checklist fontSize="large" />
-            </Button>
-            <Typography align="center" style={{ fontFamily: "Poppins", color: "#6B4BEF" }}>First-Then</Typography>
+            </CircularButton>
+            <ButtonText>
+              Choice Boards
+            </ButtonText>
+          </Grid>
+          <Grid item>
+            <CircularButton variant="contained" onClick={() => navigateToTemplate("First-Then")}>
+              <CheckBox fontSize="large" />
+            </CircularButton>
+            <ButtonText>
+              First-Then
+            </ButtonText>
           </Grid>
         </Grid>
-      </div>
+      </SnapshotStyleDiv>
 		</>
 	);
 }

@@ -1,40 +1,40 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
-
-// Image assets
-// Logos
 import Logo from "../assets/mycommspro.png";
+import { NavBar, LogoBox, NavbarLink, NavbarLinks, SwitchProfileButton } from "../Wrappers";
 
 const Navbar = ({ profileID }) => {
   return (
-    <nav className="navbar">
-      <div className="logo">
-        <img src={Logo} alt="MyComms logo" className="logo-img" />
-      </div>
-      <div className="navbar-links">
-        <Link to={`/home/${profileID}`} className="nav-item">
+    <NavBar>
+      <LogoBox>
+        <img src={Logo} alt="MyComms logo" style={{ height: '40px', width: 'auto' }}/>
+      </LogoBox>
+      <NavbarLinks>
+        <NavbarLink to={`/home/${profileID}`}>
           Home
-        </Link>
-        <Link to={`/supports/${profileID}`} className="nav-item">
+        </NavbarLink>
+        <NavbarLink to={`/supports/${profileID}`}>
           Supports
-        </Link>
-        <Link to={`/gallery/${profileID}`} className="nav-item">
+        </NavbarLink>
+        <NavbarLink to={`/gallery/${profileID}`}>
           Gallery
-        </Link>
-        <Link to={`/sharedtemplates/${profileID}`} className="nav-item">
+        </NavbarLink>
+        <NavbarLink to={`/sharedtemplates/${profileID}`}>
           Templates
-        </Link>
-        <Link to={`/settings/${profileID}`} className="nav-item">
+        </NavbarLink>
+        <NavbarLink to={`/settings/${profileID}`}>
           My Settings
-        </Link>
-      </div>
-      <div className="profile-switch">
+        </NavbarLink>
+      </NavbarLinks>
+      <LogoBox>
         <Link to="/UserManage">
-          <button className="profile-btn">👤 Switch Profile</button>
+          <SwitchProfileButton variant="contained">
+            👤 Switch Profile
+          </SwitchProfileButton>
         </Link>
-      </div>
-    </nav>
+      </LogoBox>
+    </NavBar>
   );
 };
 

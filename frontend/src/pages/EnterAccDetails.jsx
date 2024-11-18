@@ -13,8 +13,6 @@ import { useNotification } from "../services/notificationService";
 import { DarkBlueButton, LoginText, LoginFormBox, LoginBackground, LoginStack } from "../Wrappers.jsx";
 
 function EnterAccDetails({ token, setTokenFunc }) {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
   const [profession, setProfession] = React.useState("");
   const [country, setCountry] = React.useState("");
   const [postcode, setPostcode] = React.useState("");
@@ -32,25 +30,24 @@ function EnterAccDetails({ token, setTokenFunc }) {
     is_subbed: false,
   });
 
-  // UseEffect to run fetchsettings function
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
   // API Request to feth Information already entered by user
-  const fetchSettings = async () => {
-    try {
-      const response = await axios.get("http://localhost:5005/admin/auth/get_user_settings", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSettings({
-        ...response.data,
-        dob: dayjs(response.data.dob),
-      });
-    } catch (error) {
-      alert(error.response.data.error);
-    }
-  };
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await axios.get("http://localhost:5005/admin/auth/get_user_settings", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setSettings({
+          ...response.data,
+          dob: dayjs(response.data.dob),
+        });
+      } catch (error) {
+        alert(error.response.data.error);
+      }
+    };
+  
+    fetchSettings();
+  }, [token]);
 
   // Submits the register form when the enter key is pressed in any of the fields
   function handleKeyDown(event) {
@@ -117,14 +114,12 @@ function EnterAccDetails({ token, setTokenFunc }) {
             <TextFieldComponent
               label="Name"
               value={settings.full_name}
-              onChange={(e) => setName(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={true}
             />
             <TextFieldComponent
               label="Email"
               value={settings.email}
-              onChange={(e) => setEmail(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={true}
             />

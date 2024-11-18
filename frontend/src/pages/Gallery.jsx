@@ -172,6 +172,7 @@ function Gallery({ token }) {
       <Navbar profileID={profileID} />
       <PageWrapperStyle>
         <br />
+        <br />
         {/* Main box where all the images in Gallery Load */}
         <GalleryBox>
           <Title variant="h3" align="center" gutterBottom sx={{ position: "absolute", transform: "translateX(-50%)", left: "50%" }}>
@@ -186,7 +187,6 @@ function Gallery({ token }) {
           </Button>
         </GalleryBox>
         <br />
-
         {/* Modal allowing user to upload image from computer to gallery */}
         <AddPhotoModal
           open={open}

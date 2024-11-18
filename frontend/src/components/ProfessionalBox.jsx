@@ -1,31 +1,24 @@
 import React from "react";
-import { Box, Typography, Checkbox } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { ProfileCheckBox } from "../Wrappers";
 
-const RedCheckbox = styled(Checkbox)({
-  color: "#ff7c33",
-  "&.Mui-checked": {
-    color: "#ff7c33",
-  },
+const ProfessionalUserBox = styled(Box)({
+  width: 200,
+  height: 325,
+  borderRadius: 2,
+  boxShadow: 3,
+  overflow: "hidden",
+  position: "relative",
+  textAlign: "center",
+  backgroundColor: "white",
+  m: 1,
 });
 
-function ProfessionalBox({ profileName, profilePicture, profileID, checked, onChange }) {
+function ProfessionalBox({ profileName, checked, onChange }) {
   return (
-    <Box
-      sx={{
-        width: 200,
-        height: 325,
-        borderRadius: 2,
-        boxShadow: 3,
-        overflow: "hidden",
-        position: "relative",
-        textAlign: "center",
-        bgcolor: "background.paper",
-        m: 1,
-      }}
-    >
-      {/* Professional Name */}
-      {/* Profile name */}
+    <ProfessionalUserBox sx={{ boxShadow: 3 }}>
+      {/* Professional Profile Name */}
       <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold", borderBottom: '1px solid black' }}>
         {profileName}
       </Typography>
@@ -41,17 +34,12 @@ function ProfessionalBox({ profileName, profilePicture, profileID, checked, onCh
 				Sanjam
       </Typography>
 
-      {/* Red checkbox in bottom-right corner */}
-      <RedCheckbox
+      {/* Checkbox in bottom-right corner */}
+      <ProfileCheckBox
         checked={checked}
         onChange={onChange}
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          right: 8,
-        }}
       />
-    </Box>
+    </ProfessionalUserBox>
   );
 }
 

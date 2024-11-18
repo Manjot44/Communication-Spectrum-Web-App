@@ -23,6 +23,8 @@ function Home({ token }) {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
+  // API Request to fetch the user profiles account data
+  // Runs when the page is loading
   useEffect(() => {
     const fetchClient = async () => {
       try {
@@ -61,6 +63,7 @@ function Home({ token }) {
     setNewProfilePic(base64Image);
   };
 
+  // API Request to handle
   const handleUpload = async () => {
     try {
       await axios.put(
@@ -88,7 +91,8 @@ function Home({ token }) {
     }
   };
 
-  // New function to handle saving profile changes
+  // New function to handle user profile detail changes
+  // Is called when the save button (after clicking edit profile) is clicked
   const handleSaveProfile = async (updatedData) => {
     try {
       await axios.put(

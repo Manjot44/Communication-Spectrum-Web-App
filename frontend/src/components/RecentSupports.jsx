@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Card, Typography, IconButton, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmationModal from "./ConfirmationModal";
 import ShareModal from "./ShareModal";
 import IosShareIcon from '@mui/icons-material/IosShare';
 import EditIcon from '@mui/icons-material/Edit';
 import "../App.css";
+import { RecentSupportsCard, RecentSupportImage, RecentSupportImgTag, RecentSupportEditBox, RecentSupprtTitle, RecentSupportButton } from "../Wrappers";
 
 function RecentSupports({ profileData, token, onDelete, onClick, showIcons }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -18,8 +18,8 @@ function RecentSupports({ profileData, token, onDelete, onClick, showIcons }) {
 
   // Confirm deletion
   const confirmDeleteSupport = () => {
-    onDelete(profileData.support_id); // Call the onDelete function passed from RecentSupportsBox
-    setIsConfirmModalOpen(false); // Close the modal
+    onDelete(profileData.support_id);
+    setIsConfirmModalOpen(false);
   };
 
   // Open Share Modal
@@ -28,113 +28,58 @@ function RecentSupports({ profileData, token, onDelete, onClick, showIcons }) {
   }
 
   return (
-    <Card
-      class="recent-supports-style"
-    >
+    <RecentSupportsCard>
       {/* Image container with a fixed aspect ratio */}
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          paddingBottom: "56.25%", // 16:9 aspect ratio (adjust this if needed)
-          overflow: "hidden",
-          borderRadius: "10px",
-        }}
-        onClick={onClick}
-      >
+      <RecentSupportImage onClick={onClick}>
         {profileData.title_img && (
-          <img
-            src={profileData.title_img}
+          <RecentSupportImgTag 
+            src={profileData.title_img} 
             alt={profileData.title}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              borderRadius: "5px",
-            }}
           />
         )}
-      </div>
+      </RecentSupportImage>
 
       {/* Title and delete button container */}
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        style={{ marginTop: "10px", position: "relative" }}
-      >
-        <Typography
-          variant="body1"
-          style={{ fontSize: "1.2rem", textAlign: "center" }}
-        >
+      <RecentSupportEditBox>
+        <RecentSupprtTitle>
           <b>{profileData.title}</b>
-        </Typography>
-        
+        </RecentSupprtTitle>
+
+        {/* Edit, Share and Delete Icons */}
         {showIcons && (
           <>
-            <IconButton
-              aria-label="edit"
-              style={{
-                color: "grey",
-                position: "absolute",
-                right: 70,
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            >
+            <RecentSupportButton style={{ right: 70 }}>
               <EditIcon />
-            </IconButton>
-            <IconButton
-              aria-label="share"
-              onClick={handleShareClick}
-              style={{
-                color: "grey",
-                position: "absolute",
-                right: 35,
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            >
+            </RecentSupportButton>
+            <RecentSupportButton style={{ right: 35 }} onClick={handleShareClick}>
               <IosShareIcon />
-            </IconButton>
-            <IconButton
-              aria-label="delete"
-              onClick={handleDeleteClick}
-              style={{
-                color: "grey",
-                position: "absolute",
-                right: 0,
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            >
+            </RecentSupportButton>
+            <RecentSupportButton style={{ right: 0 }} onClick={handleDeleteClick}>
               <DeleteIcon />
-            </IconButton>
+            </RecentSupportButton>
           </>
         )}
-      </Box>
+      </RecentSupportEditBox>
 
       {/* Confirmation Modal for Deletion */}
       <ConfirmationModal
         open={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)} // Close modal on cancel
-        onConfirm={confirmDeleteSupport} // Confirm delete action
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={confirmDeleteSupport}
         message="Are you sure you want to delete this support?"
         description="This action cannot be undone. The support will be permanently deleted."
       />
 
+      {/* Modal that pops up when you click the share icon */}
       <ShareModal
         open={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)} // Close modal on cancel
+        onClose={() => setIsShareModalOpen(false)}
         message="Share Visual Support"
         description="Please Select User Profiles To Share"
         token={token}
         profileType={"User"}
       />
-    </Card>
+    </RecentSupportsCard>
   );
 }
 

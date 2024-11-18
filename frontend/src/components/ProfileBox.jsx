@@ -1,57 +1,44 @@
 import React from "react";
-import { Box, Typography, Checkbox } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { ProfileCheckBox } from "../Wrappers";
 
-const RedCheckbox = styled(Checkbox)({
-  color: "#ff7c33",
-  "&.Mui-checked": {
-    color: "#ff7c33",
-  },
+const ProfileOuterBox = styled(Box)({
+  width: 150,
+  height: 200,
+  borderRadius: 2,
+  boxShadow: 3,
+  overflow: "hidden",
+  position: "relative",
+  textAlign: "center",
+  backgroundColor: "white",
+  m: 1,
 });
 
-function ProfileBox({ profileName, profilePicture, profileID, checked, onChange }) {
+const UserProfilePicBox = styled(Box)({
+  width: "100%",
+  height: "70%",
+  objectFit: "cover",
+});
+
+function ProfileBox({ profileName, profilePicture, checked, onChange }) {
   return (
-    <Box
-      sx={{
-        width: 150,
-        height: 200,
-        borderRadius: 2,
-        boxShadow: 3,
-        overflow: "hidden",
-        position: "relative",
-        textAlign: "center",
-        bgcolor: "background.paper",
-        m: 1,
-      }}
-    >
-      {/* Profile picture */}
-      <Box
+    <ProfileOuterBox sx={{ boxShadow: 3, m: 1 }}>
+      <UserProfilePicBox 
         component="img"
         src={profilePicture}
         alt={profileName}
-        sx={{
-          width: "100%",
-          height: "70%",
-          objectFit: "cover",
-        }}
       />
-
       {/* Profile name */}
       <Typography variant="body1" sx={{ mt: 1, fontWeight: "bold" }}>
         {profileName}
       </Typography>
-
-      {/* Red checkbox in bottom-right corner */}
-      <RedCheckbox
+      {/* Checkbox in bottom-right corner */}
+      <ProfileCheckBox
         checked={checked}
         onChange={onChange}
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          right: 8,
-        }}
       />
-    </Box>
+    </ProfileOuterBox>
   );
 }
 

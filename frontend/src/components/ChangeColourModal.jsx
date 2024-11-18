@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import { Modal, Typography, TextField, Button } from "@mui/material";
+import { ModalBox } from "../Wrappers";
 
 function ChangeColourModal ({ open, onClose, setStepColour, setFontColour }) {
 	return (
@@ -10,18 +11,7 @@ function ChangeColourModal ({ open, onClose, setStepColour, setFontColour }) {
 				aria-labelledby="modal-title"
 				aria-describedby="modal-description"
 			>
-				<Box
-					sx={{
-						position: "absolute",
-						top: "50%",
-						left: "50%",
-						transform: "translate(-50%, -50%)",
-						width: 300,
-						bgcolor: "background.paper",
-						boxShadow: 24,
-						p: 4,
-					}}
-				>
+				<ModalBox>
 					<Typography id="modal-title" variant="h6" component="h2">
 						<b>Edit Font and Box Colours</b>
 					</Typography>
@@ -44,7 +34,7 @@ function ChangeColourModal ({ open, onClose, setStepColour, setFontColour }) {
 						sx={{ mt: 1 }}
 					/>
 					<Button onClick={onClose} sx={{ mt: 2 }}>Close</Button>
-				</Box>
+				</ModalBox>
 			</Modal>
 		</>
 	);

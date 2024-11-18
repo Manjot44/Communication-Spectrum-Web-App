@@ -1,20 +1,9 @@
 import React, { useState } from "react";
-import { Modal, Box, Button, Typography } from "@mui/material";
+import { Modal, Button, Typography } from "@mui/material";
 import axios from "axios";
 import ImageCropperModal from "../components/ImageCropperModal"; // Import the ImageCropperModal component
 import NotificationPopup from "../components/NotificationPopup"; // Import the NotificationPopup component
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { ModalBox } from "../Wrappers";
 
 function EditProfilePictureModal({
   open,
@@ -31,6 +20,7 @@ function EditProfilePictureModal({
   const [notificationMessage, setNotificationMessage] = useState(""); // State for notification message
 
   // Convert image to base64 and open cropper
+  // Function activated when user hits submit
   const handleProfilePictureUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -51,6 +41,7 @@ function EditProfilePictureModal({
     setIsCropperOpen(false); // Close the cropper modal
   };
 
+  // API Request to backend to save the new image
   const handleUpload = async () => {
     if (!profilePicture) {
       alert("Please upload an image before proceeding.");
@@ -89,13 +80,15 @@ function EditProfilePictureModal({
 
   return (
     <>
+      {/* Edit Profile picture Modal. Activates when user profile picture
+          is clicked on. User is able to upload from computer */}
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <ModalBox>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Upload a new Profile Picture
           </Typography>
@@ -113,7 +106,7 @@ function EditProfilePictureModal({
               {loading ? "Uploading..." : "Upload"}
             </Button>
           </Typography>
-        </Box>
+        </ModalBox>
       </Modal>
 
       {/* Image Cropper Modal */}
@@ -122,8 +115,8 @@ function EditProfilePictureModal({
         onClose={() => setIsCropperOpen(false)}
         image={selectedImage}
         onCropComplete={handleCropComplete}
-        defaultAspect={1} // 1:1 aspect ratio for square crop
-        circleCrop={true} // Show circular overlay for profile picture
+        defaultAspect={1}                            // 1:1 aspect ratio for square crop
+        circleCrop={true}                            // Show circular overlay for profile picture
       />
 
       {/* Notification Popup */}

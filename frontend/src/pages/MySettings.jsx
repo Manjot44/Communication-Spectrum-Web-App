@@ -24,26 +24,27 @@ const MySettings = ({ token }) => {
     is_subbed: false,
   });
 
-  // UseEffect hook to call API request fetchsettings when page loads
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
   // API request to fetch current details of the user profile
   // Function is called when the page loads through UseEffect hook
-  const fetchSettings = async () => {
-    try {
-      const response = await axios.get("http://localhost:5005/admin/auth/get_user_settings", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSettings({
-        ...response.data,
-        dob: dayjs(response.data.dob),
-      });
-    } catch (error) {
-      setNotification("Failed to load settings. Please try again later.");
-    }
-  };
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await axios.get("http://localhost:5005/admin/auth/get_user_settings", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setSettings({
+          ...response.data,
+          dob: dayjs(response.data.dob),
+        });
+      } catch (error) {
+        setNotification("Failed to load settings. Please try again later.");
+      }
+    };
+
+    fetchSettings();
+  }, [token]);
+
+  
 
   // Toggle that lets user edit their details
   const handleEditToggle = () => setIsEditing(!isEditing);
