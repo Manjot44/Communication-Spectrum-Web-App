@@ -23,10 +23,10 @@ export const getVisualSupportConfig = (type, profileID) => {
       errorMsg: "Please give name to Daily Schedule",
       addMsg: '+ Add Task',
       stepTitle: "Task",
-      showTime: "True",
+      showTime: true,
       label: "Task Name"
     },
-    "Weekly Calendar": { 
+    "Weekly Calendar": {
       title: "Create New Weekly Calendar",
       scratch: `/FromScratch/${profileID}`,
       temp: `/weeklycalendars/${profileID}`,
