@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Typography, Box, Grid, Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import dayjs from "dayjs";
 import NotificationPopup from "../components/NotificationPopup";
 import SettingsCard from "../components/SettingsCard";
 import SettingsSection from "../components/SettingsSection";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { MySettingsBox, Title, SaveButton, FromUserManageBox } from "../Wrappers";
 
 const MySettings = ({ token }) => {
   const navigate = useNavigate();
-  const { profileID } = useParams();
+  const [isEditing, setIsEditing] = useState(false);
+  const [notification, setNotification] = useState("");
+  const [passwords, setPasswords] = useState({ currentPassword: "", newPassword: "" });
   const [settings, setSettings] = useState({
     full_name: "",
     email: "",
@@ -19,14 +22,14 @@ const MySettings = ({ token }) => {
     profession: "",
     is_subbed: false,
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [notification, setNotification] = useState("");
-  const [passwords, setPasswords] = useState({ currentPassword: "", newPassword: "" });
 
+  // UseEffect hook to call API request fetchsettings when page loads
   useEffect(() => {
     fetchSettings();
   }, []);
 
+  // API request to fetch current details of the user profile
+  // Function is called when the page loads through UseEffect hook
   const fetchSettings = async () => {
     try {
       const response = await axios.get("http://localhost:5005/admin/auth/get_user_settings", {
@@ -41,8 +44,11 @@ const MySettings = ({ token }) => {
     }
   };
 
+  // Toggle that lets user edit their details
   const handleEditToggle = () => setIsEditing(!isEditing);
 
+  // API request to save new user profile details
+  // Function is called when the user clicks save changes button
   const handleSaveSettings = async () => {
     try {
       await axios.put(
@@ -57,6 +63,8 @@ const MySettings = ({ token }) => {
     }
   };
 
+  // API request to change the password of professional profile
+  // Function called when the "change password" button is clicked
   const handlePasswordChange = async () => {
     try {
       await axios.put(
@@ -79,67 +87,61 @@ const MySettings = ({ token }) => {
   const goBack = () => navigate("/UserManage"); // Update to the actual route for UserManage if different
 
   return (
-    <Box sx={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
-      <Button onClick={goBack} variant="outlined" sx={{ marginBottom: "20px" }}>
+    <FromUserManageBox>
+      <Button onClick={goBack} variant="outlined">
         Back
       </Button>
+      <MySettingsBox>
+        <Title variant="h3">
+          <b>My Settings</b>
+        </Title>
+        <SaveButton onClick={handleEditToggle} variant="contained">
+          {isEditing ? "Cancel Edit" : "Edit Settings"}
+        </SaveButton>
+        {/* Box displaying current profile information. User
+            can edit when "Edit Settings" button is clicked*/}
+        <SettingsCard title="Profile Information">
+          <SettingsSection
+            settings={settings}
+            handleChange={handleChange}
+            isEditing={isEditing}
+            isPasswordChange={false}
+          />
+          <br />
+          {/* Save changes button appears when the user has the 
+              ability to edit after clicking on Edit Settings */}
+          {isEditing && (
+            <SaveButton onClick={handleSaveSettings} variant="contained">
+              Save Changes
+            </SaveButton>
+          )}
+        </SettingsCard>
+        
+        <Divider sx={{ marginY: "30px" }} />
+        
+        {/* Card where user can change their password. User must enter
+            the same password in both boxes to successfully change password*/}
+        <SettingsCard title="Change Password">
+          <SettingsSection
+            settings={passwords}
+            handleChange={(field) => (e) => setPasswords({ ...passwords, [field]: e.target.value })}
+            isEditing={true}
+            isPasswordChange={true}
+          />
+          <br />
+          <SaveButton onClick={handlePasswordChange} variant="contained">
+            Change Password
+          </SaveButton>
+        </SettingsCard>
+      </MySettingsBox>
 
-      <Typography variant="h3" align="center" gutterBottom style={{ fontFamily: "Poppins", color: "#000CA4" }}>
-        <b>My Settings</b>
-      </Typography>
-
-      <Button
-        onClick={handleEditToggle}
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ marginBottom: "20px", bgcolor: "#000CA4", ":hover": { bgcolor: "#3333cc" } }}
-      >
-        {isEditing ? "Cancel Edit" : "Edit Settings"}
-      </Button>
-
-      <SettingsCard title="Profile Information">
-        <SettingsSection
-          settings={settings}
-          handleChange={handleChange}
-          isEditing={isEditing}
-          isPasswordChange={false}
+      {notification && 
+        <NotificationPopup 
+          message={notification} 
+          onClose={() => setNotification("")} 
         />
-        {isEditing && (
-          <Button
-            onClick={handleSaveSettings}
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ marginTop: "20px", bgcolor: "#000CA4", ":hover": { bgcolor: "#3333cc" } }}
-          >
-            Save Changes
-          </Button>
-        )}
-      </SettingsCard>
-
-      <Divider sx={{ marginY: "30px" }} />
-
-      <SettingsCard title="Change Password">
-        <SettingsSection
-          settings={passwords}
-          handleChange={(field) => (e) => setPasswords({ ...passwords, [field]: e.target.value })}
-          isEditing={true}
-          isPasswordChange={true}
-        />
-        <Button
-          onClick={handlePasswordChange}
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ marginTop: "20px", bgcolor: "#000CA4", ":hover": { bgcolor: "#3333cc" } }}
-        >
-          Change Password
-        </Button>
-      </SettingsCard>
-
-      {notification && <NotificationPopup message={notification} onClose={() => setNotification("")} />}
-    </Box>
+      }
+    </FromUserManageBox>
   );
 };
 

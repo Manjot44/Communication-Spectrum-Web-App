@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Typography, CardContent, Button } from "@mui/material";
+import { CardContent, Button } from "@mui/material";
 import "../App.css";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Grid from "@mui/material/Grid2";
 import { getVisualSupportConfig } from '../components/VisualSupportConfig.jsx';
+import { StepSupportWrapper, ViewSupportHeader, PrintBox, ViewSupportCard } from "../Wrappers.jsx";
 
 function ViewSupport({ token }) {
 	const { profileID } = useParams();
@@ -29,45 +30,28 @@ function ViewSupport({ token }) {
 	return (
 		<>
 			<Navbar profileID={profileID} />
-			<div class='page-wrapper-style' style={{ padding: '0 1%' }}>
+			<StepSupportWrapper>
 				<br/>
 				<Grid container>
 					<Grid item sx={{ width: '100%' }}>
-						<Card sx={{ backgroundColor: 'white', height: '87vh', width: '100%' }}>
+						<ViewSupportCard>
 							<CardContent>
-								<Typography
-									variant="h6"
-									gutterBottom
-									style={{
-										margin: "10px",
-										fontFamily: "Poppins",
-										color: "black",
-										display: "flex",
-										justifyContent: "space-between",
-									}}
-								>
+								{/* Menu options */}
+								<ViewSupportHeader variant="h6" gutterBottom>
 									<b>Visual Support Title</b>
 									<Button onClick={reactToPrintFn}>Print to PDF</Button>
 									<Button onClick={toggleComponentType}>Toggle Visual Style</Button>
 									<Button onClick={async () => {navigate(`/stepsupport/${profileID}`, { state: passInData } )}}>Edit Visual Support</Button>
-								</Typography>
-								<div
-									ref={contentRef}
-									style={{
-										display: "flex",
-										flexWrap: "wrap",
-										height: "75vh",
-										margin: '10px',
-										overflowY: 'scroll'
-									}}
-								>
+								</ViewSupportHeader>
+								{/* Box where visual support steps are printed out */}
+								<PrintBox ref={contentRef}>
 									Need API request to fetch the visual supports contents
-								</div>
+								</PrintBox>
 							</CardContent>
-						</Card>
+						</ViewSupportCard>
 					</Grid>
 				</Grid>
-			</div>
+			</StepSupportWrapper>
 		</>
 	);
 }
