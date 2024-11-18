@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Typography } from '@mui/material';
 import { ModalBox } from '../Wrappers';
+import { PoppinsButton } from '../Wrappers';
 
 function AddPhotoModal({ open, handleClose, handleProfilePictureUpload, handleUpload }) {
   // Function to handle profile picture upload
@@ -26,7 +27,7 @@ function AddPhotoModal({ open, handleClose, handleProfilePictureUpload, handleUp
         aria-describedby="modal-modal-description"
       >
         <ModalBox>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontFamily: 'Poppins' }}>
             Upload a Photo
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -39,7 +40,7 @@ function AddPhotoModal({ open, handleClose, handleProfilePictureUpload, handleUp
               />
             </div>
             <br/>
-            <Button onClick={handleUpload}>Upload</Button>
+            <PoppinsButton onClick={handleUpload}>Upload</PoppinsButton>
           </Typography>
         </ModalBox>
       </Modal>

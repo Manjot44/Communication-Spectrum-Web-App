@@ -170,11 +170,6 @@ function EnterAccDetails({ token, setTokenFunc }) {
               ]}
               width="75%"
             />
-            <SubscribeComponent
-              checked={isSubscribed}
-              onChange={(e) => setSubscribe(e.target.checked)}
-              label="Subscribe to MyComms Newsletter"
-            />
             <DarkBlueButton onClick={handleCreateButton} variant="contained">
               Create Account Profile
             </DarkBlueButton>

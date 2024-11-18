@@ -43,7 +43,8 @@ export const Title = styled(Typography)({
   fontFamily: "Poppins", 
 	color: "#000CA4",
   textAlign: 'center',
-  marginBottom: '16px'
+  marginBottom: '16px',
+  fontFamily: 'Poppins'
 });
 
 export const SnapShotStyleCard = styled(Card)({
@@ -345,7 +346,6 @@ export const FromScratchToolBox = styled(Box)({
   overflowX: "auto",                        // Allow horizontal scrolling if content overflows
 });
 
-
 //NavBar
 export const NavBar = styled('div')({
   display: 'flex',
@@ -376,6 +376,7 @@ export const SwitchProfileButton = styled(Button)({
   backgroundColor: '#00c89c',
   color: 'white',
   padding: '8px 12px',
+  fontFamily: 'Poppins',
   border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
@@ -439,7 +440,8 @@ export const RecentSupportEditBox = styled(Box)({
 
 export const RecentSupprtTitle = styled(Typography)({
   fontSize: "1.2rem",
-  textAlign: "center"
+  textAlign: "center",
+  fontFamily: 'Poppins'
 });
 
 export const RecentSupportButton = styled(IconButton)({
@@ -452,7 +454,8 @@ export const RecentSupportButton = styled(IconButton)({
 export const NoSupportsTypography = styled(Typography)({
   marginTop: "20px",
   color: "#666",
-  textAlign: 'center'
+  textAlign: 'center',
+  fontFamily: 'Poppins'
 });
 
 // Left hand Menu in Editing Visual Support Pages

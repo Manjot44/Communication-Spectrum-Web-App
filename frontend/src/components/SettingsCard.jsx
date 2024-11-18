@@ -11,7 +11,7 @@ export const SettingsPaper = styled(Paper)({
 
 const SettingsCard = ({ title, children }) => (
   <Paper sx={{ boxShadow: 3, padding: "30px" }}>
-    <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "15px", color: "#000CA4" }}>
+    <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "15px", color: "#000CA4", fontFamily: 'Poppins' }}>
       {title}
     </Typography>
     <Box>{children}</Box>

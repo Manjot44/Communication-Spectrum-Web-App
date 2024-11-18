@@ -116,7 +116,7 @@ function SharedTemplates ({ token, setTokenFunc }) {
 						aria-controls="panel1-content"
 						id="panel2-header"
 					>
-						<Typography variant="h6">
+						<Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
 							<b>Filter by Category</b>
 						</Typography>
 					</AccordionSummary>
