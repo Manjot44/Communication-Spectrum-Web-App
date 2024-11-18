@@ -22,6 +22,7 @@ const defaultData = {
   stepNames: [],
   stepTimes: [],
   category: "",
+  isPublic: false,
   type: "",
   defaultText: "",
   errorMsg: "",
@@ -52,6 +53,7 @@ function StepSupport({ token }) {
   const [image, setImage] = useState(data.image);
   const [date, setDate] = useState(dayjs());
   const [category, setCategory] = useState(data.category);
+  const [isPublic, setIsPublic] = useState(data.isPublic);
 
   // Data for the TaskStep boxes
   const [steps, setSteps] = useState(data.steps);
@@ -237,6 +239,7 @@ function StepSupport({ token }) {
               handleCreate={handleCreate}
               image={image}
               setImage={(image) => setImage(image)}
+              setIsPublic={(e) => setIsPublic(e.target.value)}
             />
           </Grid>
           {/* Right hand Box, where the details of a Visual Support Are Displayed */}

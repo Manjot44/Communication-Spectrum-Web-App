@@ -19,22 +19,30 @@ import { StepSupportWrapper, FirstThenCard, PrintBox, Centred, FirstThenMenu } f
 export const firstThenContext = createContext(null);
 
 function FirstThen({ token, setTokenFunc }) {
+  // General React Functions
   const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
+
+  // Data for the TaskStep boxes
   const [text, setText] = useState(state.data.text);
-  const [isEditing, setIsEditing] = useState(false);
-  const [date, setDate] = useState(dayjs());
-  const [nameError, setNameError] = useState(false);
-  const [category, setCategory] = useState(state.data.category);
-  const [image, setImage] = useState(state.data.image);
   const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
   const [imageThen, setImageThen] = useState(state.data.imageThen);
   const [firstName, setFirstname] = useState(state.data.firstName);
   const [thenName, setThenName] = useState(state.data.thenName);
+
+  // Variables for the top menu in right box (TaskHeader)
+  const [isEditing, setIsEditing] = useState(false);
+  const [nameError, setNameError] = useState(false);
   const [stepColour, setStepColour] = useState('#000CA4');
   const [fontColour, setFontColour] = useState('white');
   const [colourModal, setColourModal] = useState(false);
+
+  // Data for the left hand menu (SelectDateCategoryComponent)
+  const [image, setImage] = useState(state.data.image);
+  const [category, setCategory] = useState(state.data.category);
+  const [date, setDate] = useState(dayjs());
+  const [isPublic, setIsPublic] = useState(state.data.isPublic);
 
   // Toggle colour change Modal
   const toggleColourModal = () => {
@@ -88,6 +96,7 @@ function FirstThen({ token, setTokenFunc }) {
               handleCreate={handleCreate}
               image={image}
               setImage={(image) => setImage(image)}
+              setIsPublic={(e) => setIsPublic(e.target.value)}
             />
           </Grid>
           {/* First-Then Section */}
