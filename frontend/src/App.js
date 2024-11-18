@@ -11,7 +11,6 @@ import UserManage from "./pages/UserManage";
 import EnterUserDetails from "./pages/EnterUserDetails";
 import Gallery from "./pages/Gallery";
 import StepSupport from "./pages/StepSupport.jsx";
-import DailySchedules from "./pages/DailySchedules.jsx";
 import WeeklyCalendars from "./pages/WeeklyCalendars.jsx";
 import FirstThen from "./pages/FirstThen.jsx";
 import TemplateChoice from "./pages/TemplateChoice.jsx";
@@ -23,7 +22,6 @@ import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
 import MySettings from "./pages/MySettings";
 import FromScratch from "./pages/FromScratch";
 import MySettingsFromUserManage from "./pages/MySettingsFromUserManage.jsx";
-import { Support } from "@mui/icons-material";
 import { AuthProvider } from "./components/AuthContext.jsx";
 
 // ProtectedRoute component to handle route protection
@@ -148,17 +146,6 @@ function App() {
               element={
                 <ProtectedRoute
                   element={StepSupport}
-                  isAuth={isAuth}
-                  token={token}
-                  setTokenFunc={updateToken}
-                />
-              }
-            />
-            <Route
-              path="/dailyschedules/:profileID"
-              element={
-                <ProtectedRoute
-                  element={DailySchedules}
                   isAuth={isAuth}
                   token={token}
                   setTokenFunc={updateToken}

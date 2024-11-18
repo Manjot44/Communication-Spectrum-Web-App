@@ -11,21 +11,29 @@ export const getVisualSupportConfig = (type, profileID) => {
       addMsg: "+ Add Step",
       stepTitle: "Step",
       showTime: true,
-      label: "Task Step"
+      label: "Task Step",
+      showCategory: true,
     },
     "Daily Schedule": { 
       title: "Create New Daily Schedule",
       scratch: `/FromScratch/${profileID}`,
-      temp: `/dailyschedules/${profileID}`,
+      temp: `/stepsupport/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
-			type: "Daily Schedule"
+			type: "Daily Schedule",
+      defaultText: "Insert Daily Schedule Name",
+      errorMsg: "Please enter a name for this daily schedule",
+      addMsg: "+ Add Task",
+      stepTitle: "Task",
+      showTime: false,
+      label: "Task Title",
+      showCategory: false,
     },
     "Weekly Calendar": { 
       title: "Create New Weekly Calendar",
       scratch: `/FromScratch/${profileID}`,
       temp: `/weeklycalendars/${profileID}`,
       exist: `/choosepremadetemplate/${profileID}`,
-			type: "Weekly Calendar"
+			type: "Weekly Calendar",
     },
     "Social Story": { 
       title: "Create New Social Story",
@@ -39,6 +47,7 @@ export const getVisualSupportConfig = (type, profileID) => {
       stepTitle: "Story Point",
       showTime: false,
       label: "Story Point Description",
+      showCategory: true,
     },
     "Environmental Support": { 
       title: "Create New Environment Support",
@@ -52,6 +61,7 @@ export const getVisualSupportConfig = (type, profileID) => {
       stepTitle: "Environment Support",
       showTime: false,
       label: "Environmental Support Description",
+      showCategory: true,
     },
     "Choice Board": { 
       title: "Create New Choice Board",
@@ -65,6 +75,7 @@ export const getVisualSupportConfig = (type, profileID) => {
       stepTitle: "Choice",
       showTime: false,
       label: "Choice Name",
+      showCategory: true,
     },
     "First-Then": { 
       title: "Create New First-Then",

@@ -34,6 +34,7 @@ function StepSupport({ token }) {
     stepTitle: "",
     showTime: false,
     label: "",
+    showCategory: true,
   };
 
   // Destructure data from state or use defaultData
@@ -168,6 +169,7 @@ function StepSupport({ token }) {
       return;
     }
     try {
+      const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
@@ -180,6 +182,9 @@ function StepSupport({ token }) {
           stepTimes,
           category,
           isHorizontal,
+          timestamp,
+          stepColour,
+          fontColour,
         },
         {
           headers: {
@@ -216,6 +221,7 @@ function StepSupport({ token }) {
               handleCreate={handleCreate}
               image={image}
               setImage={(image) => setImage(image)}
+              showCategory={state.state?.showCategory}
             />
           </Grid>
           <Grid item xs={12} md={9}>

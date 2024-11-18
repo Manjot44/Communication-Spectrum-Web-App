@@ -410,6 +410,7 @@ export const get_images = async (email, profileID) => {
             ON I.img_id = PUIA.img_id
           WHERE PUIA.user_id = $1 
             AND PUIA.prof_id = $2
+          ORDER BY PUIA.timestamp DESC;
           `,
           [profileID, email]
         );
@@ -423,7 +424,7 @@ export const get_images = async (email, profileID) => {
   });
 };
 
-export const add_image = async (email, profileID, image) => {
+export const add_image = async (email, profileID, image, timestamp) => {
   return userLock(async (resolve, reject) => {
     try {
       const rows = await checkClientAuth(email, profileID);
@@ -439,10 +440,10 @@ export const add_image = async (email, profileID, image) => {
 
         // Insert the relationship between the professional, user, and image into ProfUserImageAccess
         const insertAccessQuery = `
-          INSERT INTO "ProfUserImageAccess" (img_id, prof_id, user_id)
-          VALUES ($1, $2, $3);
+          INSERT INTO "ProfUserImageAccess" (img_id, prof_id, user_id, timestamp)
+          VALUES ($1, $2, $3, $4);
         `;
-        const accessValues = [img_id, email, profileID];
+        const accessValues = [img_id, email, profileID, timestamp];
         await pool.query(insertAccessQuery, accessValues);
 
         resolve();
@@ -458,9 +459,7 @@ export const add_image = async (email, profileID, image) => {
 export const delete_image = async (email, img_id) => {
   return userLock(async (resolve, reject) => {
     try {
-      await pool.query('DELETE FROM "ProfUserImageAccess" WHERE img_id = $1', [
-        img_id,
-      ]);
+      await pool.query('DELETE FROM "ProfUserImageAccess" WHERE img_id = $1', [img_id]);
       await pool.query('DELETE FROM "Images" WHERE img_id = $1', [img_id]);
 
       resolve();
@@ -516,15 +515,18 @@ export const new_support = async (
   stepTimes,
   category,
   isHorizontal,
-  type
+  type,
+  timestamp,
+  stepColour,
+  fontColour
 ) => {
   return userLock(async (resolve, reject) => {
     try {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
         const supportQuery = `
-          INSERT INTO "Supports" (type, title, title_img, date, step_img, step_names, step_times, category, layout, prof_id)
-          VALUES ($10, $1, $2, $3, $4, $5, $6, $7, $8, $9)
+          INSERT INTO "Supports" (type, title, title_img, date, step_img, step_names, step_times, category, layout, timestamp, step_colour, font_colour, prof_id)
+          VALUES ($10, $1, $2, $3, $4, $5, $6, $7, $8, $11, $12, $13, $9)
           RETURNING support_id;
         `;
         const supportResult = await pool.query(supportQuery, [
@@ -538,14 +540,17 @@ export const new_support = async (
           isHorizontal,
           email,
           type,
+          timestamp,
+          stepColour,
+          fontColour
         ]);
         const support_id = supportResult.rows[0].support_id;
 
         const insertAccessQuery = `
-          INSERT INTO "hasSupport" (support_id, user_id)
-          VALUES ($1, $2);
+          INSERT INTO "hasSupport" (support_id, user_id, prof_id, timestamp)
+          VALUES ($1, $2, $3, $4);
         `;
-        await pool.query(insertAccessQuery, [support_id, profileID]);
+        await pool.query(insertAccessQuery, [support_id, profileID, email, timestamp]);
 
         resolve();
       } else {
@@ -563,13 +568,15 @@ export const get_client_support = async (email, profileID) => {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
         const queryText = `
-          SELECT S.*, u.name
+          SELECT S.*, u.name, p.email, h.timestamp
           FROM "Supports" S
             JOIN "hasSupport" h on h.support_id = S.support_id
             JOIN "SupportUsers" u on u.user_id = h.user_id
-          WHERE h.user_id = $1;
+            JOIN "Professionals" p on p.email = h.prof_id
+          WHERE h.user_id = $1 AND p.email = $2
+          ORDER BY h.timestamp DESC;
         `;
-        const client = await pool.query(queryText, [profileID]);
+        const client = await pool.query(queryText, [profileID, email]);
         resolve(client.rows);
       } else {
         reject(new AccessError("You do not have access to this client"));

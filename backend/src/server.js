@@ -254,8 +254,11 @@ app.post(
   catchErrors(
     authed(async (req, res, email) => {
       const { profileID } = req.params;
-      const { image } = req.body;
-      await add_image(email, profileID, image);
+      const { 
+        image,
+        timestamp,
+       } = req.body;
+      await add_image(email, profileID, image, timestamp);
       return res.json({});
     })
   )
@@ -302,6 +305,9 @@ app.post(
         stepTimes,
         category,
         isHorizontal,
+        timestamp,
+        stepColour,
+        fontColour,
       } = req.body;
       await new_support(
         email,
@@ -314,7 +320,10 @@ app.post(
         stepTimes,
         category,
         isHorizontal,
-        type
+        type,
+        timestamp, 
+        stepColour, 
+        fontColour
       );
       return res.json({});
     })

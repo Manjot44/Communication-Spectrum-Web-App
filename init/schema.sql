@@ -44,6 +44,9 @@ create table "Supports" (
     step_times  text[],
     category    text,
     layout      bool,
+    timestamp   timestamp not null,
+    step_colour text,
+    font_colour text,
     prof_id     text not null references "Professionals"(email),
     primary key (support_id)
 );
@@ -63,12 +66,15 @@ create table "hasClient" (
 create table "hasSupport" (
     support_id  integer not null references "Supports"(support_id),
     user_id     integer not null references "SupportUsers"(user_id),
-    primary key (support_id, user_id)
+    prof_id     text not null references "Professionals"(email),
+    timestamp   timestamp not null,
+    primary key (support_id, user_id, prof_id)
 );
 
 create table "ProfUserImageAccess" (
     img_id      integer not null references "Images"(img_id),
     prof_id     text not null references "Professionals"(email),
     user_id     integer not null references "SupportUsers"(user_id),
+    timestamp   timestamp not null,
     primary key (img_id, prof_id, user_id)
 );

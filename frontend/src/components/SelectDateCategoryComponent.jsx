@@ -15,6 +15,7 @@ function SelectDateCategoryComponent({
   handleCreate,
   image,
   setImage,
+  showCategory,
 }) {
   return (
     <>
@@ -53,52 +54,57 @@ function SelectDateCategoryComponent({
             deleteImage={() => setImage(null)}
           />
           <br />
-          <Typography
-            variant="h5"
-            component="div"
-            style={{ fontFamily: "Poppins" }}
-          >
-            <b>Select Category</b>
-          </Typography>
-          <div
-            className="d-flex align-items-center"
-            style={{
-              height: "75px",
-              backgroundColor: "white",
-              padding: "5px",
-            }}
-          >
-            <DropdownComponent
-              id="country-form"
-              label="Select Category"
-              value={category}
-              onChange={changeCategory}
-              options={[
-                { value: "Self-Care", label: "Self-Care" },
-                { value: "Routines", label: "Routines" },
-                { value: "School", label: "School" },
-                { value: "Work", label: "Work" },
-                { value: "Fun Activities", label: "Fun Activities" },
-                {
-                  value: "Emotional Regulation",
-                  label: "Emotional Regulation",
-                },
-                {
-                  value: "Beliefs and Practices",
-                  label: "Beliefs and Practices",
-                },
-                {
-                  value: "Health and Wellbeing",
-                  label: "Health and Wellbeing",
-                },
-                { value: "Transport", label: "Transport" },
-                { value: "Events", label: "Events" },
-                { value: "Places", label: "Places" },
-                { value: "Other", label: "Other" },
-              ]}
-              width="100%"
-            />
-          </div>
+          {showCategory && (
+            <>
+              <Typography
+                variant="h5"
+                component="div"
+                style={{ fontFamily: "Poppins" }}
+              >
+                <b>Select Category</b>
+              </Typography>
+              <div
+                className="d-flex align-items-center"
+                style={{
+                  height: "75px",
+                  backgroundColor: "white",
+                  padding: "5px",
+                }}
+              >
+                <DropdownComponent
+                  id="country-form"
+                  label="Select Category"
+                  value={category}
+                  onChange={changeCategory}
+                  options={[
+                    { value: "Self-Care", label: "Self-Care" },
+                    { value: "Routines", label: "Routines" },
+                    { value: "School", label: "School" },
+                    { value: "Work", label: "Work" },
+                    { value: "Fun Activities", label: "Fun Activities" },
+                    {
+                      value: "Emotional Regulation",
+                      label: "Emotional Regulation",
+                    },
+                    {
+                      value: "Beliefs and Practices",
+                      label: "Beliefs and Practices",
+                    },
+                    {
+                      value: "Health and Wellbeing",
+                      label: "Health and Wellbeing",
+                    },
+                    { value: "Transport", label: "Transport" },
+                    { value: "Events", label: "Events" },
+                    { value: "Places", label: "Places" },
+                    { value: "Other", label: "Other" },
+                  ]}
+                  width="100%"
+                />
+              </div>
+              <br />
+            </>
+          )}
 
           <br />
           <Button

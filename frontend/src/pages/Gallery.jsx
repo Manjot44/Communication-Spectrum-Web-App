@@ -13,6 +13,7 @@ import { useNotification } from "../services/notificationService";
 import ConfirmationModal from "../components/ConfirmationModal";
 import LoadingOverlay from "../components/LoadingOverlay"; // Import the new LoadingOverlay component
 import { removeBackground } from "@imgly/background-removal";
+import dayjs from 'dayjs';
 
 function Gallery({ token }) {
   const { profileID } = useParams();
@@ -57,9 +58,13 @@ function Gallery({ token }) {
       notify("Please upload a file.");
     } else {
       try {
+        const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
         await axios.post(
           `http://localhost:5005/add_image/${profileID}`,
-          { image },
+          { 
+            image,
+            timestamp,
+          },
           {
             headers: {
               Authorization: token,
