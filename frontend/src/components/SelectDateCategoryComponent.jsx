@@ -8,6 +8,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import VisualSupportImage from "./VisualSupportImage";
 
 function SelectDateCategoryComponent({
+  token,
   date,
   changeDate,
   category,
@@ -47,6 +48,7 @@ function SelectDateCategoryComponent({
           </Typography>
           <br />
           <VisualSupportImage
+            token={token}
             image={image}
             setImage={setImage}
             uniqueID={-1}

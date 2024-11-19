@@ -62,7 +62,6 @@ function WeeklyCalendars({ token }) {
   };
 
   const updateTask = (day, taskId, key, value) => {
-    console.log(`Updating ${day}, task ${taskId}, setting ${key} to ${value}`);
     setTasks((prev) => ({
       ...prev,
       [day]: prev[day].map((task) =>
@@ -117,7 +116,7 @@ function WeeklyCalendars({ token }) {
           text: text,
           image: image,
           date: date,
-          stepImages: tasks,
+          wkly_tasks: tasks,
           isHorizontal: isHorizontal,
           timestamp: timestamp,
           stepColour: stepColour,
@@ -145,6 +144,7 @@ function WeeklyCalendars({ token }) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponent
+              token={token}
               date={date}
               changeDate={(newDate) => setDate(newDate)}
               handleCreate={handleCreate}
@@ -183,14 +183,15 @@ function WeeklyCalendars({ token }) {
                     >
                       {daysOfWeek.map((day, index) => (
                         <WeeklyCalendarComponent
+                          token={token}
                           key={day}
                           day={day}
                           tasks={tasks[day]} // Pass tasks for the specific day
                           addTask={() => handleAddTask(day)}
-                          removeTask={(taskId) => handleRemoveTask(day, taskId)}
-                          updateTask={(taskId, key, value) => updateTask(day, taskId, key, value)}
-                          moveLeft={(index) => moveTaskLeft(day, index)}
-                          moveRight={(index) => moveTaskRight(day, index)}
+                          removeTask={handleRemoveTask}
+                          updateTask={updateTask}
+                          moveLeft={moveTaskLeft}
+                          moveRight={moveTaskRight}
                           layout={isHorizontal}
                           stepColour={stepColour}
                           fontColour={fontColour}

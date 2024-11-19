@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ScratchElementImage from "../components/ScratchElementImage.jsx";
 
 function SelectDateCategoryComponentCreate({
+  token,
   date,
   changeDate,
   category,
@@ -59,6 +60,7 @@ function SelectDateCategoryComponentCreate({
           </Typography>
           <br />
           <VisualSupportImage
+            token={token}
             image={image}
             setImage={setImage}
             uniqueID={-1}

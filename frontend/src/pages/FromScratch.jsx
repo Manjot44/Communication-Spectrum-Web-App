@@ -216,6 +216,7 @@ function FromScratch({ token }) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponentCreate
+              token={token}
               date={date}
               changeDate={(newDate) => setDate(newDate)}
               category={category}

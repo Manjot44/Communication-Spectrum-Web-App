@@ -42,6 +42,7 @@ create table "Supports" (
     step_img    text[],
     step_names  text[],
     step_times  text[],
+    wkly_tasks  jsonb,
     category    text,
     layout      bool,
     timestamp   timestamp not null,

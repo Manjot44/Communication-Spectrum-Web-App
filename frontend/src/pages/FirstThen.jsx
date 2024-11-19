@@ -86,6 +86,7 @@ function FirstThen({ token, setTokenFunc }) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponent
+              token={token}
               date={date}
               changeDate={(newDate) => setDate(newDate)}
               category={category}
@@ -135,8 +136,10 @@ function FirstThen({ token, setTokenFunc }) {
                       }}
                     >
                       <ChoiceBoardStep
+                        token={token}
                         image={imageFirst}
                         index="First"
+                        title="First"
                         setName={(newName) => setFirstname(newName)}
                         setImage={(imageFirst) => setImageFirst(imageFirst)}
                         label="First Step"
@@ -146,8 +149,10 @@ function FirstThen({ token, setTokenFunc }) {
                       />
                       <Arrow style={{ width: '20px' }}/>
                       <ChoiceBoardStep
+                        token={token}
                         image={imageThen}
                         index="Then"
+                        title="First"
                         setName={(newName) => setThenName(newName)}
                         setImage={(imageThen) => setImageThen(imageThen)}
                         label="Then Step"

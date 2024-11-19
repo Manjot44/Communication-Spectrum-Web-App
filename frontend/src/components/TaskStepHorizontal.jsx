@@ -11,6 +11,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function ChoiceBoardStepHorizontal ({ 
+  token,
   image,
   setImage,
   index,
@@ -106,7 +107,7 @@ function ChoiceBoardStepHorizontal ({
             <Grid item xs={12} md={3} style={{ backgroundColor: 'white' }}>
               <Box sx={{ height: '230px', width: '200px' }} style={{ padding: '0 5px', borderRadius: '0 0 15px 0', borderBottom: `1px solid ${stepColour}`, borderRight: `1px solid ${stepColour}` }}>
                 <br />
-                <VisualSupportImage uniqueID={index} imgHeight="65%" image={image} setImage={setImage} deleteImage={deleteImage}/>
+                <VisualSupportImage token={token} uniqueID={index} imgHeight="65%" image={image} setImage={setImage} deleteImage={deleteImage}/>
                 <br />
               </Box>
             </Grid>

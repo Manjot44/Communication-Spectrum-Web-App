@@ -308,6 +308,7 @@ app.post(
         timestamp,
         stepColour,
         fontColour,
+        wkly_tasks
       } = req.body;
       await new_support(
         email,
@@ -323,7 +324,8 @@ app.post(
         type,
         timestamp, 
         stepColour, 
-        fontColour
+        fontColour,
+        wkly_tasks
       );
       return res.json({});
     })

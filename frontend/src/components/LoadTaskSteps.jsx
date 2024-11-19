@@ -4,7 +4,8 @@ import TaskStep from "./TaskStep";
 import TaskStepHorizontal from "./TaskStepHorizontal";
 
 function LoadTaskSteps({
-	steps,
+	token,
+  steps,
   title,
   stepImages,
   stepNames,
@@ -29,6 +30,7 @@ function LoadTaskSteps({
       {steps.map((step, index) =>
         isHorizontal ? (
           <TaskStepHorizontal
+            token={token}  
             key={step.id}
             index={`${title} ${index + 1}`}
             image={stepImages[index]}
@@ -51,8 +53,10 @@ function LoadTaskSteps({
           />
         ) : (
           <TaskStep
+            token={token}
             key={step.id}
             index={`${title} ${index + 1}`}
+            title={`${title} ${index + 1}`}
             image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
             setImage={(newImage) => updateStepImage(index, newImage)}

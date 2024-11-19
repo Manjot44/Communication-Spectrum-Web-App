@@ -9,8 +9,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function ChoiceBoardStep ({ 
+  token, 
   image,
   setImage,
+  title,
   index,
   deleteImage,
   removeStep,
@@ -61,7 +63,7 @@ function ChoiceBoardStep ({
               gutterBottom
               style={{ fontFamily: "Poppins" }}
             >
-              <b>{index}</b>
+              <b>{title}</b>
             </Typography>
             {showCancel && (
               <IconButton
@@ -77,7 +79,7 @@ function ChoiceBoardStep ({
         </Grid>
         <Grid item xs={12} >
           <Box style={{ backgroundColor: 'white', width: '350px', height: '350px', padding: '15px', borderTop: `1px solid ${stepColour}`, borderLeft: `1px solid ${stepColour}`, borderRight: `1px solid ${stepColour}` }}>
-            <VisualSupportImage uniqueID={index} imgHeight="95%" image={image} setImage={setImage} deleteImage={deleteImage}/>
+            <VisualSupportImage token={token} uniqueID={index} imgHeight="95%" image={image} setImage={setImage} deleteImage={deleteImage}/>
           </Box>
         </Grid>
         <Grid item xs={12}>

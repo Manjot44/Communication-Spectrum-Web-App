@@ -117,6 +117,7 @@ function VisualSupportImage({ uniqueID, imgHeight, image, setImage, deleteImage,
       />
 
       <GalleryModal
+        token={token}
         open={isGalleryOpen}
         onClose={() => setIsGalleryOpen(false)}
         onSelectImage={handleGallerySelect}

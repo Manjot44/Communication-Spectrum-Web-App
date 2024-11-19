@@ -4,7 +4,6 @@ import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import { useNotification } from "../services/notificationService";
 import { useParams } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
 import GalleryPhotoComponent from "./GalleryPhotoComponent";
 
 const modalStyle = {
@@ -21,12 +20,11 @@ const modalStyle = {
   textAlign: "center",
 };
 
-function GalleryModal ({ open, onClose, onSelectImage }) {
+function GalleryModal ({ token, open, onClose, onSelectImage }) {
 	const { profileID } = useParams();
 	const [images, setImages] = useState(null);
 	const { notify } = useNotification();
 	const notifyRef = useRef(notify);
-	const { token } = useContext(AuthContext); // Access token from context
 
 	// Fetch images
   useEffect(() => {

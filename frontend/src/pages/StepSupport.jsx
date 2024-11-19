@@ -214,6 +214,7 @@ function StepSupport({ token }) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponent
+              token={token}
               date={date}
               changeDate={(newDate) => setDate(newDate)}
               category={category}
@@ -271,6 +272,7 @@ function StepSupport({ token }) {
                         }}
                       >
                         <LoadTaskSteps
+                          token={token}
                           steps={steps}
                           title={state.state?.stepTitle}
                           stepImages={stepImages}

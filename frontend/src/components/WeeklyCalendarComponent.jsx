@@ -3,6 +3,7 @@ import { Grid, Button, Typography, Card, CardContent } from '@mui/material';
 import TaskStep from './TaskStep';
 
 function WeeklyCalendarComponent({
+  token,
   day,
   tasks,
   addTask,
@@ -60,11 +61,13 @@ function WeeklyCalendarComponent({
               }}
             >
               <TaskStep
+                token={token}
+                index={task.id}
                 image={task.image}
                 setImage={(newImage) => updateTask(day, task.id, 'image', newImage)}
-                index={`Task ${index + 1}`}
+                title={`Task ${index + 1}`}
                 deleteImage={() => updateTask(day, task.id, 'image', null)}
-                removeStep={() => removeTask(task.id)}
+                removeStep={() => removeTask(day, task.id)}
                 setName={(newName) => updateTask(day, task.id, 'name', newName)}
                 stepName={task.name}
                 label="Task Name"
@@ -73,8 +76,8 @@ function WeeklyCalendarComponent({
                 fontColour={fontColour}
                 stepColour={stepColour}
                 totalSteps={tasks.length}
-                onMoveLeft={() => moveLeft(index)}
-                onMoveRight={() => moveRight(index)}
+                onMoveLeft={(index) => moveLeft(day, index)}
+                onMoveRight={(index) => moveRight(day, index)}
                 count={index}
               />
             </div>

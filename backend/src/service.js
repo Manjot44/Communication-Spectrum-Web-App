@@ -518,15 +518,16 @@ export const new_support = async (
   type,
   timestamp,
   stepColour,
-  fontColour
+  fontColour,
+  wkly_tasks
 ) => {
   return userLock(async (resolve, reject) => {
     try {
       const rows = await checkClientAuth(email, profileID);
       if (rows.length > 0) {
         const supportQuery = `
-          INSERT INTO "Supports" (type, title, title_img, date, step_img, step_names, step_times, category, layout, timestamp, step_colour, font_colour, prof_id)
-          VALUES ($10, $1, $2, $3, $4, $5, $6, $7, $8, $11, $12, $13, $9)
+          INSERT INTO "Supports" (type, title, title_img, date, step_img, step_names, step_times, wkly_tasks, category, layout, timestamp, step_colour, font_colour, prof_id)
+          VALUES ($10, $1, $2, $3, $4, $5, $6, $14, $7, $8, $11, $12, $13, $9)
           RETURNING support_id;
         `;
         const supportResult = await pool.query(supportQuery, [
@@ -542,7 +543,8 @@ export const new_support = async (
           type,
           timestamp,
           stepColour,
-          fontColour
+          fontColour,
+          JSON.stringify(wkly_tasks)
         ]);
         const support_id = supportResult.rows[0].support_id;
 
