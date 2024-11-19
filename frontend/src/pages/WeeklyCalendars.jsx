@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Grid, Typography, Card, CardContent } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -17,8 +17,13 @@ const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 function WeeklyCalendars({ token }) {
   const { profileID } = useParams();
   const navigate = useNavigate();
-  const [date, setDate] = useState(dayjs());
-  const [tasks, setTasks] = useState({
+  const { state } = useLocation();
+
+  // Destructure data from state
+  const data = state?.data;
+  const [date, setDate] = useState(dayjs(data?.date) || dayjs());
+  const [tasks, setTasks] = useState(data?.wkly_tasks || 
+    {
     Mon: [],
     Tue: [],
     Wed: [],
@@ -27,12 +32,13 @@ function WeeklyCalendars({ token }) {
     Sat: [],
     Sun: [],
   }); // Unified state for all tasks
-  const [text, setText] = useState("Insert Weekly Calendar Name Here");
+  const [text, setText] = useState(data?.title || "");
+  const [isHorizontal, setIsHorizontal] = useState(data?.layout || false);
+  const [stepColour, setStepColour] = useState(data?.step_colour || '#000CA4');
+  const [fontColour, setFontColour] = useState(data?.font_colour || 'white');
+  const [image, setImage] = useState(data?.title_img || null);
+
   const [isEditing, setIsEditing] = useState(false);
-  const [isHorizontal, setIsHorizontal] = useState(false);
-  const [stepColour, setStepColour] = useState("#000CA4");
-  const [fontColour, setFontColour] = useState("white");
-  const [image, setImage] = useState(null);
   const [colourModal, setColourModal] = useState(false);
   const [nameError, setNameError] = useState(false);
 
@@ -109,18 +115,19 @@ function WeeklyCalendars({ token }) {
     }
     try {
       const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const formattedDate = date.format("YYYY-MM-DD");
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
-          type: "Weekly Calendar",
-          text: text,
-          image: image,
-          date: date,
+          type: state.state.type,
+          text,
+          image,
+          date: formattedDate,
           wkly_tasks: tasks,
-          isHorizontal: isHorizontal,
-          timestamp: timestamp,
-          stepColour: stepColour,
-          fontColour: fontColour,
+          isHorizontal,
+          timestamp,
+          stepColour,
+          fontColour,
         },
         {
           headers: {
@@ -164,6 +171,7 @@ function WeeklyCalendars({ token }) {
                   nameError={nameError}
                   setNameError={setNameError}
                   toggleComponentType={toggleComponentType}
+                  defaultText={"Insert Weekly Calendar Name Here"}
                   reactToPrintFn={reactToPrintFn}
                   setColourModal={toggleColourModal}
                 />

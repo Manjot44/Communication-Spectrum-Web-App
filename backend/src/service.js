@@ -509,7 +509,7 @@ export const new_support = async (
   profileID,
   text,
   image,
-  value,
+  date,
   stepImages,
   stepNames,
   stepTimes,
@@ -533,7 +533,7 @@ export const new_support = async (
         const supportResult = await pool.query(supportQuery, [
           text,
           image,
-          value,
+          date,
           stepImages,
           stepNames,
           stepTimes,
@@ -636,6 +636,30 @@ export const delete_support = async (email, supportID) => {
         `Error in delete_support for support ${supportID}:`,
         error.message
       );
+      reject(error);
+    }
+  });
+};
+
+export const new_timestamp = async (email, profileID, supportID, timestamp) => {
+  return userLock(async (resolve, reject) => {
+    try {
+      const rows = await checkClientAuth(email, profileID);
+      if (rows.length > 0) {
+        const queryText = `
+          UPDATE "hasSupport"
+          SET timestamp = $1
+          WHERE support_id = $2
+            AND user_id = $3
+            AND prof_id = $4;
+        `;
+        await pool.query(queryText, [timestamp, supportID, profileID, email]);
+
+        resolve();
+      } else {
+        reject(new AccessError("You do not have access to this client"));
+      }
+    } catch (error) {
       reject(error);
     }
   });

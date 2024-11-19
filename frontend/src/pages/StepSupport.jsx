@@ -18,40 +18,22 @@ function StepSupport({ token }) {
   const { profileID } = useParams();
   const [loading, setLoading] = useState(true); // Add loading state
 
-  // Default values for state data properties to handle null cases
-  const defaultData = {
-    text: "",
-    image: null,
-    steps: [],
-    stepImages: [],
-    stepNames: [],
-    stepTimes: [],
-    category: "",
-    type: "",
-    defaultText: "",
-    errorMsg: "",
-    addMsg: "",
-    stepTitle: "",
-    showTime: false,
-    label: "",
-    showCategory: true,
-  };
+  // Destructure data from state
+  const data = state?.data;
+  const [text, setText] = useState(data?.title || "");
+  const [image, setImage] = useState(data?.title_img || null);
+  const [stepImages, setStepImages] = useState(data?.step_img || []);
+  const [stepNames, setStepNames] = useState(data?.step_names || []);
+  const [stepTimes, setStepTimes] = useState(data?.step_times || []);
+  const [category, setCategory] = useState(data?.category || "");
+  const [stepColour, setStepColour] = useState(data?.step_colour || '#000CA4');
+  const [fontColour, setFontColour] = useState(data?.font_colour || 'white');
+  const [isHorizontal, setIsHorizontal] = useState(data?.layout || false);
+  const [date, setDate] = useState(dayjs(data?.date) || dayjs());
+  const [isMade, setIsMade] = useState(data?.isMade || false);
 
-  // Destructure data from state or use defaultData
-  const data = state?.data || defaultData;
-  const [text, setText] = useState(data.text);
-  const [image, setImage] = useState(data.image);
-  const [steps, setSteps] = useState(data.steps);
-  const [stepImages, setStepImages] = useState(data.stepImages);
-  const [stepNames, setStepNames] = useState(data.stepNames);
-  const [stepTimes, setStepTimes] = useState(data.stepTimes);
-  const [category, setCategory] = useState(data.category);
   const [isEditing, setIsEditing] = useState(false);
-  const [date, setDate] = useState(dayjs());
-  const [isHorizontal, setIsHorizontal] = useState(false);
   const [nameError, setNameError] = useState(false);
-  const [stepColour, setStepColour] = useState('#000CA4');
-  const [fontColour, setFontColour] = useState('white');
   const [colourModal, setColourModal] = useState(false);
 
   // Set loading to false once component is mounted
@@ -71,8 +53,6 @@ function StepSupport({ token }) {
 
   // Add a new step to the task analysis
   const addStep = () => {
-    const newStep = { id: Date.now() };
-    setSteps([...steps, newStep]);
     setStepImages([...stepImages, null]); // Initialize a placeholder for the new step's image
     setStepNames([...stepNames, null]); // Initialize a placeholder for the new step's name
     setStepTimes([...stepTimes, null]); // Initialize a placeholder for the new step's time
@@ -80,7 +60,6 @@ function StepSupport({ token }) {
 
   // Remove a step by index
   const removeStep = (index, id) => {
-    setSteps(steps.filter((step) => step.id !== id));
     setStepImages(stepImages.filter((_, imgIndex) => imgIndex !== index));
     setStepNames(stepNames.filter((_, imgIndex) => imgIndex !== index));
     setStepTimes(stepTimes.filter((_, imgIndex) => imgIndex !== index));
@@ -120,19 +99,16 @@ function StepSupport({ token }) {
     if (index === 0) return;
 
     // Swap the current step with the previous one
-    const newSteps = [...steps];
     const newStepImages = [...stepImages];
     const newStepNames = [...stepNames];
     const newStepTimes = [...stepTimes];
 
     // Swap step data with the previous step
-    [newSteps[index - 1], newSteps[index]] = [newSteps[index], newSteps[index - 1]];
     [newStepImages[index - 1], newStepImages[index]] = [newStepImages[index], newStepImages[index - 1]];
     [newStepNames[index - 1], newStepNames[index]] = [newStepNames[index], newStepNames[index - 1]];
     [newStepTimes[index - 1], newStepTimes[index]] = [newStepTimes[index], newStepTimes[index - 1]];
 
     // Update state with the reordered arrays
-    setSteps(newSteps);
     setStepImages(newStepImages);
     setStepNames(newStepNames);
     setStepTimes(newStepTimes);
@@ -141,22 +117,19 @@ function StepSupport({ token }) {
   // Move step to the right (swap with the next step)
   const onMoveRight = (index) => {
     // Do nothing if it's the last step
-    if (index === steps.length - 1) return;
+    if (index === stepImages.length - 1) return;
 
     // Swap the current step with the next one
-    const newSteps = [...steps];
     const newStepImages = [...stepImages];
     const newStepNames = [...stepNames];
     const newStepTimes = [...stepTimes];
 
     // Swap step data with the next step
-    [newSteps[index + 1], newSteps[index]] = [newSteps[index], newSteps[index + 1]];
     [newStepImages[index + 1], newStepImages[index]] = [newStepImages[index], newStepImages[index + 1]];
     [newStepNames[index + 1], newStepNames[index]] = [newStepNames[index], newStepNames[index + 1]];
     [newStepTimes[index + 1], newStepTimes[index]] = [newStepTimes[index], newStepTimes[index + 1]];
 
     // Update state with the reordered arrays
-    setSteps(newSteps);
     setStepImages(newStepImages);
     setStepNames(newStepNames);
     setStepTimes(newStepTimes);
@@ -170,13 +143,14 @@ function StepSupport({ token }) {
     }
     try {
       const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const formattedDate = date.format("YYYY-MM-DD");
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
-          type: data.type,
+          type: state.state.type,
           text,
           image,
-          date,
+          date: formattedDate,
           stepImages,
           stepNames,
           stepTimes,
@@ -273,7 +247,6 @@ function StepSupport({ token }) {
                       >
                         <LoadTaskSteps
                           token={token}
-                          steps={steps}
                           title={state.state?.stepTitle}
                           stepImages={stepImages}
                           stepNames={stepNames}
@@ -289,7 +262,7 @@ function StepSupport({ token }) {
                           label={state.state?.label}
                           fontColour={fontColour}
                           stepColour={stepColour}
-                          totalSteps={steps.length}
+                          totalSteps={stepImages.length}
                           onMoveLeft={onMoveLeft}
                           onMoveRight={onMoveRight}
                         />

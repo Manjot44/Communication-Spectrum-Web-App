@@ -24,19 +24,27 @@ function FirstThen({ token, setTokenFunc }) {
   const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
-  const [text, setText] = useState(state.data.text);
+  
+  // Destructure data from state 
+  const data = state?.data;
+  const [text, setText] = useState(data?.title || "");
+  const [date, setDate] = useState(dayjs(data?.date) || dayjs());
+  const [category, setCategory] = useState(data?.category || "");
+  const [image, setImage] = useState(data?.title_img || null);
+
+  const stepImages = data?.step_img || [];
+  const stepNames = data?.step_names || [];
+  const [imageFirst, setImageFirst] = useState(stepImages[0] || null);
+  const [imageThen, setImageThen] = useState(stepImages[1] || null);
+  const [firstName, setFirstname] = useState(stepNames[0] || "");
+  const [thenName, setThenName] = useState(stepNames[1] || "");
+  const [stepColour, setStepColour] = useState(data?.step_colour || '#000CA4');
+  const [fontColour, setFontColour] = useState(data?.font_colour || 'white');
+  const [isMade, setIsMade] = useState(data?.isMade || false);
+
   const [isEditing, setIsEditing] = useState(false);
-  const [date, setDate] = useState(dayjs());
-  const [nameError, setNameError] = useState(false);
-  const [category, setCategory] = useState(state.data.category);
-  const [image, setImage] = useState(state.data.image);
-  const [imageFirst, setImageFirst] = useState(state.data.imageFirst);
-  const [imageThen, setImageThen] = useState(state.data.imageThen);
-  const [firstName, setFirstname] = useState(state.data.firstName);
-  const [thenName, setThenName] = useState(state.data.thenName);
-  const [stepColour, setStepColour] = useState('#000CA4');
-  const [fontColour, setFontColour] = useState('white');
   const [colourModal, setColourModal] = useState(false);
+  const [nameError, setNameError] = useState(false);
 
   // Toggle colour change Modal
   const toggleColourModal = () => {
@@ -49,18 +57,21 @@ function FirstThen({ token, setTokenFunc }) {
       return;
     }
     try {
+      const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const formattedDate = date.format("YYYY-MM-DD");
       await axios.post(
         `http://localhost:5005/new_support/${profileID}`,
         {
-          type: "First-Then",
+          type: state.state.type,
           text,
           image,
-          date,
+          date: formattedDate,
           stepImages: [imageFirst, imageThen],
           stepNames: [firstName, thenName],
-          stepTimes: null,
           category,
-          isHorizontal: null,
+          timestamp,
+          stepColour,
+          fontColour,
         },
         {
           headers: {

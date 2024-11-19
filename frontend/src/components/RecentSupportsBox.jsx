@@ -4,8 +4,10 @@ import RecentSupports from "../components/RecentSupports.jsx";
 import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import axios from "axios";
+import dayjs from 'dayjs';
 import NotificationPopup from "../components/NotificationPopup";
 import { useNavigate, useParams } from "react-router-dom";
+import { getVisualSupportConfig } from "./VisualSupportConfig.jsx";
 
 function RecentSupportsBox({
   profileData,
@@ -42,6 +44,40 @@ function RecentSupportsBox({
     } catch (error) {
       console.error("Error deleting support:", error);
     }
+  };
+
+  const handleSupportClick = async (support) => {
+    try {
+      const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      await axios.put(
+        `http://localhost:5005/new_timestamp/${profileID}/${support.support_id}`, 
+        { timestamp },
+        {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const passInData = { 
+        state: getVisualSupportConfig(support.type), 
+        data: {...support, isMade: true} 
+      };
+  
+      console.log(passInData)
+      if (support.type === "Weekly Calendar") {
+        navigate(`/weeklycalendars/${profileID}`, { state: passInData } )
+      }
+      else if (support.type === "First-Then") {
+        navigate(`/firstthen/${profileID}`, { state: passInData })
+      }
+      else {
+        navigate(`/stepsupport/${profileID}`, { state: passInData })
+      }
+    } catch (error) {
+      console.error("Error deleting support:", error);
+    }
+    
+    
   };
 
   const filteredSupports = useMemo(() => {
@@ -119,11 +155,7 @@ function RecentSupportsBox({
                     profileData={support}
                     token={token}
                     onDelete={handleDeleteSupport}
-                    onClick={async () => {
-                      navigate(
-                        `/viewsupport/${profileID}/${support.support_id}`
-                      );
-                    }}
+                    onClick={async () => handleSupportClick(support)}
                     showIcons={true}
                   />
                 </Grid>

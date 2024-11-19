@@ -17,7 +17,6 @@ import TemplateChoice from "./pages/TemplateChoice.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import Supports from "./pages/Supports.jsx";
 import SharedTemplates from "./pages/SharedTemplates.jsx";
-import ViewSupport from "./pages/ViewSupport.jsx";
 import ChoosePreMadeTemplate from "./pages/ChoosePreMadeTemplate.jsx";
 import MySettings from "./pages/MySettings";
 import FromScratch from "./pages/FromScratch";
@@ -201,17 +200,6 @@ function App() {
               element={
                 <ProtectedRoute
                   element={SharedTemplates}
-                  isAuth={isAuth}
-                  token={token}
-                  setTokenFunc={updateToken}
-                />
-              }
-            />
-            <Route
-              path="/viewsupport/:profileID/:supportID"
-              element={
-                <ProtectedRoute
-                  element={ViewSupport}
                   isAuth={isAuth}
                   token={token}
                   setTokenFunc={updateToken}

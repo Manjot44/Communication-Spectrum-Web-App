@@ -28,6 +28,7 @@ import {
   updateUserSettings,
   changeUserPassword,
   update_image,
+  new_timestamp,
 } from "./service.js";
 
 const app = express();
@@ -299,7 +300,7 @@ app.post(
         type,
         text,
         image,
-        value,
+        date,
         stepImages,
         stepNames,
         stepTimes,
@@ -315,7 +316,7 @@ app.post(
         profileID,
         text,
         image,
-        value,
+        date,
         stepImages,
         stepNames,
         stepTimes,
@@ -362,6 +363,18 @@ app.delete(
         );
         throw error;
       }
+    })
+  )
+);
+
+app.put(
+  "/new_timestamp/:profileID/:supportID",
+  catchErrors(
+    authed(async (req, res, email) => {
+      const { profileID, supportID } = req.params;
+      const { timestamp } = req.body;
+      await new_timestamp(email, profileID, supportID, timestamp);
+      return res.json({});
     })
   )
 );
