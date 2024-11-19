@@ -48,6 +48,7 @@ function SelectDateCategoryComponent({
             </Typography>
             <div>
               <VisualSupportImage
+                token={token}
                 image={image}
                 setImage={setImage}
                 uniqueID={-1}
