@@ -17,6 +17,7 @@ const DropdownComponent = ({ id, label, value, onChange, options, width, disable
           onChange={onChange}
           disabled={disabled}
         >
+        {/* Options for the dropdown  checkboxes will be not ticked by default*/}
         {options.map((option, index) => (
           <MenuItem key={index} value={option.value}>{option.label}</MenuItem>
         ))}

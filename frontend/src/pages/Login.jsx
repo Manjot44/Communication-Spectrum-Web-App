@@ -2,15 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "@mui/material/Button";
-
-// Image assets
-// Logos
 import Logo from "../assets/Mycommsproblue.png";
-import Apple from "../assets/apple.png";
-import Facebook from "../assets/Facebook.png";
-import Google from "../assets/Google.png";
-
+import { DarkBlueButton, LoginText, LoginFormBox, LoginBackground, LoginStack } from "../Wrappers.jsx";
 import TextFieldComponent from "../components/TextFieldComponent";
 import "../App.css";
 
@@ -53,51 +46,29 @@ function Login({ setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
-      <div
-        id="background-container"
-        class="d-flex justify-content-center align-items-center login-background"
-      >
-        <div id="outside-box" class="mx-auto login-form">
-          <img src={Logo} alt="MyComms Logo" class="login-logo" />
-          <h3 class="login-text">Log In to your account</h3>
-
-          <TextFieldComponent
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <br />
-          <TextFieldComponent
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={handleKeyDown}
-            type="Password"
-          />
-          <br />
-          <br />
-
-          <Button
-            onClick={newUserRequest}
-            variant="contained"
-            style={{
-              backgroundColor: "#000CA4",
-              width: "75%",
-              borderRadius: "20px",
-              fontFamily: "Poppins",
-            }}
-          >
-            Login
-          </Button>
-          <br />
-          <br />
-          <p>
+      <LoginBackground>
+        <LoginFormBox>
+          <LoginStack spacing={2.5}>
+            <img src={Logo} alt="MyComms Logo" class="login-logo" />
+            <LoginText>
+              Log In to your account
+            </LoginText>
+            <TextFieldComponent
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <TextFieldComponent
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              type="Password"
+            />
+            <DarkBlueButton variant="contained" onClick={newUserRequest}>
+              Login
+            </DarkBlueButton>
             <a
               class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
               href="/register"
@@ -105,9 +76,9 @@ function Login({ setTokenFunc }) {
             >
               Dont have an account? <b>Register here</b>
             </a>
-          </p>
-        </div>
-      </div>
+          </LoginStack>
+        </LoginFormBox>
+      </LoginBackground>
     </>
   );
 }

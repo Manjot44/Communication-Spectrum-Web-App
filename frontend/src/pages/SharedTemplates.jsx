@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, Box } from "@mui/material";
+import { Typography } from "@mui/material";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "../App.css";
@@ -8,10 +8,10 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { useNotification } from "../services/notificationService";
 import RecentSupportsBox from "../components/RecentSupportsBox";
 import CategorySelectCheckboxes from "../components/CategorySelectCheckboxes";
-import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { PageWrapperStyle, Title, SharedAccordion } from "../Wrappers";
 
 function SharedTemplates ({ token, setTokenFunc }) {
 	const { profileID } = useParams();
@@ -21,6 +21,7 @@ function SharedTemplates ({ token, setTokenFunc }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
 	const { notify } = useNotification();
 
+  // Message that pops up when there are no Visual Supports to Load
   const noSupportMessage =
     selectedCategories.length > 0
       ? `${
@@ -47,6 +48,7 @@ function SharedTemplates ({ token, setTokenFunc }) {
       )
     : null;
 
+  // UseEffect to fetch Visual Supports from the Database (CHANGE TO PUBLIC TEMPLATES)
 	useEffect(() => {
     const fetchClient = async () => {
       try {
@@ -102,42 +104,19 @@ function SharedTemplates ({ token, setTokenFunc }) {
   return (
     <>
       <Navbar profileID={profileID} />
-      <div className="page-wrapper-style">
+      <PageWrapperStyle>
         <br />
-				<br />
-        <Box
-          sx={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: "Poppins",
-              color: "#000CA4",
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-            }}
-          >
-            <b>Public Templates</b>
-          </Typography>
-        </Box>
-				<br />
-				<br />
-				<Accordion sx={{ borderRadius: '15px', fontFamily: 'Poppins', border: 'none', color: '#000CA4' }}>
+        <Title variant="h3">
+          <b>Public Templates</b>
+        </Title>
+        {/* Drop down menu where user can select filter categories */}
+        <SharedAccordion>
 					<AccordionSummary
 						expandIcon={<ArrowDownwardIcon />}
 						aria-controls="panel1-content"
 						id="panel2-header"
-						style={{ border: "none" }}
 					>
-						<Typography variant="h6">
+						<Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
 							<b>Filter by Category</b>
 						</Typography>
 					</AccordionSummary>
@@ -148,8 +127,9 @@ function SharedTemplates ({ token, setTokenFunc }) {
 							/>
 						</Typography>
 					</AccordionDetails>
-				</Accordion>
+        </SharedAccordion>
 				<br/>
+        {/* Box with Publicly Shared Templates */}
 				<RecentSupportsBox
 					profileData={profileData}
 					supportData={filteredSupportData}
@@ -158,7 +138,7 @@ function SharedTemplates ({ token, setTokenFunc }) {
           noSupportMessage={noSupportMessage}
 				/>
 				<br />
-      </div>
+      </PageWrapperStyle>
     </>
   );
 }

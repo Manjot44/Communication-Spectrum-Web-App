@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useRef, createContext } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Typography, Card, CardContent } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,6 +12,7 @@ import ChangeColourModal from '../components/ChangeColourModal';
 import TaskHeader from '../components/Taskheader';
 import { useReactToPrint } from 'react-to-print';
 
+export const context = createContext(null);
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function WeeklyCalendars({ token }) {
@@ -76,7 +77,7 @@ function WeeklyCalendars({ token }) {
     }));
   };
 
-  const moveTaskLeft = (day, index) => {
+  const onMoveLeft = (day, index) => {
     setTasks((prev) => {
       if (index === 0) return prev;
       const dayTasks = [...prev[day]];
@@ -88,7 +89,7 @@ function WeeklyCalendars({ token }) {
     });
   };
   
-  const moveTaskRight = (day, index) => {
+  const onMoveRight = (day, index) => {
     setTasks((prev) => {
       if (index === prev[day].length - 1) return prev;
       const dayTasks = [...prev[day]];
@@ -145,8 +146,8 @@ function WeeklyCalendars({ token }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Navbar profileID={profileID}/>
       <div className="page-wrapper-style" style={{ padding: "0 1%" }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Week starting {date.format('DD/MM/YYYY')}
+        <Typography variant="h4" align="center" gutterBottom sx={{ fontFamily: "Poppins" }}>
+          <b>Week starting {date.format('DD/MM/YYYY')}</b>
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
@@ -190,21 +191,30 @@ function WeeklyCalendars({ token }) {
                       }}
                     >
                       {daysOfWeek.map((day, index) => (
-                        <WeeklyCalendarComponent
-                          token={token}
-                          key={day}
-                          day={day}
-                          tasks={tasks[day]} // Pass tasks for the specific day
-                          addTask={() => handleAddTask(day)}
-                          removeTask={handleRemoveTask}
-                          updateTask={updateTask}
-                          moveLeft={moveTaskLeft}
-                          moveRight={moveTaskRight}
-                          layout={isHorizontal}
-                          stepColour={stepColour}
-                          fontColour={fontColour}
-                          title={formatDayWithDate(index)}
-                        />
+                        <context.Provider value={{
+                          fontColour: fontColour,
+                          stepColour: stepColour,
+                          showCancel: true,
+                          showTime: false,
+                          label: "Task Name",
+                          totalSteps: tasks[day].length
+                        }}>
+                          <WeeklyCalendarComponent
+                            token={token}
+                            key={day}
+                            day={day}
+                            tasks={tasks[day]} // Pass tasks for the specific day
+                            addTask={() => handleAddTask(day)}
+                            removeTask={handleRemoveTask}
+                            updateTask={updateTask}
+                            moveLeft={onMoveLeft}
+                            moveRight={onMoveRight}
+                            layout={isHorizontal}
+                            stepColour={stepColour}
+                            fontColour={fontColour}
+                            title={formatDayWithDate(index)}
+                          />
+                        </context.Provider>
                       ))}
                     </div>
                   </Grid>

@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import Navbar from "../components/Navbar";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Grid,
-  Card,
-  Typography,
   CardContent,
   Button,
-  Box,
-  Modal,
-  TextField
 } from "@mui/material";
 import dayjs from 'dayjs';
 import '../App.css';
 import Arrow from '../components/Arrow';
 import SelectDateCategoryComponent from '../components/SelectDateCategoryComponent';
 import EditTitleComponent from '../components/EditTitleComponent';
-import ChoiceBoardStep from '../components/TaskStep';
+import TaskStep from '../components/TaskStep';
 import axios from "axios";
 import ChangeColourModal from '../components/ChangeColourModal';
+import { StepSupportWrapper, FirstThenCard, PrintBox, Centred, FirstThenMenu } from '../Wrappers.jsx';
+
+export const firstThenContext = createContext(null);
 
 function FirstThen({ token, setTokenFunc }) {
+  // General React Functions
   const navigate = useNavigate();
   const { profileID } = useParams();
   const { state } = useLocation();
@@ -45,12 +44,14 @@ function FirstThen({ token, setTokenFunc }) {
   const [isEditing, setIsEditing] = useState(false);
   const [colourModal, setColourModal] = useState(false);
   const [nameError, setNameError] = useState(false);
+  const [isPublic, setIsPublic] = useState(state.data.isPublic);
 
   // Toggle colour change Modal
   const toggleColourModal = () => {
     setColourModal((prev) => !prev);
   };
 
+  // API Request to save Visual Support
   const handleCreate = async () => {
     if (text.trim() === "") {
       setNameError(true); // Set error state if no name is entered
@@ -87,13 +88,9 @@ function FirstThen({ token, setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
       <Navbar profileID={profileID}/>
       <br />
-      <div className="page-wrapper-style" style={{ padding: '0 1%' }}>
+      <StepSupportWrapper>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <SelectDateCategoryComponent
@@ -105,86 +102,81 @@ function FirstThen({ token, setTokenFunc }) {
               handleCreate={handleCreate}
               image={image}
               setImage={(image) => setImage(image)}
+              setIsPublic={(e) => setIsPublic(e.target.value)}
+              showCategory={true}
             />
           </Grid>
           {/* First-Then Section */}
           <Grid item xs={12} md={9}>
-            <Card className="task-analyses-create-options" style={{ backgroundColor: 'white', height: '87vh' }}>
+            <FirstThenCard>
               <CardContent>
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  style={{
-                    margin: "10px",
-                    fontFamily: "Poppins",
-                    color: "black",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                <EditTitleComponent
-                  text={text}
-                  changeText={setText}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                  nameError={nameError}
-                  setNameError={setNameError}
-                  defaultText="Insert First-Then Support Name"
-                  errorMsg="Please enter a name for this First-Then visual support"
-                />
-                <Button onClick={toggleColourModal}>Customise Colour</Button>
-                </Typography>
-                <div 
-                    class="d-flex justify-content-center align-items-center"  
-                  >
-                  <div>
-                    <Grid
-                      class="d-flex justify-content-center align-items-center" 
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        height: "75vh",
-                      }}
-                    >
-                      <ChoiceBoardStep
-                        token={token}
-                        image={imageFirst}
-                        index="First"
-                        title="First"
-                        setName={(newName) => setFirstname(newName)}
-                        setImage={(imageFirst) => setImageFirst(imageFirst)}
-                        label="First Step"
-                        showCancel={false}
-                        fontColour={fontColour}
-                        stepColour={stepColour}
-                      />
-                      <Arrow style={{ width: '20px' }}/>
-                      <ChoiceBoardStep
-                        token={token}
-                        image={imageThen}
-                        index="Then"
-                        title="First"
-                        setName={(newName) => setThenName(newName)}
-                        setImage={(imageThen) => setImageThen(imageThen)}
-                        label="Then Step"
-                        showCancel={false}
-                        fontColour={fontColour}
-                        stepColour={stepColour}
-                      />
-                      <ChangeColourModal
-                        open={colourModal}
-                        onClose={toggleColourModal}
-                        setStepColour={setStepColour}
-                        setFontColour={setFontColour}
-                      />
-                    </Grid>
-                  </div>
-                </div>
+                {/* Title and Colour Customise Menu Buttons */}
+                <FirstThenMenu variant="h6" gutterBottom>
+                  <EditTitleComponent
+                    text={text}
+                    changeText={setText}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    nameError={nameError}
+                    setNameError={setNameError}
+                    defaultText="Insert First-Then Support Name"
+                    errorMsg="Please enter a name for this First-Then visual support"
+                  />
+                  <Button onClick={toggleColourModal}>Customise Colour</Button>
+                </FirstThenMenu>
+                <Centred>
+                  <PrintBox>
+                    {/* First Box */}
+                    <TaskStep
+                      token={token}
+                      key={1}
+                      title="First"
+                      updateStepName={(newName) => setFirstname(newName)}
+                      updateStepImage={(imageFirst) => setImageFirst(imageFirst)}
+                      stepImages={imageFirst}
+                      stepNames={firstName}
+                      fontColour={fontColour}
+                      stepColour={stepColour}
+                      showCancel={false}
+                      showTime={false}
+                      label={"First Step"}
+                      totalSteps={0}
+                      count={0}
+                      id={0}
+                    />
+                    <Arrow style={{ width: '20px' }}/>
+                    {/* Then Box */}
+                    <TaskStep
+                      token={token}
+                      key={1}
+                      title="Then"
+                      updateStepName={(newName) => setThenName(newName)}
+                      updateStepImage={(imageThen) => setImageThen(imageThen)}
+                      stepImages={imageThen}
+                      stepNames={thenName}
+                      fontColour={fontColour}
+                      stepColour={stepColour}
+                      showCancel={false}
+                      showTime={false}
+                      label={"Then Step"}
+                      totalSteps={0}
+                      count={0}
+                      id={1}
+                    />
+                    {/* Modal that pops up when you click on customise colour */}
+                    <ChangeColourModal
+                      open={colourModal}
+                      onClose={toggleColourModal}
+                      setStepColour={setStepColour}
+                      setFontColour={setFontColour}
+                    />
+                  </PrintBox>
+                </Centred>
               </CardContent>
-            </Card>
+            </FirstThenCard>
           </Grid>
         </Grid>
-      </div>
+      </StepSupportWrapper>
     </>
   );
 }

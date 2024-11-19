@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Grid, Typography, Card, TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import RecentSupports from "../components/RecentSupports.jsx";
 import "../App.css";
 import LoadingSpinner from "./LoadingSpinner.jsx";
@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import NotificationPopup from "../components/NotificationPopup";
 import { useNavigate, useParams } from "react-router-dom";
 import { getVisualSupportConfig } from "./VisualSupportConfig.jsx";
+import { SnapShotStyleCard, Title, InnerSnapShotBox, NoSupportsTypography } from "../Wrappers.jsx";
 
 function RecentSupportsBox({
   profileData,
@@ -23,10 +24,13 @@ function RecentSupportsBox({
   const navigate = useNavigate();
   const { profileID } = useParams();
 
+  // Select message to load
+  // Will load up message if user profile has 0 Visual Supports
   const loadingMessage = profileData
     ? `Loading ${profileData.name}'s recent supports...`
     : "Loading recent supports...";
 
+  // API Request to delete a Visual Support
   const handleDeleteSupport = async (supportId) => {
     try {
       await axios.delete(`http://localhost:5005/delete_support/${supportId}`, {
@@ -80,6 +84,9 @@ function RecentSupportsBox({
     
   };
 
+  // Function to filter out the Visual Supports.
+  // Called when the user either types something in the search box
+  // Or clicks on the category checkboxes
   const filteredSupports = useMemo(() => {
     if (!supportData) return [];
     if (!searchQuery) return supportData;
@@ -103,22 +110,10 @@ function RecentSupportsBox({
 
   return (
     <>
-      <Card
-        className="snapshot-style"
-        style={{
-          height: "700px",
-          fontFamily: "Poppins",
-          borderRadius: "15px",
-          color: "#000CA4",
-          padding: "20px",
-        }}
-      >
-        <Typography
-          variant="h6"
-          style={{ marginBottom: "10px", fontFamily: "Poppins" }}
-        >
+      <SnapShotStyleCard>
+        <Title variant="h6" sx={{ textAlign: "left" }}>
           <b>{title}</b>
-        </Typography>
+        </Title>
 
         {/* Search Input */}
         <TextField
@@ -132,21 +127,13 @@ function RecentSupportsBox({
           }}
         />
 
-        <div
-          style={{
-            overflowY: "auto",
-            height: "600px",
-            padding: "15px",
-          }}
-        >
+        {/* Box containing the recent support cards
+            clicking on them will redirect to the viewing page */}
+        <InnerSnapShotBox>
           {filteredSupports.length === 0 ? (
-            <Typography
-              variant="body1"
-              align="center"
-              style={{ marginTop: "20px", color: "#666" }}
-            >
+            <NoSupportsTypography variant="body1">
               {noSupportMessage}
-            </Typography>
+            </NoSupportsTypography>
           ) : (
             <Grid container spacing={2} alignItems="stretch">
               {filteredSupports.map((support) => (
@@ -162,9 +149,10 @@ function RecentSupportsBox({
               ))}
             </Grid>
           )}
-        </div>
-      </Card>
+        </InnerSnapShotBox>
+      </SnapShotStyleCard>
 
+      {/* Notification Popup when the user profile has been changed */}
       {showNotification && (
         <NotificationPopup
           message={notificationMessage}

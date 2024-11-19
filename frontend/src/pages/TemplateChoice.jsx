@@ -2,46 +2,46 @@ import '../App.css'
 import React from 'react';
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import TemplateChoiceCard from '../components/TemplateChoiceCard';
+import { PageWrapperStyle } from '../Wrappers.jsx';
+import { Title } from "../Wrappers.jsx";
+
+// Default Data that will be passed into the Edit/Create Visual Support Pages
+// When creating a new visual support
+const getMakeEmpty = (category) => {
+  switch (category) {
+    case "First-Then":
+      return { text: '', image: '', imageFirst: null, imageThen: null, firstName: '', thenName: '', category: '', isPublic: false };
+    default:
+      return { text: '', image: '', steps: [], stepImages: [], stepNames: [], stepTimes: [], category: '', isPublic: false };
+  }
+};
 
 function TemplateChoice({ token }) {
   const { profileID } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
-
-  const getMakeEmpty = (category) => {
-    switch (category) {
-      case "First-Then":
-        return { text: '', image: '', imageFirst: '', imageThen: '', firstName: '', thenName: '', category: '' };
-      default:
-        return { text: '', image: '', steps: [], stepImages: [], stepNames: [], stepTimes: [], category: '' };
-    }
-  };
-  
   const makeEmpty = getMakeEmpty(state.type);
   const supportType = { state: state, data: makeEmpty };
 
   return (
     <>
       <Navbar profileID={profileID}/>
-      <div class="page-wrapper-style">
+      <PageWrapperStyle>
         <br />
-        <Typography 
-					variant="h3" 
-					align="center" 
-					gutterBottom 
-					style={{ 
-						fontFamily: "Poppins", 
-						color: "#000CA4" 
-					}}
-				>
+        <Title variant="h3" align="center" gutterBottom>
           <b>{state.title}</b>
-        </Typography>
+        </Title>
         <br />
+        {/* Container contaning the Three Buttons for 3 choices:
+            - From Scratch (User can add any element anywhere on a 'canvas')
+            - From Template (Structured template users can add their own photos to)
+            - From existing template
+        */}
         <Grid 
           container
           spacing={4}
@@ -73,7 +73,7 @@ function TemplateChoice({ token }) {
             />
           </Grid>
         </Grid>
-      </div>
+      </PageWrapperStyle>
     </>
   );
 }

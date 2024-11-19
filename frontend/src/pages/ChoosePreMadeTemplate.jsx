@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { Grid, Typography, Box, Card } from "@mui/material";
+import { Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useNotification } from "../services/notificationService";
 import RecentSupports from "../components/RecentSupports";
+import { Title, PageWrapperStyle, SnapShotStyleCard, InnerSnapShotBox } from "../Wrappers.jsx";
 
 function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
-	const { profileID } = useParams();
-	const [supportData, setSupportData] = useState([]);
-	const [images, setImages] = useState(null);
+  const { profileID } = useParams();
 	const { notify } = useNotification();
   const { state } = useLocation(); // Comes from TemplateChoice.jsx
   const navigate = useNavigate();
+
+  // Visual Support Data
+  const [supportData, setSupportData] = useState([]);
+	const [images, setImages] = useState(null);
 
   // Pretend this is the Pre-Made Template (ACTUAL DATA WILL COME FROM API REQUEST)
   const testSupport = { text: 'How to banana', image: 'https://media.istockphoto.com/id/619046500/photo/bananas.jpg?s=612x612&w=0&k=20&c=p5-v1iKwhOhw5cFjfx83qgaZcOBSVpUuicZi4VIGF2Y=', steps: [ { id: 1 }, { id: 2 }], stepImages: [null, null], stepNames: ["hey", "bob"], stepTimes: [null, null], category: '' }
@@ -41,7 +44,7 @@ function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
     fetchClient();
   }, [profileID, token]);
 	
-	// Fetch images
+	// API REQUEST to Fetch images
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -66,52 +69,14 @@ function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
   return (
     <>
       <Navbar profileID={profileID} />
-      <div className="page-wrapper-style">
+      <PageWrapperStyle>
         <br />
-				<br />
-        <Box
-          sx={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: "Poppins",
-              color: "#000CA4",
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-              width: '100%'
-            }}
-          >
+          <Title variant="h3" align="center" gutterBottom>
             <b>Choose Pre-Made {state.type}</b>
-          </Typography>
-        </Box>
-				<br />
+          </Title>
 				<br/>
-        <Card
-          className="snapshot-style"
-          style={{
-            height: "700px",
-            fontFamily: "Poppins",
-            borderRadius: "15px",
-            color: "#000CA4",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              overflowY: "auto",
-              height: "600px",
-              padding: "15px",
-            }}
-          >
+        <SnapShotStyleCard>
+          <InnerSnapShotBox>
             <Grid container spacing={2} alignItems="stretch">
               {supportData.map((support) => (
                 <Grid item key={support.support_id} xs={12} sm={6} md={4}>
@@ -123,10 +88,10 @@ function ChoosePreMadeTemplate ({ token, setTokenFunc }) {
                 </Grid>
               ))}
             </Grid>
-          </div>
-        </Card>
+          </InnerSnapShotBox>
+        </SnapShotStyleCard>
 				<br />
-      </div>
+      </PageWrapperStyle>
     </>
   );
 }

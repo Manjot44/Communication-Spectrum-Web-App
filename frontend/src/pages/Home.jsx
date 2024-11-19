@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import {
-  Grid,
-  Typography,
-  Modal,
-  Box,
-} from "@mui/material";
+import { Grid, Modal } from "@mui/material";
 import Navbar from "../components/Navbar";
 import EditProfilePictureModal from "../components/EditProfilePictureModal";
 import EnterUserDetails from "../pages/EnterUserDetails";
@@ -16,23 +11,7 @@ import RecentSupportsBox from "../components/RecentSupportsBox.jsx";
 import "../App.css";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import NotificationPopup from "../components/NotificationPopup.jsx";
-
-// Styles
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  maxWidth: "1600px",
-  height: "auto",
-  maxHeight: "80vh",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  overflowY: "auto",
-};
+import { Title, PageWrapperStyle, EditUserBox } from "../Wrappers.jsx";
 
 function Home({ token }) {
   const { profileID } = useParams();
@@ -44,6 +23,8 @@ function Home({ token }) {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
+  // API Request to fetch the user profiles account data
+  // Runs when the page is loading
   useEffect(() => {
     const fetchClient = async () => {
       try {
@@ -82,6 +63,7 @@ function Home({ token }) {
     setNewProfilePic(base64Image);
   };
 
+  // API Request to handle
   const handleUpload = async () => {
     try {
       await axios.put(
@@ -109,7 +91,8 @@ function Home({ token }) {
     }
   };
 
-  // New function to handle saving profile changes
+  // New function to handle user profile detail changes
+  // Is called when the save button (after clicking edit profile) is clicked
   const handleSaveProfile = async (updatedData) => {
     try {
       await axios.put(
@@ -145,16 +128,13 @@ function Home({ token }) {
           onClose={() => setShowNotification(false)}
         />
       )}
-      <div className="page-wrapper-style">
+      <PageWrapperStyle>
         <br />
-        <Typography
-          variant="h3"
-          align="center"
-          gutterBottom
-          style={{ fontFamily: "Poppins", color: "#000CA4" }}
-        >
+        <Title variant="h3">
           <b>Client Portal</b>
-        </Typography>
+        </Title>
+        {/* Menu displaying the differnet Visual Types where
+            user is able to select which one they want to make */}
         <VisualSupportTypes profileID={profileID} />
         <Grid
           container
@@ -163,16 +143,20 @@ function Home({ token }) {
           justifyContent="center"
         >
           <Grid item xs={12} md={3}>
+            {/* Snapshot of the user profile with basic details
+                such as name, interests and key environments. These are editable */}
             <SupportSnapshot
               profileData={profileData}
               openEditModal={openEditModal}
               setOpenEditModal={setOpenEditModal}
               handleProfilePictureClick={handleProfilePictureClick}
               handleProfilePictureUpload={handleProfilePictureUpload}
-              handleSaveProfile={handleSaveProfile} // Pass handleSaveProfile to SupportSnapshot
+              handleSaveProfile={handleSaveProfile}
             />
           </Grid>
           <Grid item xs={12} md={9}>
+            {/* Box displaying the recent visual supports created 
+                by the professional for the user */}
             <RecentSupportsBox
               profileData={profileData}
               supportData={supportData}
@@ -183,8 +167,7 @@ function Home({ token }) {
           </Grid>
         </Grid>
         <br />
-      </div>
-
+      </PageWrapperStyle>
       {/* Edit Profile Picture Modal */}
       <EditProfilePictureModal
         open={openEditModal}
@@ -195,19 +178,18 @@ function Home({ token }) {
         handleUpload={handleUpload}
         setProfileData={setProfileData}
       />
-
       {/* Edit Details Modal */}
       <Modal
         open={openEditDetailsModal}
         onClose={() => setOpenEditDetailsModal(false)}
       >
-        <Box sx={modalStyle}>
+        <EditUserBox>
           <EnterUserDetails
             token={token}
             profileData={profileData}
             isEditMode={true}
           />
-        </Box>
+        </EditUserBox>
       </Modal>
     </>
   );

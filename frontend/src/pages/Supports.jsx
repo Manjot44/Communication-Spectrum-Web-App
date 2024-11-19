@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography } from "@mui/material";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import "../App.css";
@@ -8,7 +8,6 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { useNotification } from "../services/notificationService";
 import RecentSupportsBox from "../components/RecentSupportsBox";
 import CategorySelectCheckboxes from "../components/CategorySelectCheckboxes";
-import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -16,6 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import VisualSupportTypes from "../components/VisualSupportTypes.jsx";
+import { PageWrapperStyle, Title, SupportsHeader, AddSupport, SharedAccordion } from "../Wrappers";
 
 function Supports({ token }) {
   const { profileID } = useParams();
@@ -35,6 +35,7 @@ function Supports({ token }) {
     setOpen(false);
   };
 
+  // Message that pops up when there are no Visual Supports to Load
   const noSupportMessage =
     selectedCategories.length > 0
       ? `${
@@ -52,6 +53,7 @@ function Supports({ token }) {
     );
   };
 
+  // UseEffect to fetch user profiles Visual Supports from the Database
   useEffect(() => {
     const fetchClient = async () => {
       try {
@@ -116,54 +118,25 @@ function Supports({ token }) {
   return (
     <>
       <Navbar profileID={profileID} />
-      <div className="page-wrapper-style">
+      <PageWrapperStyle>
         <br />
-        <Box
-          sx={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: "Poppins",
-              color: "#000CA4",
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-            }}
-          >
+        <SupportsHeader>
+          <Title variant="h3" style={{ textAlign: "center" }}>
             <b>Visual Supports Gallery</b>
-          </Typography>
-          <Button
-            sx={{ ml: "auto", backgroundColor: "#ff7c33" }}
-            onClick={handleClickOpen}
-            variant="contained"
-          >
+          </Title>
+          <AddSupport onClick={handleClickOpen} variant="contained">
             + Add Visual Support
-          </Button>
-        </Box>
+          </AddSupport>
+        </SupportsHeader>
         <br />
-        <Accordion
-          sx={{
-            borderRadius: "15px",
-            fontFamily: "Poppins",
-            border: "none",
-            color: "#000CA4",
-          }}
-        >
+        {/* Drop down menu where user can select filter categories */}
+        <SharedAccordion>
           <AccordionSummary
             expandIcon={<ArrowDownwardIcon />}
             aria-controls="panel1-content"
             id="panel2-header"
-            style={{ border: "none" }}
           >
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
               <b>Filter by Category</b>
             </Typography>
           </AccordionSummary>
@@ -174,8 +147,9 @@ function Supports({ token }) {
               />
             </Typography>
           </AccordionDetails>
-        </Accordion>
+        </SharedAccordion>
         <br />
+        {/* Box containing user profiles Visual Support Templates */}
         <RecentSupportsBox
           profileData={profileData}
           supportData={filteredSupportData}
@@ -185,7 +159,9 @@ function Supports({ token }) {
           noSupportMessage={noSupportMessage}
         />
         <br />
-      </div>
+      </PageWrapperStyle>
+      {/* Small window that opens when user clicks on Add Visual Support
+          Users able to choose what type of visual support they want to make */}
       <Dialog
         open={open}
         onClose={handleClose}

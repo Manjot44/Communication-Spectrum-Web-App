@@ -6,23 +6,23 @@ import TaskStepHorizontal from "./TaskStepHorizontal";
 function LoadTaskSteps({
 	token,
   title,
-  stepImages,
-  stepNames,
-  stepTimes,
   isHorizontal,
   removeStep,
+  deleteStepImageChange,
   updateStepImage,
   updateStepName,
   updateStepTime,
-  deleteStepImageChange,
+  stepImages,
+  stepNames,
+  stepTimes,
+  onMoveLeft,
+  onMoveRight,
+  fontColour,
+  stepColour,
   showCancel,
   showTime,
   label,
-  fontColour,
-  stepColour,
   totalSteps,
-  onMoveLeft,
-  onMoveRight
 }) {
   return (
     <>
@@ -31,48 +31,49 @@ function LoadTaskSteps({
           <TaskStepHorizontal
             token={token}  
             key={index}
-            index={`${title} ${index + 1}`}
             image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
-            setImage={(newImage) => updateStepImage(index, newImage)}
             deleteImage={() => deleteStepImageChange(index)}
-            setName={(newName) => updateStepName(index, newName)}
-            stepName={stepNames[index]}
-            setTime={(newTime) => updateStepTime(index, newTime)}
-            stepTime={stepTimes[index]}
+            count={index}
+            updateStepImage={(newImage) => updateStepImage(index, newImage)}
+            updateStepName={(newName) => updateStepName(index, newName)}
+            updateStepTime={(newTime) => updateStepTime(index, newTime)}
+            stepImages={stepImages[index]}
+            stepNames={stepNames[index]}
+            stepTimes={stepTimes[index]}
+            onMoveLeft={() => onMoveLeft(index)}
+            onMoveRight={() => onMoveRight(index)}
+            fontColour={fontColour}
+            stepColour={stepColour}
             showCancel={showCancel}
             showTime={showTime}
             label={label}
-            fontColour={fontColour}
-            stepColour={stepColour}
-            count={index}
             totalSteps={totalSteps}
-            onMoveLeft={onMoveLeft}
-            onMoveRight={onMoveRight}
+            id={index}
           />
         ) : (
           <TaskStep
             token={token}
             key={index}
-            index={`${title} ${index + 1}`}
             title={`${title} ${index + 1}`}
-            image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
-            setImage={(newImage) => updateStepImage(index, newImage)}
             deleteImage={() => deleteStepImageChange(index)}
-            setName={(newName) => updateStepName(index, newName)}
-            stepName={stepNames[index]}
-            setTime={(newTime) => updateStepTime(index, newTime)}
-            stepTime={stepTimes[index]}
-            label={label}
-            showCancel={showCancel}
-            showTime={showTime}
+            count={index}
+            updateStepImage={(newImage) => updateStepImage(index, newImage)}
+            updateStepName={(newName) => updateStepName(index, newName)}
+            updateStepTime={(newTime) => updateStepTime(index, newTime)}
+            stepImages={stepImages[index]}
+            stepNames={stepNames[index]}
+            stepTimes={stepTimes[index]}
+            onMoveLeft={() => onMoveLeft(index)}
+            onMoveRight={() => onMoveRight(index)}
             fontColour={fontColour}
             stepColour={stepColour}
-            count={index}
+            showCancel={showCancel}
+            showTime={showTime}
+            label={label}
             totalSteps={totalSteps}
-            onMoveLeft={onMoveLeft}
-            onMoveRight={onMoveRight}
+            id={index}
           />
         )
       )}
