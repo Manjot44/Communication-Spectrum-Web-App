@@ -1,5 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Fade, Paper } from "@mui/material";
+import { styled } from "@mui/material";
+
+const RedBox = styled(Paper)({
+  position: "fixed",
+  bottom: 30,
+  right: 30,
+  padding: "16px 24px",
+  borderRadius: "8px",
+  backgroundColor: "#BF0603",
+  color: "white",
+  zIndex: 1500,
+  minWidth: "250px",
+  textAlign: "center",
+  boxShadow: 3,
+  overflow: "hidden",
+  cursor: "pointer",
+});
+
+const WhiteBar = styled(Box)({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  height: "4px",
+  backgroundColor: "white",
+  transition: "width 50ms linear",
+});
 
 const NotificationPopup = ({ message, duration = 5000, onClose }) => {
   const [visible, setVisible] = useState(true);
@@ -31,41 +57,12 @@ const NotificationPopup = ({ message, duration = 5000, onClose }) => {
 
   return (
     <Fade in={visible} timeout={600}>
-      <Paper
-        onClick={handleClose}
-        elevation={3}
-        sx={{
-          position: "fixed",
-          bottom: 30,
-          right: 30,
-          padding: "16px 24px",
-          borderRadius: "8px",
-          bgcolor: "#BF0603",
-          color: "white",
-          zIndex: 1500,
-          minWidth: "250px",
-          textAlign: "center",
-          boxShadow: 3,
-          overflow: "hidden",
-          cursor: "pointer",
-        }}
-      >
+      <RedBox onClick={handleClose} elevation={3}>
         <Typography variant="body1" sx={{ fontFamily: "Poppins" }}>
           {message}
         </Typography>
-
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            height: "4px",
-            width: `${progress}%`,
-            bgcolor: "white",
-            transition: "width 50ms linear",
-          }}
-        />
-      </Paper>
+        <WhiteBar sx={{ width: `${progress}%` }}/>
+      </RedBox>
     </Fade>
   );
 };

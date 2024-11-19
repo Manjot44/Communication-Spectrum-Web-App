@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TextFieldComponent from "../components/TextFieldComponent";
 import "../App.css";
 import Logo from "../assets/Mycommsproblue.png";
+import { DarkBlueButton, LoginText, LoginFormBox, LoginBackground, LoginStack } from "../Wrappers.jsx";
 
 function Register({ setTokenFunc }) {
   const [name, setName] = React.useState("");
@@ -61,68 +61,42 @@ function Register({ setTokenFunc }) {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css?family=Poppins"
-        rel="stylesheet"
-      ></link>
-      <div
-        id="background-container"
-        class="d-flex justify-content-center align-items-center login-background"
-      >
-        <div id="outside-box" class="mx-auto login-form">
-          <img src={Logo} alt="MyComms Logo" class="login-logo" />
-          <h3 class="login-text">Create an account</h3>
-
-          <TextFieldComponent
-            label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <br />
-          <TextFieldComponent
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <br />
-          <br />
-          <TextFieldComponent
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={handleKeyDown}
-            type="password"
-          />
-          <br />
-          <br />
-          <TextFieldComponent
-            label="Confirm Password"
-            value={confirmPass}
-            onChange={(e) => setConfirmPass(e.target.value)}
-            onKeyDown={handleKeyDown}
-            type="password"
-          />
-          <br />
-          <br />
-
-          <Button
-            onClick={newUserRequest}
-            variant="contained"
-            style={{
-              backgroundColor: "#000CA4",
-              width: "75%",
-              borderRadius: "20px",
-              fontFamily: "Poppins",
-            }}
-          >
-            Register
-          </Button>
-          <br />
-          <br />
-          <p>
+      <LoginBackground>
+        <LoginFormBox>
+          <LoginStack spacing={2.5}>
+            <img src={Logo} alt="MyComms Logo" class="login-logo" />
+            <LoginText>
+              Create an account
+            </LoginText>
+            <TextFieldComponent
+              label="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <TextFieldComponent
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <TextFieldComponent
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              type="password"
+            />
+            <TextFieldComponent
+              label="Confirm Password"
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
+              onKeyDown={handleKeyDown}
+              type="password"
+            />
+            <DarkBlueButton onClick={newUserRequest} variant="contained">
+              Register
+            </DarkBlueButton>
             <a
               class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
               href="/"
@@ -130,9 +104,9 @@ function Register({ setTokenFunc }) {
             >
               Already have an account? <b>Log in</b>
             </a>
-          </p>
-        </div>
-      </div>
+          </LoginStack>
+        </LoginFormBox>
+      </LoginBackground>
     </>
   );
 }

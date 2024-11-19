@@ -1,11 +1,14 @@
 import React from "react";
-import { Card, Typography, CardContent, Button } from "@mui/material";
+import { Typography, CardContent, Stack, Checkbox } from "@mui/material";
 import "../App.css";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import DropdownComponent from "../components/DropdownComponent";
 import { DatePicker } from "@mui/x-date-pickers";
 import VisualSupportImage from "./VisualSupportImage";
+import { LeftMenuCard, CreateSupportButton } from "../Wrappers";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 function SelectDateCategoryComponent({
   token,
@@ -17,111 +20,107 @@ function SelectDateCategoryComponent({
   image,
   setImage,
   showCategory,
+  setIsPublic
 }) {
   return (
     <>
-      <Card className="task-analyses-create-options" style={{ height: "87vh" }}>
+      <LeftMenuCard>
         <CardContent>
-          <Typography
-            variant="h5"
-            component="div"
-            style={{ fontFamily: "Poppins" }}
-          >
-            <b>Select Date</b>
-          </Typography>
-          <br />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={date}
-              onChange={changeDate}
-              sx={{ width: "100%" }}
-            />
-          </LocalizationProvider>
-          <br />
-          <br />
-          <Typography
-            variant="h5"
-            component="div"
-            style={{ fontFamily: "Poppins" }}
-          >
-            <b>Select Thumbnail</b>
-          </Typography>
-          <br />
-          <VisualSupportImage
-            token={token}
-            image={image}
-            setImage={setImage}
-            uniqueID={-1}
-            imgHeight={"35vh"}
-            deleteImage={() => setImage(null)}
-          />
-          <br />
-          {showCategory && (
-            <>
-              <Typography
-                variant="h5"
-                component="div"
-                style={{ fontFamily: "Poppins" }}
-              >
-                <b>Select Category</b>
-              </Typography>
-              <div
-                className="d-flex align-items-center"
-                style={{
-                  height: "75px",
-                  backgroundColor: "white",
-                  padding: "5px",
-                }}
-              >
-                <DropdownComponent
-                  id="country-form"
-                  label="Select Category"
-                  value={category}
-                  onChange={changeCategory}
-                  options={[
-                    { value: "Self-Care", label: "Self-Care" },
-                    { value: "Routines", label: "Routines" },
-                    { value: "School", label: "School" },
-                    { value: "Work", label: "Work" },
-                    { value: "Fun Activities", label: "Fun Activities" },
-                    {
-                      value: "Emotional Regulation",
-                      label: "Emotional Regulation",
-                    },
-                    {
-                      value: "Beliefs and Practices",
-                      label: "Beliefs and Practices",
-                    },
-                    {
-                      value: "Health and Wellbeing",
-                      label: "Health and Wellbeing",
-                    },
-                    { value: "Transport", label: "Transport" },
-                    { value: "Events", label: "Events" },
-                    { value: "Places", label: "Places" },
-                    { value: "Other", label: "Other" },
-                  ]}
-                  width="100%"
-                />
-              </div>
-              <br />
-            </>
-          )}
+          <Stack spacing={1.5}>
+            <Typography
+              variant="h5"
+              style={{ fontFamily: "Poppins" }}
+            >
+              <b>Select Date</b>
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={date}
+                onChange={changeDate}
+                sx={{ width: "100%" }}
+              />
+            </LocalizationProvider>
+            <Typography
+              variant="h5"
+              style={{ fontFamily: "Poppins" }}
+            >
+              <b>Select Thumbnail</b>
+            </Typography>
+            <div>
+              <VisualSupportImage
+                image={image}
+                setImage={setImage}
+                uniqueID={-1}
+                imgHeight={"35vh"}
+                deleteImage={() => setImage(null)}
+              />
+            </div>
+            {showCategory && (
+              <>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  style={{ fontFamily: "Poppins" }}
+                >
+                  <b>Select Category</b>
+                </Typography>
+                <div
+                  className="d-flex align-items-center"
+                  style={{
+                    height: "75px",
+                    backgroundColor: "white",
+                    padding: "5px",
+                  }}
+                >
+                  <DropdownComponent
+                    id="country-form"
+                    label="Select Category"
+                    value={category}
+                    onChange={changeCategory}
+                    options={[
+                      { value: "Self-Care", label: "Self-Care" },
+                      { value: "Routines", label: "Routines" },
+                      { value: "School", label: "School" },
+                      { value: "Work", label: "Work" },
+                      { value: "Fun Activities", label: "Fun Activities" },
+                      {
+                        value: "Emotional Regulation",
+                        label: "Emotional Regulation",
+                      },
+                      {
+                        value: "Beliefs and Practices",
+                        label: "Beliefs and Practices",
+                      },
+                      {
+                        value: "Health and Wellbeing",
+                        label: "Health and Wellbeing",
+                      },
+                      { value: "Transport", label: "Transport" },
+                      { value: "Events", label: "Events" },
+                      { value: "Places", label: "Places" },
+                      { value: "Other", label: "Other" },
+                    ]}
+                    width="100%"
+                  />
+                </div>
+                <br />
+              </>
+            )}
+            
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Make Visual Support Public"
+                onChange={setIsPublic}
+              />
+            </FormGroup>
 
-          <br />
-          <Button
-            variant="contained"
-            style={{
-              width: "100%",
-              backgroundColor: "#26c3ba",
-              fontFamily: "Poppins",
-            }}
-            onClick={handleCreate}
-          >
-            Create Visual Support
-          </Button>
+            <CreateSupportButton variant="contained" onClick={handleCreate}>
+              Create Visual Support
+            </CreateSupportButton>
+          </Stack>
         </CardContent>
-      </Card>
+      </LeftMenuCard>
     </>
   );
 }

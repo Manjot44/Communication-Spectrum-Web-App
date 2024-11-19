@@ -5,26 +5,14 @@ import Grid from "@mui/material/Grid2";
 import { useNotification } from "../services/notificationService";
 import { useParams } from "react-router-dom";
 import GalleryPhotoComponent from "./GalleryPhotoComponent";
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "63%",
-  height: "70%",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "8px",
-  textAlign: "center",
-};
+import { ChooseFromGalleryBox } from "../Wrappers";
 
 function GalleryModal ({ token, open, onClose, onSelectImage }) {
 	const { profileID } = useParams();
 	const [images, setImages] = useState(null);
 	const { notify } = useNotification();
 	const notifyRef = useRef(notify);
+	const { token } = useContext(AuthContext);
 
 	// Fetch images
   useEffect(() => {
@@ -49,7 +37,7 @@ function GalleryModal ({ token, open, onClose, onSelectImage }) {
 	return (
 		<>
 			<Modal open={open} onClose={onClose}>
-				<Box sx={modalStyle}>
+				<ChooseFromGalleryBox>
 					<Typography variant="h4" component="h2" gutterBottom>
 						<b>{"Choose Image From Gallery"}</b>
 					</Typography>
@@ -68,7 +56,7 @@ function GalleryModal ({ token, open, onClose, onSelectImage }) {
 							Cancel
 						</Button>
 					</Box>
-				</Box>
+				</ChooseFromGalleryBox>
 			</Modal>
 		</>
 	);

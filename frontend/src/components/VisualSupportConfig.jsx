@@ -28,7 +28,7 @@ export const getVisualSupportConfig = (type, profileID) => {
       label: "Task Title",
       showCategory: false,
     },
-    "Weekly Calendar": { 
+    "Weekly Calendar": {
       title: "Create New Weekly Calendar",
       scratch: `/FromScratch/${profileID}`,
       temp: `/weeklycalendars/${profileID}`,

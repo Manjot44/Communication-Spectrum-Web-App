@@ -1,23 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
 import ProfileBox from "./ProfileBox";
 import ProfessionalBox from "./ProfessionalBox.jsx";
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "63%",
-  height: "70%",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "8px",
-  textAlign: "center",
-};
+import { ShareModalBox, PoppinsButton } from "../Wrappers.jsx";
 
 function ShareModal({ open, onClose, onConfirm, message, description, token, profileType }) {
   const [profiles, setProfileData] = useState([]);
@@ -69,6 +56,9 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
 		console.log(selectedProfileIds);
   };
 
+  // Function to render the user profiles.
+  // Based off profileType variable, either load
+  // User profile or professional profiles
   const renderProfileComponents = () => {
     switch (profileType) {
       case 'User':
@@ -91,63 +81,57 @@ function ShareModal({ open, onClose, onConfirm, message, description, token, pro
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={modalStyle}>
-        <Typography variant="h4" component="h2" gutterBottom>
+      <ShareModalBox>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ fontFamily: 'Poppins' }}>
           <b>{message || "Are you sure you want to proceed?"}</b>
         </Typography>
 
         {/* Render description if provided */}
         {description && (
-          <Typography variant="body1" color="textSecondary" sx={{ mt: 1 }}>
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 1, fontFamily: 'Poppins' }}>
             <b>{description}</b>
           </Typography>
         )}
         <br />
-        <Grid container spacing={2} sx={{ overflowY: 'scroll', height: "70%" }}>
-          {/* {profiles &&
-            profiles.map((profile) => (
-              <ProfileBox
-                key={profile.user_id}
-                profileName={profile.name}
-                profilePicture={profile.profile_pic}
-                profileID={profile.user_id}
-                checked={selectedProfileIds.includes(profile.user_id)}
-                onChange={() => handleCheckboxToggle(profile.user_id)}
-              />
-          ))}
 
-          <ProfessionalBox/> */}
+        {/* Box that renders the profiles */}
+        <Grid container spacing={2} sx={{ overflowY: 'scroll', height: "70%" }}>
           {renderProfileComponents(profileType)}
         </Grid>
 
+        {/* List of buttons at the bottom of the modal */}
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
-					<Button
+					<PoppinsButton
             variant="contained"
             color="success"
             onClick={onConfirm}
             sx={{ width: "150px" }}
           >
             Share
-          </Button>
-					<Button
+          </PoppinsButton>
+					<PoppinsButton
             variant="contained"
             onClick={handleSelectAll}
             sx={{ width: "150px" }}
           >
             Select All
-          </Button>
-          <Button
+          </PoppinsButton>
+          <PoppinsButton
             variant="contained"
             onClick={handleDeselectAll}
             sx={{ width: "150px" }}
           >
             Deselect All
-          </Button>
-          <Button variant="outlined" onClick={onClose} sx={{ width: "150px" }}>
+          </PoppinsButton>
+          <PoppinsButton 
+            variant="outlined"
+            onClick={onClose}
+            sx={{ width: "150px" }}
+          >
             Cancel
-          </Button>
+          </PoppinsButton>
         </Box>
-      </Box>
+      </ShareModalBox>
     </Modal>
   );
 }

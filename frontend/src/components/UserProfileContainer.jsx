@@ -4,6 +4,14 @@ import { Grid, Box } from "@mui/material";
 import UserProfileCircles from "../components/UserProfileCircles";
 import ConfirmationModal from "../components/ConfirmationModal";
 import ShareModal from "./ShareModal";
+import { styled } from "@mui/system";
+
+const ContainerBox = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  maxWidth: "90%",
+  margin: "0 auto",
+});
 
 function UserProfileContainer({ token }) {
   const [profiles, setProfiles] = useState([]);
@@ -49,16 +57,7 @@ function UserProfileContainer({ token }) {
 
   return (
     <>
-      <Box
-        display="flex"
-        justifyContent="center"
-        sx={{
-          maxWidth: "90%",
-          margin: "0 auto",
-          mt: 4,
-          padding: 2,
-        }}
-      >
+      <ContainerBox sx={{ mt: 4, padding: 2 }}>
         <Grid
           container
           spacing={2}
@@ -80,7 +79,7 @@ function UserProfileContainer({ token }) {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </ContainerBox>
 
       <ConfirmationModal
         open={isConfirmModalOpen}

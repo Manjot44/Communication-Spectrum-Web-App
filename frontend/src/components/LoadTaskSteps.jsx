@@ -7,23 +7,12 @@ function LoadTaskSteps({
 	token,
   steps,
   title,
-  stepImages,
-  stepNames,
-  stepTimes,
   isHorizontal,
   removeStep,
+  deleteStepImageChange,
   updateStepImage,
   updateStepName,
-  updateStepTime,
-  deleteStepImageChange,
-  showCancel,
-  showTime,
-  label,
-  fontColour,
-  stepColour,
-  totalSteps,
-  onMoveLeft,
-  onMoveRight
+  updateStepTime
 }) {
   return (
     <>
@@ -33,47 +22,26 @@ function LoadTaskSteps({
             token={token}  
             key={step.id}
             index={`${title} ${index + 1}`}
-            image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
-            setImage={(newImage) => updateStepImage(index, newImage)}
             deleteImage={() => deleteStepImageChange(index)}
-            setName={(newName) => updateStepName(index, newName)}
-            stepName={stepNames[index]}
-            setTime={(newTime) => updateStepTime(index, newTime)}
-            stepTime={stepTimes[index]}
-            showCancel={showCancel}
-            showTime={showTime}
-            label={label}
-            fontColour={fontColour}
-            stepColour={stepColour}
             count={index}
-            totalSteps={totalSteps}
-            onMoveLeft={onMoveLeft}
-            onMoveRight={onMoveRight}
+            updateStepImage={(newImage) => updateStepImage(index, newImage)}
+            updateStepName={(newName) => updateStepName(index, newName)}
+            updateStepTime={(newTime) => updateStepTime(index, newTime)}
+            id={index}
           />
         ) : (
           <TaskStep
             token={token}
             key={step.id}
             index={`${title} ${index + 1}`}
-            title={`${title} ${index + 1}`}
-            image={stepImages[index]}
             removeStep={() => removeStep(index, step.id)}
-            setImage={(newImage) => updateStepImage(index, newImage)}
             deleteImage={() => deleteStepImageChange(index)}
-            setName={(newName) => updateStepName(index, newName)}
-            stepName={stepNames[index]}
-            setTime={(newTime) => updateStepTime(index, newTime)}
-            stepTime={stepTimes[index]}
-            label={label}
-            showCancel={showCancel}
-            showTime={showTime}
-            fontColour={fontColour}
-            stepColour={stepColour}
             count={index}
-            totalSteps={totalSteps}
-            onMoveLeft={onMoveLeft}
-            onMoveRight={onMoveRight}
+            updateStepImage={(newImage) => updateStepImage(index, newImage)}
+            updateStepName={(newName) => updateStepName(index, newName)}
+            updateStepTime={(newTime) => updateStepTime(index, newTime)}
+            id={index}
           />
         )
       )}
