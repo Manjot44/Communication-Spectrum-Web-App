@@ -250,19 +250,6 @@ function StepSupport({ token }) {
           </Grid>
           {/* Right hand Box, where the details of a Visual Support Are Displayed */}
           <Grid item xs={12} md={9}>
-            <context.Provider value={{
-              stepImages,
-              stepNames,
-              stepTimes,
-              onMoveLeft,
-              onMoveRight,
-              fontColour,
-              stepColour,
-              showCancel: true,
-              showTime: state.state?.showTime,
-              label: state.state?.label,
-              totalSteps: steps.length,
-            }}>
               <Card>
                 <CardContent>
                     {/* Header in Right hand box with buttons such as Print to pdf, customise colour etc. */}
@@ -296,6 +283,17 @@ function StepSupport({ token }) {
                               updateStepImage={updateStepImage}
                               updateStepName={updateStepName}
                               updateStepTime={updateStepTime}
+                              stepImages={stepImages}
+                              stepNames={stepNames}
+                              stepTimes={stepTimes}
+                              onMoveLeft={onMoveLeft}
+                              onMoveRight={onMoveRight}
+                              fontColour={fontColour}
+                              stepColour={stepColour}
+                              showCancel={true}
+                              showTime={state.state?.showTime}
+                              label={state.state?.label}
+                              totalSteps={steps.length}
                             />
                             {/* Modal that allows user to adjust colour of TaskStep component */}
                             <ChangeColourModal
@@ -310,7 +308,6 @@ function StepSupport({ token }) {
                     </Grid>
                 </CardContent>
               </Card>
-            </context.Provider>
           </Grid>
         </Grid>
       </StepSupportWrapper>

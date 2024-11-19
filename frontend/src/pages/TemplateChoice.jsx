@@ -15,7 +15,7 @@ import { Title } from "../Wrappers.jsx";
 const getMakeEmpty = (category) => {
   switch (category) {
     case "First-Then":
-      return { text: '', image: '', imageFirst: [null], imageThen: [null], firstName: [null], thenName: [null], category: '', isPublic: false };
+      return { text: '', image: '', imageFirst: null, imageThen: null, firstName: '', thenName: '', category: '', isPublic: false };
     default:
       return { text: '', image: '', steps: [], stepImages: [], stepNames: [], stepTimes: [], category: '', isPublic: false };
   }

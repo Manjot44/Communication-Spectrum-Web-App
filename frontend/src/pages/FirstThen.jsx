@@ -63,8 +63,8 @@ function FirstThen({ token, setTokenFunc }) {
           text,
           image,
           date,
-          stepImages: [imageFirst[0], imageThen[0]],
-          stepNames: [firstName[0], thenName[0]],
+          stepImages: [imageFirst, imageThen],
+          stepNames: [firstName, thenName],
           stepTimes: null,
           category,
           isHorizontal: null,
@@ -98,6 +98,7 @@ function FirstThen({ token, setTokenFunc }) {
               image={image}
               setImage={(image) => setImage(image)}
               setIsPublic={(e) => setIsPublic(e.target.value)}
+              showCategory={true}
             />
           </Grid>
           {/* First-Then Section */}
@@ -121,48 +122,42 @@ function FirstThen({ token, setTokenFunc }) {
                 <Centred>
                   <PrintBox>
                     {/* First Box */}
-                    <firstThenContext.Provider value={{
-                      stepImages: imageFirst,
-                      stepNames: firstName,
-                      fontColour,
-                      stepColour,
-                      showCancel: false,
-                      label: "First Step",
-                      totalSteps: 0,
-                    }}>
-                      <TaskStep
-                        token={token}
-                        key={0}
-                        index="First"
-                        updateStepName={(newName) => setFirstname([newName])}
-                        updateStepImage={(imageFirst) => setImageFirst([imageFirst])}
-                        firstThen={true}
-                        count={0}
-                        id={0}
-                      />
-                    </firstThenContext.Provider>
+                    <TaskStep
+                      token={token}
+                      key={1}
+                      title="First"
+                      updateStepName={(newName) => setFirstname(newName)}
+                      updateStepImage={(imageFirst) => setImageFirst(imageFirst)}
+                      stepImages={imageFirst}
+                      stepNames={firstName}
+                      fontColour={fontColour}
+                      stepColour={stepColour}
+                      showCancel={false}
+                      showTime={false}
+                      label={"First Step"}
+                      totalSteps={0}
+                      count={0}
+                      id={0}
+                    />
                     <Arrow style={{ width: '20px' }}/>
                     {/* Then Box */}
-                    <firstThenContext.Provider value={{
-                      stepImages: imageThen,
-                      stepNames: thenName,
-                      fontColour,
-                      stepColour,
-                      showCancel: false,
-                      label: "Then Step",
-                      totalSteps: 0,
-                    }}>
-                      <TaskStep
-                        token={token}
-                        key={1}
-                        index="Then"
-                        updateStepName={(newName) => setThenName([newName])}
-                        updateStepImage={(imageThen) => setImageThen([imageThen])}
-                        firstThen={true}
-                        count={0}
-                        id={1}
-                      />
-                    </firstThenContext.Provider>
+                    <TaskStep
+                      token={token}
+                      key={1}
+                      title="Then"
+                      updateStepName={(newName) => setThenName(newName)}
+                      updateStepImage={(imageThen) => setImageThen(imageThen)}
+                      stepImages={imageThen}
+                      stepNames={thenName}
+                      fontColour={fontColour}
+                      stepColour={stepColour}
+                      showCancel={false}
+                      showTime={false}
+                      label={"Then Step"}
+                      totalSteps={0}
+                      count={0}
+                      id={1}
+                    />
                     {/* Modal that pops up when you click on customise colour */}
                     <ChangeColourModal
                       open={colourModal}

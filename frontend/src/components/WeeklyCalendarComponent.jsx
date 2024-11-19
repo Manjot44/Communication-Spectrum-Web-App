@@ -1,6 +1,9 @@
 import React from 'react';
-import { Grid, Button, Typography, Card, CardContent } from '@mui/material';
+import { Button, Typography, Card, CardContent } from '@mui/material';
 import TaskStep from './TaskStep';
+import { createContext } from 'react';
+
+export const context = createContext(null);
 
 function WeeklyCalendarComponent({
   token,
@@ -52,36 +55,40 @@ function WeeklyCalendarComponent({
             overflowX: layout ? "hidden" : "auto", // Scroll horizontally in horizontal mode
           }}
         >
-          {tasks.map((task, index) => (
-            <div
-              key={task.id}
-              style={{
-                flex: "0 0 auto", 
-                width: layout ? "100%" : "300px", 
-              }}
-            >
-              <TaskStep
-                token={token}
-                index={task.id}
-                image={task.image}
-                setImage={(newImage) => updateTask(day, task.id, 'image', newImage)}
-                title={`Task ${index + 1}`}
-                deleteImage={() => updateTask(day, task.id, 'image', null)}
-                removeStep={() => removeTask(day, task.id)}
-                setName={(newName) => updateTask(day, task.id, 'name', newName)}
-                stepName={task.name}
-                label="Task Name"
-                showCancel={true}
-                showTime={false}
-                fontColour={fontColour}
-                stepColour={stepColour}
-                totalSteps={tasks.length}
-                onMoveLeft={(index) => moveLeft(day, index)}
-                onMoveRight={(index) => moveRight(day, index)}
-                count={index}
-              />
-            </div>
-          ))}
+          {tasks.map((task, index) => {
+            return (
+              <div
+                key={task.id}
+                style={{
+                  flex: "0 0 auto",
+                  width: layout ? "100%" : "300px",
+                }}
+              >
+                  <TaskStep
+                    token={token}
+                    index={task.id}
+                    title={`Task ${index + 1}`}
+                    label="Task Name"
+                    stepImages={task.image}
+                    stepNames={task.name}
+                    updateStepImage={(newImage) => updateTask(day, task.id, 'image', newImage)}
+                    updateStepName={(newName) => updateTask(day, task.id, 'name', newName)}
+                    deleteImage={() => updateTask(day, task.id, 'image', null)}
+                    removeStep={() => removeTask(day, task.id)}
+                    showCancel={true}
+                    showTime={false}
+                    fontColour={fontColour}
+                    stepColour={stepColour}
+                    totalSteps={tasks.length}
+                    onMoveLeft={(index) => moveLeft(day, index)}
+                    onMoveRight={(index) => moveRight(day, index)}
+                    count={index}
+                    firstThen={false}
+                    id={`${day} index`}
+                  />
+              </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>

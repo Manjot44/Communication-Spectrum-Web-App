@@ -1,8 +1,7 @@
-import { React, useContext } from 'react';
+import { React } from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import VisualSupportImage from './VisualSupportImage';
-import { context } from '../pages/StepSupport';
 import { styled } from "@mui/system";
 import { LeftArrow, LeftArrowIcon, RightArrow, RightArrowIcon, StepIndex, DeleteButton, CrossIcon, DescriptionBox } from "../Wrappers"
 
@@ -36,29 +35,26 @@ const BottomBox = styled(Box)({
 
 function TaskStepHorizontal ({
   token,
-  index,
+  title,
   deleteImage,
   removeStep,
   count,
   updateStepImage,
   updateStepName,
   updateStepTime,
-  id
+  stepImages,
+  stepNames,
+  stepTimes,
+  onMoveLeft,
+  onMoveRight,
+  fontColour,
+  stepColour,
+  showCancel,
+  showTime,
+  label,
+  totalSteps,
+  id,
 }) {
-  const {
-    stepImages,
-    stepNames,
-    stepTimes,
-    onMoveLeft,
-    onMoveRight,
-    fontColour,
-    stepColour,
-    showCancel,
-    showTime,
-    label,
-    totalSteps
-  } = useContext(context);
-
   const handleTimeChange = (e) => {
     let input = e.target.value;
     
@@ -92,7 +88,7 @@ function TaskStepHorizontal ({
               </RightArrow>
             )}
             <StepIndex variant="h6" gutterBottom>
-              <b>{index}</b>
+              <b>{title}</b>
             </StepIndex>
             {/* Cross Button to Delete the Step. ShowCancel boolean to toggle if its 
                 shown or not. Not shown in First-Then */}
@@ -113,18 +109,12 @@ function TaskStepHorizontal ({
               }}>
                 <br/>
                 {/* Box with Description of each Step/Option */}
-                {/* <DescriptionBox 
-                  label={label}
-                  variant="outlined"
-                  defaultValue={stepNames[count]}
-                  onChange={(e) => updateStepName(e.target.value)}
-                /> */}
                 {showTime ? (
                   <DescriptionBox
                     // id="standard-multiline-flexible"
                     label={label}
                     variant="outlined"
-                    defaultValue={stepNames[count]}
+                    defaultValue={stepNames}
                     onChange={(e) => updateStepName(e.target.value)}
                   />
                 ) : (
@@ -134,7 +124,7 @@ function TaskStepHorizontal ({
                     // variant="outlined"
                     multiline
                     rows={4}
-                    defaultValue={stepNames[count]}
+                    defaultValue={stepNames}
                     onChange={(e) => updateStepName(e.target.value)}
                   />
                 )}
@@ -143,7 +133,7 @@ function TaskStepHorizontal ({
                   <DescriptionBox 
                     label="Timer"
                     variant="outlined"
-                    defaultValue={stepTimes[count]}
+                    defaultValue={stepTimes}
                     onChange={handleTimeChange}
                     inputProps={{ inputMode: 'numeric', pattern: "[0-9]*" }}
                     placeholder="00:00:00"
@@ -161,7 +151,7 @@ function TaskStepHorizontal ({
                   token={token}
                   uniqueID={id}
                   imgHeight="65%"
-                  image={stepImages[count]}
+                  image={stepImages}
                   setImage={updateStepImage}
                   deleteImage={deleteImage}
                 />

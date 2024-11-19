@@ -1,9 +1,7 @@
-import { React, useContext } from 'react';
+import { React } from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import VisualSupportImage from './VisualSupportImage';
-import { context } from '../pages/StepSupport';
-import { firstThenContext } from '../pages/FirstThen';
 import { styled } from "@mui/system";
 import { LeftArrow, LeftArrowIcon, RightArrow, RightArrowIcon, StepIndex, DeleteButton, CrossIcon, DescriptionBox } from "../Wrappers"
 
@@ -39,32 +37,26 @@ const BottomBox = styled(Box)({
 
 function TaskStep ({
   token,
-  index,
+  title,
   deleteImage,
   removeStep,
   count,
-  firstThen,
   updateStepImage,
   updateStepName,
   updateStepTime,
-  id
+  stepImages,
+  stepNames,
+  stepTimes,
+  onMoveLeft,
+  onMoveRight,
+  fontColour,
+  stepColour,
+  showCancel,
+  showTime,
+  label,
+  totalSteps,
+  id,
 }) {
-  const whichContext = firstThen ? firstThenContext : context;
-
-  const {
-    stepImages,
-    stepNames,
-    stepTimes,
-    onMoveLeft,
-    onMoveRight,
-    fontColour,
-    stepColour,
-    showCancel,
-    showTime,
-    label,
-    totalSteps
-  } = useContext(whichContext);
-
   const handleTimeChange = (e) => {
     let input = e.target.value;
     
@@ -88,18 +80,18 @@ function TaskStep ({
           }}>
             {/* Left Arrow. Appears for steps after the first step */}
             {count > 0 && (
-              <LeftArrow onClick={() => onMoveLeft(count)}>
+              <LeftArrow onClick={onMoveLeft}>
                 <LeftArrowIcon/>
               </LeftArrow>
             )}
             {/*  Right Arrow. Appears for steps before the last step */}
             {count < totalSteps - 1 && (
-              <RightArrow onClick={() => onMoveRight(count)}>
+              <RightArrow onClick={onMoveRight}>
                 <RightArrowIcon/>
               </RightArrow>
             )}
             <StepIndex variant="h6" gutterBottom>
-              <b>{index}</b>
+              <b>{title}</b>
             </StepIndex>
             {/* Cross Button to Delete the Step. ShowCancel boolean to toggle if its 
                 shown or not. Not shown in First-Then */}
@@ -120,7 +112,7 @@ function TaskStep ({
               token={token}
               uniqueID={id}
               imgHeight="95%" 
-              image={stepImages[count]} 
+              image={stepImages} 
               setImage={updateStepImage} 
               deleteImage={deleteImage}
             />
@@ -137,7 +129,7 @@ function TaskStep ({
             <DescriptionBox 
               label={label}
               variant="outlined"
-              defaultValue={stepNames[count]}
+              defaultValue={stepNames}
               onChange={(e) => updateStepName(e.target.value)}
             />
             {/* Timer Box (Only for Task Analysis)*/}
@@ -145,7 +137,7 @@ function TaskStep ({
               <DescriptionBox 
                 label="Timer"
                 variant="outlined"
-                defaultValue={stepTimes[count]}
+                defaultValue={stepTimes}
                 onChange={handleTimeChange}
                 inputProps={{ inputMode: 'numeric', pattern: "[0-9]*" }}
                 placeholder="00:00:00"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import axios from "axios";
 import Grid from "@mui/material/Grid2";
@@ -12,7 +12,6 @@ function GalleryModal ({ token, open, onClose, onSelectImage }) {
 	const [images, setImages] = useState(null);
 	const { notify } = useNotification();
 	const notifyRef = useRef(notify);
-	const { token } = useContext(AuthContext);
 
 	// Fetch images
   useEffect(() => {

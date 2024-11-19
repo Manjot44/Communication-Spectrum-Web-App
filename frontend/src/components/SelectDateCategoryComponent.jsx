@@ -26,7 +26,7 @@ function SelectDateCategoryComponent({
     <>
       <LeftMenuCard>
         <CardContent>
-          <Stack spacing={1.5}>
+          <Stack spacing={1.2}>
             <Typography
               variant="h5"
               style={{ fontFamily: "Poppins" }}
@@ -69,7 +69,6 @@ function SelectDateCategoryComponent({
                   style={{
                     height: "75px",
                     backgroundColor: "white",
-                    padding: "5px",
                   }}
                 >
                   <DropdownComponent
@@ -103,7 +102,6 @@ function SelectDateCategoryComponent({
                     width="100%"
                   />
                 </div>
-                <br />
               </>
             )}
             
